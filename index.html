@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Học cùng Nam San</title>
+<meta name="description" content="Trò chơi học chữ và số cho bé mầm non chuẩn bị vào lớp 1. Mẹ cùng con học ở nhà, mỗi ngày 10 phút.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@500;700;800&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --bg:#EEF5FF; --card:#FFFFFF; --ink:#22304D; --soft:#5B6B8C; --line:#D5E1F5;
+  --six:#F07A35; --six-bg:#FFE9DB; --nine:#2E7BE0; --nine-bg:#DDEBFF; --good-bg:#DDF6E8; --lilac:#F1E6FF; --sun:#FFF3C4;
+  --f-num:"Baloo 2","Nunito",system-ui,sans-serif;
+  --f-body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html,body{background:var(--bg);color:var(--ink)}
+body{margin:0;font-family:var(--f-body);font-size:17px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+.wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+h1,h2,h3{font-family:var(--f-num);line-height:1.15;margin:0;text-wrap:balance}
+p{margin:0}
+.hero{background:var(--card);border-radius:28px;padding:22px 20px;box-shadow:0 4px 0 var(--line);display:flex;flex-direction:column;gap:8px}
+.hero h1{font-size:clamp(30px,8vw,44px)}
+.hero p{color:var(--soft);font-weight:700}
+.hero .tag{font-size:13px;letter-spacing:.06em;text-transform:uppercase;font-weight:800;color:var(--six)}
+h2{font-size:24px}
+.list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:12px}
+.card{background:var(--card);border-radius:22px;padding:16px;display:flex;gap:14px;align-items:center;box-shadow:0 4px 0 var(--line);text-decoration:none;color:inherit}
+a.card:active{transform:translateY(3px);box-shadow:0 1px 0 var(--line)}
+a.card:focus-visible{outline:4px solid var(--nine);outline-offset:3px}
+.card .ic{flex:none;width:60px;height:60px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-family:var(--f-num);font-weight:800;font-size:26px}
+.card h3{font-size:21px}
+.card p{color:var(--soft);font-size:14px;font-weight:700;line-height:1.35}
+.card .k{font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:800;color:var(--soft)}
+.card.soon{opacity:.6;box-shadow:none;border:2px dashed var(--line);background:transparent}
+.mom{background:var(--card);border-radius:22px;padding:16px 18px;border:2px dashed var(--line)}
+.mom h2{font-size:20px;margin-bottom:6px}
+.mom ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+footer{color:var(--soft);font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <span class="tag">Chuẩn bị vào lớp 1</span>
+    <h1>Học cùng Nam San</h1>
+    <p>Trò chơi học chữ và số cho bé 4–6 tuổi. Mẹ ngồi cùng con, mỗi ngày 10 phút, chơi trên điện thoại hay máy tính bảng.</p>
+  </header>
+
+  <section>
+    <h2>Bài học</h2>
+  </section>
+  <div class="list">
+    <a class="card" href="so-6-9/">
+      <span class="ic" style="background:var(--six-bg)"><span style="color:var(--six)">6</span><span style="color:var(--nine)">9</span></span>
+      <span><span class="k">Số đếm</span><h3>Số 6 và số 9</h3><p>Tròn ở dưới là 6, tròn ở trên là 9. Tìm số, đếm hình, đếm ngược, tập tô.</p></span>
+    </a>
+    <div class="card soon" aria-disabled="true">
+      <span class="ic" style="background:var(--good-bg)">a</span>
+      <span><span class="k">Sắp có</span><h3>Chữ cái theo âm</h3><p>29 chữ cái đọc theo âm như sách Tiếng Việt 1.</p></span>
+    </div>
+    <div class="card soon" aria-disabled="true">
+      <span class="ic" style="background:var(--sun)">20</span>
+      <span><span class="k">Sắp có</span><h3>Số từ 1 đến 20</h3><p>Đếm, nhận mặt số, nhiều hơn và ít hơn.</p></span>
+    </div>
+    <div class="card soon" aria-disabled="true">
+      <span class="ic" style="background:var(--lilac)">b d</span>
+      <span><span class="k">Sắp có</span><h3>Chữ dễ nhầm</h3><p>b và d, p và q, số 2 và số 5.</p></span>
+    </div>
+  </div>
+
+  <section class="mom">
+    <h2>Gợi ý cho mẹ</h2>
+    <ul>
+      <li>Mỗi ngày 10 phút là đủ. Bé còn thích thì chơi thêm, bé chán thì nghỉ.</li>
+      <li>Đọc chữ theo âm (“bờ”, “cờ”), không đọc theo tên chữ (“bê”, “xê”), để bé vào lớp 1 khỏi học lại.</li>
+      <li>Cho bé đếm đồ thật trong nhà sau mỗi bài trên máy.</li>
+    </ul>
+  </section>
+  <footer>Trang miễn phí cho các mẹ dạy con ở nhà.</footer>
+</div>
+</body>
+</html>
