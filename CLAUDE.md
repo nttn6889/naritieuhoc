@@ -1,8 +1,11 @@
-# Học cùng Nam San — trang học chữ và số cho bé mầm non
+# Nari Tiểu Học — trang học cho bé (phần đầu: Chuẩn bị vào lớp 1, học cùng bé Nam San)
 
-Site tĩnh cho bé 4–6 tuổi chuẩn bị vào lớp 1 (mẹ dạy con ở nhà). Chạy bằng GitHub Pages từ nhánh `main`, thư mục gốc
-(địa chỉ tạm https://nttn6889.github.io/be-hoc/). Tên miền riêng chưa mua (đang cân nhắc: sansanghoc.vn, sandihoc.com, hoccungnamsan.com…);
-khi có thì thêm file `CNAME` và hướng dẫn mẹ cài DNS. Dự án tách hẳn khỏi Nari TOPIK (kho `narikoreanbox`, `nari-lop`) — không trộn.
+Site tĩnh, kho `nttn6889/naritieuhoc` (tên cũ `be-hoc`). Mẹ chốt tên **Nari Tiểu Học** (7/11/2026): lâu dài theo bé suốt tiểu học
+(lớp 1–5, sau có thể thêm mục luyện thi Trạng Nguyên Tiếng Việt — không dùng “Trạng Nguyên” làm tên chính vì trùng tên cuộc thi chính thức).
+Trang chủ chia mục theo cấp: hiện có **Chuẩn bị vào lớp 1** (bé 4–6 tuổi), sau thêm Lớp 1, Lớp 2…
+Chạy bằng GitHub Pages từ nhánh `main`, thư mục gốc (địa chỉ tạm https://nttn6889.github.io/naritieuhoc/). Tên miền định mua **naritieuhoc.vn**
+(+ .com chuyển về); khi có thì thêm file `CNAME` và hướng dẫn mẹ cài DNS (tạm thời có thể dùng `tieuhoc.naritopik.com`).
+Dự án tách khỏi Nari TOPIK (kho `narikoreanbox`, `nari-lop`), chỉ chung chữ “Nari” — không trộn nội dung.
 
 - Nam San là con gái của chủ kho, 5 tuổi, là nhân vật của trang. Kho công khai: **không đưa ảnh, ngày sinh, trường lớp hay thông tin riêng nào khác của bé**.
 - Người dùng: các mẹ ở Việt Nam, bé chơi bằng ngón tay trên điện thoại / máy tính bảng. Nút to, chữ to, câu ngắn, giọng nhẹ nhàng; có mục “Gợi ý cho mẹ”.
