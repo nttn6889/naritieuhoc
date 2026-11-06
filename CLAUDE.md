@@ -35,11 +35,14 @@ thẻ kỹ năng Số đếm / Chữ cái / Tô nét (bài có thì là link xan
   Mẹ chọn nhóm chữ (Tất cả · a ă â · o ô ơ · e ê i y u ư · b c d đ g h · k l m n p q · r s t v x), các trò lấy chữ trong nhóm.
   Làm quen (thẻ chữ to, chữ hoa, từ gạch chân chữ, bảng chữ cam = nguyên âm / xanh = phụ âm) · Nghe và chọn (5 câu) ·
   Tranh có âm gì (từ thiếu một chữ, 5 câu) · Tìm chữ (lưới 12, nhiễu bằng chữ dễ nhầm `CONF`). Trò nghe không cho â/ơ, i/y đứng cùng nhau.
-  **Bài từng chữ** `#bai-<chữ>` (29 bài, trang đầu có lưới chữ, học xong có ✓): 1 Nhìn, nghe (hình dáng chữ `SHAPE`) · 2 Từ có âm (3 từ + tranh, `WORDS`) ·
-  3 Tai thính (3 lượt: đọc 3 tiếng, chọn tiếng có âm; tiếng nhiễu không chứa chữ đó hay chữ cùng tiếng `EAR`: c/k/q, i/y, â/ơ, d/r, s/x, l/n) ·
-  4 Tìm chữ · 5 Đánh vần (không có ở ă, â, y vì không đứng một mình sau phụ âm).
+  **Bài từng chữ** `#bai-<chữ>` theo cách sách Tiếng Việt 1 (Kết nối tri thức): bảng `BOOK` xếp chữ theo thứ tự sách
+  (a, b+huyền, c+sắc, e, ê, o+hỏi, ô+nặng, d, đ, ơ+ngã, i, k, h, l, u, ư, m, n, g, r, s, t, q, v, x, y; ă, â, p để sau vì đi cùng vần / ph),
+  mỗi bài: tiếng mẫu, từ ngữ có nghĩa + tranh, câu. **Từ và câu do Nari tự viết (không chép sách), chỉ dùng chữ + dấu đã học tới bài đó**
+  để bé tự đánh vần được — thêm từ mới phải giữ luật này (kiểm bằng script so chữ/dấu với các bài trước).
+  Các bước: Nhận biết (tranh + câu nghe, gạch chân chữ) · Âm mới (chữ, `SHAPE`, dấu mới, 3 tranh `WORDS`) · Đánh vần (tiếng mẫu, chỉ hiện dấu đã học; từ ngữ chạm
+  để nghe “bờ – o – bo – huyền – bò”) · Tai thính (3 lượt; nhiễu tránh âm giống `EAR`) · Tìm chữ · Đọc câu (chạm từng tiếng, cô đọc mẫu, “Mẹ hỏi bé” nói theo tranh).
   **Đánh vần** `#danh-van`: chọn phụ âm + nguyên âm → “bờ – a – ba”, 6 dấu thanh “ba – huyền – bà”; tự đổi c→k, g→gh trước e ê i, q→qu (qui→quy) và nhắc luật;
-  tiếng có nghĩa hiện tranh (`MEAN`). Cuối trang có “Dạy bé đánh vần thế nào?”.
+  tiếng có nghĩa hiện tranh (`MEAN`), dưới có “Từ có nghĩa bắt đầu bằng …” lấy từ `BOOK` + `MEAN`. Cuối trang có “Dạy bé đánh vần thế nào?”.
   localStorage `ncc-stars`, `ncc-snd`, `ncc-grp`, `ncc-done`. Link `chu-cai/#lam-quen|nghe-chon|tranh|tim-chu|danh-van|bai-b`.
   Ghi chú: công cụ ghi file có thể đổi `\u0300`… thành ký tự dấu ghép thật trong JS — vẫn chạy đúng.
 

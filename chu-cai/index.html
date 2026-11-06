@@ -185,6 +185,14 @@ p{margin:0}
 .tiles .tl[aria-pressed="true"]{background:var(--ink);color:#fff}
 .tiles .tl:disabled{opacity:.3}
 .rowlab{font-weight:800;font-size:15px;color:var(--soft);align-self:flex-start}
+.sent{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.sw{border:0;background:var(--bg);border-radius:14px;padding:6px 12px;font:800 clamp(28px,8vw,38px)/1.2 var(--f-big);box-shadow:0 3px 0 var(--line)}
+.sw.say{background:#FFF8DC;outline:3px solid var(--star)}
+.wv .sw mark,.wv .word mark{color:var(--vow)} .wc .sw mark,.wc .word mark{color:var(--con)}
+.sw mark{background:none;color:inherit;text-decoration:underline 4px;text-underline-offset:5px}
+.pic .sp{font-weight:700;font-size:12px;color:var(--soft);line-height:1.35}
+.bigpic .word mark{background:none;text-decoration:underline 4px;text-underline-offset:6px}
+.bigpic .e.multi{font-size:clamp(44px,14vw,72px);white-space:nowrap}
 .rule2{background:#FFF8DC;border-radius:16px;padding:8px 14px;font-weight:800;font-size:15px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -347,9 +355,9 @@ function home(){
   '<section class="hero"><div class="abc" aria-hidden="true"><span>a</span><span>b</span><span>c</span></div>'+
   '<h1>Nam San ơi, mình học chữ cái nhé!</h1><p class="sub">Mỗi chữ có một âm. Bé nghe, đọc to theo và nhìn tranh.</p>'+
   chipsHTML()+'</section>'+
-  '<section class="panel"><h2>Học từng chữ</h2><p class="hint">Mỗi chữ một bài: nhìn, nghe, tìm tiếng có âm, tìm chữ, đánh vần. Học xong được dấu ✓.</p>'+
-  '<div class="keys2">'+ORDER.map(function(c){return '<button class="key '+(L[c].v?'v':'c')+(DONE[c]?' done':'')+'" data-go="bai-'+c+'" aria-label="Bài chữ '+c+(DONE[c]?', đã học':'')+'">'+c+'</button>'}).join('')+'</div>'+
-  '<p class="hint">Gợi ý thứ tự như sách: a, b, c, o, ô, ơ, d, đ, e, ê, h, i, k, l, m, n…</p></section>'+
+  '<section class="panel"><h2>Học từng chữ</h2><p class="hint">Mỗi bài như một bài trong sách: nhận biết, âm mới, đánh vần, đọc từ, đọc câu. Học xong được dấu ✓.</p>'+
+  '<div class="keys2">'+BORDER.map(function(c){return '<button class="key '+(L[c].v?'v':'c')+(DONE[c]?' done':'')+'" data-go="bai-'+c+'" aria-label="Bài chữ '+c+(DONE[c]?', đã học':'')+'">'+c+'</button>'}).join('')+'</div>'+
+  '<p class="hint">Xếp theo thứ tự như sách Tiếng Việt 1: học dần từng chữ, mỗi bài chỉ dùng chữ bé đã học nên bé tự đánh vần được. ă, â, p học sau cùng vần.</p></section>'+
   '<nav class="menu">'+ACTS.map(function(a,i){return '<button class="tile" data-go="'+a[0]+'"><span class="ic" style="background:'+a[4]+'">'+a[3]+'</span><span><span class="k">Bài '+(i+1)+'</span><h3>'+a[1]+'</h3><p>'+a[2]+'</p></span></button>'}).join('')+'</nav>'+
   '<section class="mom"><h2>Gợi ý cho mẹ</h2><ul>'+
   '<li>Đọc theo <b>âm</b> như sách Tiếng Việt 1: “bờ”, “cờ”, “dờ”, không đọc tên chữ “bê”, “xê”, “dê”. Riêng k đọc “ca”, q đọc “cu”, y gọi là “i dài”.</li>'+
@@ -542,11 +550,11 @@ function combine(c,v){
   return {on:on,snd:snd,v:vv,vs:L[v].snd,syl:on+vv,note:note};
 }
 /* khung ghép: [b] + [a] = [ba] và hàng 6 dấu thanh */
-function spellHTML(r,t){
+function spellHTML(r,t,allow){
   return '<div class="spell" aria-live="polite"><button class="sc" id="spC">'+r.on+'</button><span class="op">+</span><button class="sv" id="spV">'+r.v+'</button><span class="op">=</span><button class="sr" id="spR">'+withTone(r.syl,t)+'</button></div>'+
     '<p class="spellread" id="spRead"></p>'+
     (r.note?'<p class="rule2">'+r.note+'</p>':'')+
-    '<p class="rowlab">Thêm dấu thanh:</p><div class="tones">'+TONES.map(function(x,i){var w=withTone(r.syl,i);return '<button class="tone" data-t="'+i+'" aria-pressed="'+(i===t)+'"><b>'+w+'</b><small>'+x[2]+'</small><i>'+(MEAN[w]||'')+'</i></button>'}).join('')+'</div>';
+    '<p class="rowlab">Thêm dấu thanh:</p><div class="tones">'+TONES.map(function(x,i){if(allow&&allow.indexOf(i)<0)return '';var w=withTone(r.syl,i);return '<button class="tone" data-t="'+i+'" aria-pressed="'+(i===t)+'"><b>'+w+'</b><small>'+x[2]+'</small><i>'+(MEAN[w]||'')+'</i></button>'}).join('')+'</div>';
 }
 function spellRead(r,t){
   var w=withTone(r.syl,t), el=$('#spRead');
@@ -563,6 +571,15 @@ function bindSpell(r,state,again){
   view.querySelectorAll('.tone').forEach(function(b){b.onclick=function(){state.t=+b.dataset.t;again(true)}});
 }
 
+/* từ có nghĩa (bé đánh vần được) bắt đầu bằng phụ âm đang chọn; từ cùng nguyên âm xếp trước */
+function wordsFor(on,v){
+  var seen={},out=[];
+  BOOK.forEach(function(r){r[3].forEach(function(w){if(!seen[w[0]]){seen[w[0]]=1;out.push(w)}})});
+  Object.keys(MEAN).forEach(function(w){if(MEAN[w]&&!seen[w]&&w.indexOf(' ')<0){var p=parseSyl(w);if(p.on&&p.v.length===1){seen[w]=1;out.push([w,MEAN[w]])}}});
+  out=out.filter(function(w){return parseSyl(w[0].split(' ')[0]).on===on});
+  out.sort(function(a,b){var x=parseSyl(a[0].split(' ')[0]).v===v?0:1,y=parseSyl(b[0].split(' ')[0]).v===v?0:1;return x-y});
+  return out.slice(0,6);
+}
 /* ---------- 5. đánh vần (máy ghép tiếng) ---------- */
 var DV={c:'b',v:'a',t:0};
 function spellGame(quiet){
@@ -571,6 +588,7 @@ function spellGame(quiet){
   view.innerHTML='<section class="panel"><h2>Đánh vần</h2>'+
     '<p class="hint">Chọn một phụ âm và một nguyên âm. Bé đọc theo: “bờ – a – ba”, rồi thêm dấu: “ba – huyền – bà”.</p>'+
     spellHTML(r,DV.t)+
+    (function(){var ws=wordsFor(r.on,r.v);return ws.length?'<p class="rowlab">Từ có nghĩa bắt đầu bằng “'+r.on+'”:</p>'+wordCards(ws):''})()+
     '<p class="rowlab">Phụ âm:</p><div class="tiles c">'+CONS.map(function(c){return '<button class="tl" data-c="'+c+'" aria-pressed="'+(c===DV.c)+'">'+c+'</button>'}).join('')+'</div>'+
     '<p class="rowlab">Nguyên âm:</p><div class="tiles v">'+VOWS.map(function(v){return '<button class="tl" data-v="'+v+'" aria-pressed="'+(v===DV.v)+'"'+(combine(DV.c,v)?'':' disabled')+'>'+v+'</button>'}).join('')+'</div>'+
     '<button class="btn" id="spAgain">🔊 Đánh vần lại</button></section>'+
@@ -588,29 +606,108 @@ function spellGame(quiet){
     DV.t=0;spellGame();
   }});
   $('#spAgain').onclick=function(){spellRead(r,DV.t)};
+  var wl=wordsFor(r.on,r.v);
+  view.querySelectorAll('.rw').forEach(function(x){x.onclick=function(){view.querySelectorAll('.rw').forEach(function(y){y.classList.remove('say')});x.classList.add('say');sayWord(wl[+x.dataset.i][0],function(){x.classList.remove('say')})}});
   spellRead(combine(DV.c,DV.v)||r,DV.t);
 }
 
-/* ---------- bài từng chữ ---------- */
+/* ---------- bài từng chữ, theo cách sách Tiếng Việt 1 ----------
+   Thứ tự chữ và lúc học dấu thanh gần như sách Kết nối tri thức (b + huyền, c + sắc, o + hỏi, ô + nặng, ơ + ngã).
+   Từ ngữ và câu do Nari tự viết, CHỈ dùng chữ và dấu bé đã học tới bài đó (bé tự đánh vần được).
+   [chữ, dấu thanh mới, tiếng mẫu, [[từ, tranh]…], câu, tranh của câu] */
+var BOOK=[
+  ['a',0,'a',[],'',''],
+  ['b',1,'bà',[['ba','👨'],['bà','👵'],['ba ba','🐢']],'',''],
+  ['c',2,'cá',[['cá','🐟'],['cà','🍆'],['ca','🥤']],'',''],
+  ['e',0,'bé',[['bé','👶'],['bè','🛶'],['be bé','🤏']],'',''],
+  ['ê',0,'bế',[['bê','🐮'],['bế bé','🤱'],['bề bề','🦐']],'Bà bế bé.','👵🤱'],
+  ['o',3,'cỏ',[['bò','🐄'],['cỏ','🌿'],['bó','💐'],['bó cỏ','🌾']],'Bò, bê có cỏ.','🐄🐮🌿'],
+  ['ô',5,'bộ',[['cô','👩‍🏫'],['bố','👨'],['cọ','🖌️'],['cô bé','👧']],'Bố bế bé.','👨👶'],
+  ['d',0,'dê',[['dê','🐐'],['dế','🦗']],'Bé có dê, có dế.','🐐🦗'],
+  ['đ',0,'đỏ',[['đá','🪨'],['đỏ','🔴'],['đò','⛵'],['cá đỏ','🐠']],'Bé có cá đỏ.','👶🐠'],
+  ['ơ',4,'cờ',[['cờ','🚩'],['bơ','🥑'],['bờ đê','🏞️'],['dỗ bé','🤱']],'Bà dỗ bé.','👵👶'],
+  ['i',0,'bi',[['bi','⚪'],['bí đỏ','🎃'],['dì','👩'],['đi bộ','🚶']],'Bé đi bộ.','👶🚶'],
+  ['k',0,'kì',[['kì đà','🦎'],['kê','🌾'],['kể','🗣️']],'Kì đà bò.','🦎'],
+  ['h',0,'hổ',[['hổ','🐯'],['hồ','🏞️'],['hè','☀️'],['hố','🕳️']],'Bé Hà đi bộ ở bờ hồ.','👧🚶🏞️'],
+  ['l',0,'lá',[['lá','🍃'],['lê','🍐'],['lọ','🏺'],['lá cờ','🚩']],'Bé Hà có lê.','👧🍐'],
+  ['u',0,'cú',[['cú','🦉'],['củ','🥔'],['dù','⛱️'],['bú','🍼']],'Bé bú, bà dỗ bé.','👶🍼👵'],
+  ['ư',0,'dữ',[['hổ dữ','🐯'],['cá dữ','🦈'],['lừ đừ','😴']],'',''],
+  ['m',0,'mẹ',[['mẹ','👩'],['mũ','🧢'],['mì','🍜'],['me','🌰']],'Mẹ có mũ đỏ.','👩🧢'],
+  ['n',0,'nơ',[['nơ','🎀'],['nụ','🌷'],['no','😋']],'Bé có nơ đỏ.','👧🎀'],
+  ['g',0,'gà',[['gà','🐔'],['gỗ','🪵'],['gõ','🥁'],['gà gô','🐦']],'Bà có gà, bố có gỗ.','👵🐔👨🪵'],
+  ['r',0,'rổ',[['rổ','🧺'],['rễ','🌱'],['rõ','👀']],'Mẹ để cá ở rổ.','👩🐟🧺'],
+  ['s',0,'sò',[['sò','🐚'],['số','🔢'],['sổ','📓'],['su su','🥒']],'Bé Hà có sò.','👧🐚'],
+  ['t',0,'tổ',[['tô','🥣'],['tủ','🗄️'],['tổ','🪺'],['tò he','🧸']],'Bé để mũ ở tủ.','👶🧢🗄️'],
+  ['q',0,'quà',[['quà','🎁'],['quả','🍑'],['quê','🏡']],'Bà ở quê có quà.','👵🏡🎁'],
+  ['v',0,'vở',[['vở','📒'],['vẽ','🎨'],['ve','🦗']],'Bé vẽ ở vở.','👧🎨📒'],
+  ['x',0,'xe',[['xe','🚗'],['xô','🪣'],['xe đỏ','🚒']],'Bé vẽ xe.','👧🎨🚗'],
+  ['y',0,'y',[['y tá','👩‍⚕️'],['ý','💡']],'Mẹ là y tá.','👩‍⚕️'],
+  ['ă',0,'',[],'',''],
+  ['â',0,'',[],'',''],
+  ['p',0,'',[],'','']
+];
+var BK={},BORDER=[];
+BOOK.forEach(function(r,i){BK[r[0]]={i:i,tone:r[1],mau:r[2],tu:r[3],cau:r[4],cpic:r[5]};BORDER.push(r[0])});
+var LATER={'ă':'Âm ă không đứng một mình sau phụ âm, luôn có âm cuối: ăn, ắt, ăm… Sách dạy ă khi học vần (an, ăn, ân).',
+  'â':'Âm â không đứng một mình sau phụ âm, luôn có âm cuối: ấm, cây, mây… Sách dạy â khi học vần (an, ăn, ân).',
+  'p':'Chữ p thường đi với h thành ph (phở, phố), hoặc đứng cuối vần (áp, họp). Bé học khi vào lớp 1.'};
+/* dấu thanh bé đã học tính tới bài này */
+function tonesUpTo(ch){var t=[0],i=BK[ch].i;for(var j=0;j<=i;j++)if(BOOK[j][1])t.push(BOOK[j][1]);return t.sort()}
+
+/* tách tiếng: phụ âm đầu + nguyên âm + dấu thanh */
+var TMARK={'̀':1,'́':2,'̉':3,'̃':4,'̣':5};
+function parseSyl(s){
+  s=s.toLowerCase();var t=0;
+  var b=s.normalize('NFD').replace(/[̣̀́̉̃]/g,function(m){t=TMARK[m];return ''}).normalize('NFC');
+  var m=b.match(/^(qu|gh|[bcdđghklmnpqrstvx])/), on=m?m[1]:'';
+  return {on:on,v:b.slice(on.length),base:b,t:t,syl:s};
+}
+function onSnd(on){return on==='qu'?'quờ':on==='gh'?'gờ':(L[on]?L[on].snd:on)}
+function vSnd(v){return v==='y'?'i':(L[v]?L[v].snd:v)}
+/* “bờ – a – ba – huyền – bà” */
+function spellParts(s){var p=parseSyl(s),a=[];if(p.on){a.push(onSnd(p.on),vSnd(p.v),p.base)}else a.push(vSnd(p.v));if(p.t)a.push(TONES[p.t][0],p.syl);return a}
+function spellWord(w){return w.split(/\s+/).map(function(s){return spellParts(s.replace(/[.,!?]/g,'')).join(' – ')})}
+function sayWord(w,done){say(spellWord(w).map(function(x){return x.replace(/ – /g,'. ')}).join('. ')+'. '+w+'.',done)}
+function sylR(s){var p=parseSyl(s);return {on:p.on,snd:onSnd(p.on),v:p.v,vs:vSnd(p.v),syl:p.on+p.v,note:'',t:p.t}}
+function hlLetter(text,ch){return text.split(' ').map(function(w){return hasLetter(w,ch)?wordHTML(w,ch,'mark'):w}).join(' ')}
+function wordCards(list){
+  return '<div class="words">'+list.map(function(w,i){return '<button class="pic rw" data-i="'+i+'"><span class="e">'+w[1]+'</span><span class="word">'+w[0]+'</span><small class="sp">'+spellWord(w[0]).join('<br>')+'</small></button>'}).join('')+'</div>';
+}
+
 var LS=null;
-function canSpell(ch){return 'ăây'.indexOf(ch)<0}
-function lessonSteps(ch){var s=[['nhin','Nhìn, nghe'],['tu','Từ có âm'],['tai','Tai thính'],['tim','Tìm chữ']];if(canSpell(ch))s.push(['ghep','Đánh vần']);return s}
-function nextLetter(ch){return ORDER[(ORDER.indexOf(ch)+1)%ORDER.length]}
+function lessonSteps(ch){
+  var b=BK[ch],s=[['nhan','Nhận biết'],['am','Âm mới']];
+  if(b.mau&&parseSyl(b.mau).on||b.tu.length)s.push(['van','Đánh vần']);
+  s.push(['tai','Tai thính'],['tim','Tìm chữ']);
+  if(b.cau)s.push(['cau','Đọc câu']);
+  return s;
+}
+function nextLetter(ch){return BORDER[(BK[ch].i+1)%BORDER.length]}
+function finishLesson(ch){markDone(ch);LS=null;win('Bé học xong bài chữ '+ch+'.',function(){go('bai-'+nextLetter(ch))})}
 function lesson(ch,quiet){
-  if(!LS||LS.ch!==ch)LS={ch:ch,step:0,tai:0,t:0,pick:null,heard:{}};
-  var steps=lessonSteps(ch), st=steps[LS.step][0], o=L[ch], k=o.v?'v':'c', last=LS.step===steps.length-1;
-  var h='<section class="panel"><div class="lhead"><span class="lbadge '+k+'">'+ch+'</span><h2>Bài chữ '+ch+'</h2></div>'+
+  if(!LS||LS.ch!==ch)LS={ch:ch,step:0,tai:0,t:0,pick:null};
+  var b=BK[ch],steps=lessonSteps(ch),st=steps[LS.step][0],o=L[ch],k=o.v?'v':'c',last=LS.step===steps.length-1;
+  var h='<section class="panel"><div class="lhead"><span class="lbadge '+k+'">'+ch+'</span><h2>Bài '+(b.i+1)+': '+ch.toUpperCase()+' '+ch+'</h2></div>'+
     '<div class="stepper">'+steps.map(function(s,i){return '<span class="'+(i===LS.step?'on':i<LS.step?'ok':'')+'">'+(i+1)+'. '+s[1]+'</span>'}).join('')+'</div>';
   var nextBtn='<div class="row"><button class="btn" id="lNext">'+(last?'Xong bài ★':'Tiếp ›')+'</button></div>';
   var W=WORDS[ch];
-  if(st==='nhin'){
+  if(st==='nhan'){
+    var pic=b.cau?b.cpic:W[0][1], txt=b.cau||W[0][0];
+    h+='<button class="bigpic" id="nPic"><span class="e'+(Array.from(pic).length>2?' multi':'')+'">'+pic+'</span><span class="word w'+k+'">'+hlLetter(txt,ch)+'</span></button>'+
+      '<p class="hint">Bé nghe cô đọc. Tiếng nào có chữ gạch chân là có âm “'+o.snd+'”.</p>'+
+      (b.cau?'<p class="hint">Hết bài, bé sẽ tự đọc được câu này!</p>':'')+nextBtn;
+  }else if(st==='am'){
     h+='<div class="card '+k+'"><button class="big" id="bigL" aria-label="Nghe âm '+o.snd+'"><span class="l">'+ch+'</span><small>Chữ in hoa: '+ch.toUpperCase()+'</small></button>'+
       '<div class="info"><span class="kind">'+(o.v?'Nguyên âm':'Phụ âm')+'</span><p class="reads">Đọc là <b>'+o.snd+'</b></p>'+
       '<p class="shape">'+SHAPE[ch]+'</p>'+(o.tip?'<p class="note2">'+o.tip+'</p>':'')+'</div></div>'+
-      '<p class="hint">Bé chạm vào chữ, nghe rồi đọc to theo: “'+o.snd+'”.</p>'+nextBtn;
-  }else if(st==='tu'){
-    h+='<p class="ask">Những tiếng có âm “'+o.snd+'”</p><p class="hint">Bé chạm vào từng tranh, nghe rồi nói theo.</p>'+
-      '<div class="words w'+k+'">'+W.map(function(w,i){return '<button class="pic'+(LS.heard[i]?' heard':'')+'" data-i="'+i+'"><span class="e">'+w[1]+'</span><span class="word">'+wordHTML(w[0],ch,'mark')+'</span></button>'}).join('')+'</div>'+nextBtn;
+      (b.tone?'<p class="rule2">Bài này học thêm <b>'+TONES[b.tone][2]+'</b>.</p>':'')+
+      (LATER[ch]?'<p class="rule2">'+LATER[ch]+'</p>':'')+
+      '<div class="words w'+k+'">'+W.map(function(w,i){return '<button class="pic hw" data-i="'+i+'"><span class="e">'+w[1]+'</span><span class="word">'+wordHTML(w[0],ch,'mark')+'</span></button>'}).join('')+'</div>'+nextBtn;
+  }else if(st==='van'){
+    var r=b.mau&&parseSyl(b.mau).on?sylR(b.mau):null;
+    if(r&&!LS.vInit){LS.t=r.t;LS.vInit=1}
+    h+=(r?'<p class="ask">Tiếng mẫu</p>'+spellHTML(r,LS.t,tonesUpTo(ch)):'')+
+      (b.tu.length?'<p class="ask">Đọc từ ngữ</p><p class="hint">Bé chạm vào tranh, đánh vần theo cô rồi đọc liền.</p>'+wordCards(b.tu):'')+nextBtn;
   }else if(st==='tai'){
     if(!LS.pick||LS.pick.r!==LS.tai){
       var good=W[LS.tai%W.length], bad=shuffle(ALLW.filter(function(w){
@@ -626,63 +723,66 @@ function lesson(ch,quiet){
     var cf=Array.from(CONF[ch]||'').filter(function(c){return L[c]&&c!==ch}), others=[];
     shuffle(cf).forEach(function(c){if(others.length<2)others.push(c)});
     shuffle(ORDER.slice()).forEach(function(c){if(others.length<2&&c!==ch&&others.indexOf(c)<0&&SAME[ch]!==c)others.push(c)});
-    var n=4, cells=[];for(var i=0;i<12;i++)cells.push(i<n?ch:others[i%2]);shuffle(cells);
+    var cells=[];for(var i=0;i<12;i++)cells.push(i<4?ch:others[i%2]);shuffle(cells);
     h+='<p class="ask">Bé chạm vào tất cả chữ <span class="target">'+ch+'</span></p><p class="hint">'+SHAPE[ch]+'</p>'+
-      '<div class="grid">'+cells.map(function(v){return '<button class="cell" data-v="'+v+'">'+v+'</button>'}).join('')+'</div><p class="prog" id="prog">Đã tìm được 0 / '+n+'</p>';
-  }else if(st==='ghep'){
-    var list=o.v?'bcdđhlmntvx'.split(''):VOWS.filter(function(v){var r=combine(ch,v);return r&&(ch==='q'||r.on===ch)});
-    if(o.v)list=list.filter(function(c){return combine(c,ch)});
-    if(!LS.sel)LS.sel=list[0];
-    var r=o.v?combine(LS.sel,ch):combine(ch,LS.sel);
-    h+='<p class="ask">Ghép “'+o.snd+'” với '+(o.v?'phụ âm':'nguyên âm')+'</p><p class="hint">Chạm một chữ ở dưới. Bé đọc theo từng âm rồi đọc liền.</p>'+
-      spellHTML(r,LS.t)+
-      '<p class="rowlab">'+(o.v?'Phụ âm:':'Nguyên âm:')+'</p><div class="tiles '+(o.v?'c':'v')+'">'+list.map(function(x){return '<button class="tl" data-x="'+x+'" aria-pressed="'+(x===LS.sel)+'">'+x+'</button>'}).join('')+'</div>'+nextBtn;
+      '<div class="grid">'+cells.map(function(v){return '<button class="cell" data-v="'+v+'">'+v+'</button>'}).join('')+'</div><p class="prog" id="prog">Đã tìm được 0 / 4</p>';
+  }else if(st==='cau'){
+    var ws=b.cau.split(' ');
+    h+='<div class="bigpic"><span class="e'+(Array.from(b.cpic).length>2?' multi':'')+'">'+b.cpic+'</span></div><p class="ask">Bé đọc câu</p>'+
+      '<div class="sent w'+k+'">'+ws.map(function(w,i){return '<button class="sw" data-i="'+i+'">'+(hasLetter(w,ch)?wordHTML(w,ch,'mark'):w)+'</button>'}).join('')+'</div>'+
+      '<p class="hint">Chạm từng tiếng để nghe. Bé chỉ tay vào từng tiếng và đọc to.</p>'+
+      '<div class="row"><button class="btn light" id="cRead">🔊 Cô đọc mẫu</button></div>'+
+      '<div class="mom" style="text-align:left;width:100%"><b>Mẹ hỏi bé (nói theo tranh):</b> Trong tranh có ai, có gì? Ai đang làm gì? Ở nhà mình có giống thế không?</div>'+nextBtn;
   }
   view.innerHTML=h+'</section>';
 
   var nb=$('#lNext');
-  if(nb)nb.onclick=function(){
-    if(last){markDone(ch);LS=null;win('Bé học xong bài chữ '+ch+'.',function(){go('bai-'+nextLetter(ch))});return}
-    LS.step++;LS.t=0;lesson(ch);window.scrollTo(0,0);
-  };
-  if(st==='nhin'){
+  if(nb)nb.onclick=function(){if(last){finishLesson(ch);return}LS.step++;lesson(ch);window.scrollTo(0,0)};
+  if(st==='nhan'){
+    var t=b.cau||W[0][0];
+    $('#nPic').onclick=function(){say(t)};
+    if(!quiet)say('Bài chữ '+o.snd+'. Bé nghe nhé. '+t);
+  }else if(st==='am'){
     $('#bigL').onclick=function(){say(o.snd+'. '+o.snd+'.')};
-    if(!quiet)say('Bài chữ '+o.snd+'. Đây là chữ '+o.snd+'. '+SHAPE[ch]);
-  }else if(st==='tu'){
-    view.querySelectorAll('.words .pic').forEach(function(b){b.onclick=function(){var w=W[+b.dataset.i][0];LS.heard[b.dataset.i]=1;b.classList.add('heard');say(w+'. '+w+' có âm '+o.snd+'.')}});
-    if(!quiet)say('Những tiếng có âm '+o.snd+'. Bé chạm vào từng tranh nhé.');
+    view.querySelectorAll('.hw').forEach(function(x){x.onclick=function(){var w=W[+x.dataset.i][0];x.classList.add('heard');say(w+'. '+w+' có âm '+o.snd+'.')}});
+    if(!quiet)say('Âm mới: '+o.snd+'. '+o.snd+'. '+SHAPE[ch]);
+  }else if(st==='van'){
+    var rr=b.mau&&parseSyl(b.mau).on?sylR(b.mau):null;
+    if(rr)bindSpell(rr,LS,function(){lesson(ch,true);spellRead(sylR(b.mau),LS.t)});
+    view.querySelectorAll('.rw').forEach(function(x){x.onclick=function(){
+      view.querySelectorAll('.rw').forEach(function(y){y.classList.remove('say')});x.classList.add('say','heard');
+      sayWord(b.tu[+x.dataset.i][0],function(){x.classList.remove('say')})}});
+    if(!quiet){if(rr)say('Mình đánh vần tiếng mẫu nhé.',function(){spellRead(rr,LS.t)});else say('Bé đọc từ ngữ nhé.')}
   }else if(st==='tai'){
-    var cards=view.querySelectorAll('.words .pic'), busy=false;
-    var readAll=function(){
-      var i=0;busy=true;
-      (function step(){cards.forEach(function(c){c.classList.remove('say')});
-        if(i>=cards.length){busy=false;return}
-        var c=cards[i++];c.classList.add('say');
-        if(sound&&viVoice)say(c.dataset.w,function(){setTimeout(step,250)});else setTimeout(step,900);
-      })();
-    };
+    var cards=view.querySelectorAll('.words .pic');
+    var readAll=function(){var i=0;(function step(){cards.forEach(function(c){c.classList.remove('say')});if(i>=cards.length)return;
+      var c=cards[i++];c.classList.add('say');if(sound&&viVoice)say(c.dataset.w,function(){setTimeout(step,250)});else setTimeout(step,900)})()};
     say('Tiếng nào có âm '+o.snd+'?',readAll);
     $('#tAgain').onclick=readAll;
     var locked=false;
-    cards.forEach(function(b){b.onclick=function(){
+    cards.forEach(function(x){x.onclick=function(){
       if(locked)return;
-      if(b.dataset.w===LS.pick.good){locked=true;b.classList.add('ok');say(b.dataset.w+' có âm '+o.snd+'. Đúng rồi!');
-        setTimeout(function(){LS.tai++;if(LS.tai>=3){LS.step++}lesson(ch)},1500)}
-      else{b.classList.add('no');shakeEl(b);say(b.dataset.w+' không có âm '+o.snd+'.');setTimeout(function(){b.classList.remove('no')},900)}
+      if(x.dataset.w===LS.pick.good){locked=true;x.classList.add('ok');say(x.dataset.w+' có âm '+o.snd+'. Đúng rồi!');
+        setTimeout(function(){LS.tai++;if(LS.tai>=3)LS.step++;lesson(ch)},1500)}
+      else{x.classList.add('no');shakeEl(x);say(x.dataset.w+' không có âm '+o.snd+'.');setTimeout(function(){x.classList.remove('no')},900)}
     }});
   }else if(st==='tim'){
     var found=0;
     say('Bé tìm tất cả chữ '+o.snd+' nhé.');
-    view.querySelectorAll('.cell').forEach(function(b){b.onclick=function(){
-      if(b.classList.contains('ok'))return;
-      if(b.dataset.v===ch){b.classList.add('ok');found++;$('#prog').textContent='Đã tìm được '+found+' / 4';
-        if(found===4){say('Giỏi quá!');setTimeout(function(){if(last){markDone(ch);LS=null;win('Bé học xong bài chữ '+ch+'.',function(){go('bai-'+nextLetter(ch))})}else{LS.step++;lesson(ch)}},900)}else say(o.snd)}
-      else{b.classList.add('no');shakeEl(b);say('Đây là chữ '+L[b.dataset.v].snd+'.');setTimeout(function(){b.classList.remove('no')},900)}
+    view.querySelectorAll('.cell').forEach(function(x){x.onclick=function(){
+      if(x.classList.contains('ok'))return;
+      if(x.dataset.v===ch){x.classList.add('ok');found++;$('#prog').textContent='Đã tìm được '+found+' / 4';
+        if(found===4){say('Giỏi quá!');setTimeout(function(){if(last)finishLesson(ch);else{LS.step++;lesson(ch)}},900)}else say(o.snd)}
+      else{x.classList.add('no');shakeEl(x);say('Đây là chữ '+L[x.dataset.v].snd+'.');setTimeout(function(){x.classList.remove('no')},900)}
     }});
-  }else if(st==='ghep'){
-    bindSpell(r,LS,function(){lesson(ch,true);spellRead(o.v?combine(LS.sel,ch):combine(ch,LS.sel),LS.t)});
-    view.querySelectorAll('.tiles .tl').forEach(function(b){b.onclick=function(){LS.sel=b.dataset.x;LS.t=0;lesson(ch,true);spellRead(o.v?combine(LS.sel,ch):combine(ch,LS.sel),0)}});
-    if(!quiet)say('Mình đánh vần nhé. Bé đọc theo cô.',function(){spellRead(r,LS.t)});
+  }else if(st==='cau'){
+    var btns=view.querySelectorAll('.sw'), ws2=b.cau.split(' ');
+    btns.forEach(function(x){x.onclick=function(){sayWord(ws2[+x.dataset.i].replace(/[.,!?]/g,''))}});
+    var readSent=function(){var i=0;(function step(){btns.forEach(function(x){x.classList.remove('say')});
+      if(i>=btns.length){say(b.cau);return}var x=btns[i++];x.classList.add('say');
+      if(sound&&viVoice)say(ws2[i-1].replace(/[.,!?]/g,''),function(){setTimeout(step,200)});else setTimeout(step,800)})()};
+    $('#cRead').onclick=readSent;
+    if(!quiet)say('Bé đọc câu nhé. Cô đọc mẫu.',readSent);
   }
 }
 
