@@ -5,84 +5,177 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Nari Tiểu Học</title>
 <meta name="description" content="Nari Tiểu Học: trang học miễn phí cho bé, mẹ cùng con học ở nhà. Chuẩn bị vào lớp 1: chữ cái, số đếm, trò chơi chạm trên điện thoại.">
+<link rel="icon" href="logo/nari-tieu-hoc-icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="logo/nari-tieu-hoc-icon-180.png">
+<meta property="og:title" content="Nari Tiểu Học">
+<meta property="og:description" content="Vui từng bài – Vững từng lớp. Mẹ cùng con học ở nhà, mỗi ngày 10 phút.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@500;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@500;700;800&display=swap">
 <style>
+/* Trang chủ kiểu “cặp sách”: đầu trang logo, khối mở đầu có Bạn Sáu – Bạn Chín, thanh các cấp học (lớp 0 → lớp 5),
+   rồi bài học chia theo kỹ năng. Màu nhà Nari (tím, vàng) + cam/xanh của trang bé. Một giao diện sáng có chủ ý. */
 *,*::before,*::after{box-sizing:border-box}
 :root{
-  --bg:#EEF5FF; --card:#FFFFFF; --ink:#22304D; --soft:#5B6B8C; --line:#D5E1F5;
-  --six:#F07A35; --six-bg:#FFE9DB; --nine:#2E7BE0; --nine-bg:#DDEBFF; --good-bg:#DDF6E8; --lilac:#F1E6FF; --sun:#FFF3C4;
-  --f-num:"Baloo 2","Nunito",system-ui,sans-serif;
+  --bg:#F7F4FC; --card:#FFFFFF; --ink:#2A2547; --soft:#6B6588; --line:#E6E0F2;
+  --purple:#53468F; --purple-bg:#EFEAF8; --gold:#D4A843; --gold-bg:#FBF2DC;
+  --orange:#F07A35; --orange-bg:#FFE9DB; --blue:#2E7BE0; --blue-bg:#DDEBFF; --green-bg:#DDF6E8;
+  --f-logo:"Baloo 2","Nunito",system-ui,sans-serif;
   --f-body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
   color-scheme:light;
   padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
 }
 html,body{background:var(--bg);color:var(--ink)}
-body{margin:0;font-family:var(--f-body);font-size:17px;line-height:1.5;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
-.wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
-h1,h2,h3{font-family:var(--f-num);line-height:1.15;margin:0;text-wrap:balance}
+body{margin:0;font-family:var(--f-body);font-size:17px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px 40px}
+.wrap{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:26px}
+h1,h2,h3{font-family:var(--f-logo);line-height:1.15;margin:0;text-wrap:balance}
 p{margin:0}
-.hero{background:var(--card);border-radius:28px;padding:22px 20px;box-shadow:0 4px 0 var(--line);display:flex;flex-direction:column;gap:8px}
-.hero h1{font-size:clamp(30px,8vw,44px)}
-.hero p{color:var(--soft);font-weight:700}
-.hero .tag{font-size:13px;letter-spacing:.06em;text-transform:uppercase;font-weight:800;color:var(--six)}
-h2{font-size:24px}
-.list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:12px}
-.card{background:var(--card);border-radius:22px;padding:16px;display:flex;gap:14px;align-items:center;box-shadow:0 4px 0 var(--line);text-decoration:none;color:inherit}
-a.card:active{transform:translateY(3px);box-shadow:0 1px 0 var(--line)}
-a.card:focus-visible{outline:4px solid var(--nine);outline-offset:3px}
-.card .ic{flex:none;width:60px;height:60px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-family:var(--f-num);font-weight:800;font-size:26px}
-.card h3{font-size:21px}
-.card p{color:var(--soft);font-size:14px;font-weight:700;line-height:1.35}
-.card .k{font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:800;color:var(--soft)}
-.card.soon{opacity:.6;box-shadow:none;border:2px dashed var(--line);background:transparent}
-.mom{background:var(--card);border-radius:22px;padding:16px 18px;border:2px dashed var(--line)}
-.mom h2{font-size:20px;margin-bottom:6px}
-.mom ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
-footer{color:var(--soft);font-size:14px;text-align:center}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:4px solid var(--blue);outline-offset:3px;border-radius:12px}
+
+/* đầu trang */
+.brand{display:flex;align-items:center;gap:8px;text-decoration:none}
+.brand img{width:58px;height:58px;display:block}
+.brand b{font-family:var(--f-logo);font-weight:800;font-size:28px;line-height:1;display:block}
+.brand b span{color:var(--orange)} .brand b{color:var(--purple)}
+.brand small{display:block;font-weight:800;font-size:12.5px;color:var(--blue);letter-spacing:.02em}
+
+/* mở đầu */
+.hero{background:var(--card);border-radius:30px;padding:26px 22px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:18px;align-items:center;box-shadow:0 4px 0 var(--line)}
+@media (max-width:640px){.hero{grid-template-columns:minmax(0,1fr);text-align:center}.hero .cta{justify-content:center}}
+.hero h1{font-size:clamp(30px,6.4vw,46px);color:var(--purple)}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero p{color:var(--soft);font-weight:700;margin-top:10px;max-width:46ch}
+.hero .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:12px 22px;font-weight:800;text-decoration:none;background:var(--purple);color:#fff;box-shadow:0 3px 0 #352c62}
+.btn.alt{background:var(--purple-bg);color:var(--purple);box-shadow:0 3px 0 var(--line)}
+.btn:active{transform:translateY(2px);box-shadow:none}
+.pals{display:flex;justify-content:center;align-items:flex-end;gap:10px}
+.pals svg{width:clamp(84px,22vw,124px);height:auto}
+
+/* cấp học */
+.levels{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 8px;scrollbar-width:thin}
+.lv{flex:none;border-radius:18px;padding:10px 14px;min-width:104px;background:var(--card);border:2px solid var(--line);display:flex;flex-direction:column;gap:2px}
+.lv b{font-family:var(--f-logo);font-size:19px;line-height:1.1}
+.lv span{font-size:12.5px;font-weight:800;color:var(--soft)}
+.lv.on{border-color:var(--orange);background:var(--orange-bg)}
+.lv.on span{color:#9A3F0C}
+.sec-h{display:flex;flex-direction:column;gap:4px}
+.sec-h h2{font-size:clamp(24px,5vw,30px)}
+.sec-h p{color:var(--soft);font-weight:700}
+.eyebrow{font-size:12.5px;letter-spacing:.07em;text-transform:uppercase;font-weight:800;color:var(--orange)}
+
+/* bài học */
+.skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:14px}
+.skill{background:var(--card);border-radius:24px;padding:16px;display:flex;flex-direction:column;gap:10px;box-shadow:0 3px 0 var(--line)}
+.skill h3{font-size:20px;display:flex;align-items:center;gap:10px}
+.skill h3 i{font-style:normal;width:40px;height:40px;border-radius:13px;display:grid;place-items:center;font-size:20px;font-family:var(--f-logo);font-weight:800}
+.lesson{display:flex;align-items:center;gap:12px;border-radius:16px;padding:10px 12px;text-decoration:none;background:var(--bg)}
+a.lesson{background:var(--green-bg)}
+a.lesson:active{transform:translateY(2px)}
+.lesson b{display:block;font-weight:800;line-height:1.25}
+.lesson small{display:block;color:var(--soft);font-weight:700;font-size:13.5px;line-height:1.35}
+.lesson .go{margin-left:auto;font-weight:800;color:#18794A;flex:none}
+.lesson.soon{opacity:.65}
+.lesson.soon .go{color:var(--soft);font-size:12.5px}
+
+/* cách học */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px;counter-reset:st}
+.step{background:var(--card);border-radius:22px;padding:16px;display:flex;gap:12px;align-items:flex-start;box-shadow:0 3px 0 var(--line)}
+.step::before{counter-increment:st;content:counter(st);flex:none;width:36px;height:36px;border-radius:50%;background:var(--purple);color:#fff;display:grid;place-items:center;font:800 18px/1 var(--f-logo)}
+.step b{display:block;font-size:17px}
+.step p{color:var(--soft);font-weight:700;font-size:15px}
+
+.mom{background:var(--gold-bg);border-radius:24px;padding:18px 20px}
+.mom h2{font-size:22px;margin-bottom:8px}
+.mom ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+
+footer{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;color:var(--soft);font-size:14px;font-weight:700;padding-top:6px}
+footer img{width:72px;height:72px}
+footer .sl{font-family:var(--f-logo);font-size:19px;color:var(--purple);font-weight:800}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header class="hero">
-    <span class="tag">Học cùng bé Nam San</span>
-    <h1>Nari Tiểu Học</h1>
-    <p>Trang học miễn phí cho bé, mẹ cùng con học ở nhà. Mỗi ngày 10 phút, chơi trên điện thoại hay máy tính bảng.</p>
+  <header>
+    <a class="brand" href="./" aria-label="Nari Tiểu Học, trang chủ">
+      <img src="logo/nari-tieu-hoc-bieu-tuong.svg" alt="">
+      <span><b>Nari <span>Tiểu Học</span></b><small>Vui từng bài – Vững từng lớp</small></span>
+    </a>
   </header>
 
-  <section>
-    <h2>Chuẩn bị vào lớp 1</h2>
-    <p style="color:var(--soft);font-weight:700">Cho bé 4–6 tuổi: làm quen chữ cái và số đếm.</p>
+  <section class="hero">
+    <div>
+      <h1>Mẹ cùng con học ở nhà, <em>mỗi ngày 10 phút</em></h1>
+      <p>Trò chơi chạm trên điện thoại cho bé chuẩn bị vào lớp 1: nhận mặt số, đếm, làm quen chữ cái. Học cùng bé Nam San, Bạn Sáu và Bạn Chín.</p>
+      <div class="cta">
+        <a class="btn" href="so-6-9/">Chơi bài Số 6 và số 9 ›</a>
+        <a class="btn alt" href="#cach-hoc">Cách học</a>
+      </div>
+    </div>
+    <div class="pals" aria-hidden="true">
+      <svg viewBox="0 0 100 140"><path d="M72 16 C50 20 27 44 23 86 C20 116 34 128 51 128 C69 128 80 115 80 98 C80 80 67 70 52 70 C38 70 27 79 23 92" stroke="#F07A35" stroke-width="15" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="43" cy="96" r="3.6" fill="#2A2547"/><circle cx="59" cy="96" r="3.6" fill="#2A2547"/><path d="M44 105 Q51 111 58 105" stroke="#2A2547" stroke-width="2.6" fill="none" stroke-linecap="round"/><circle cx="37" cy="104" r="3.5" fill="#FF9FB0" opacity=".7"/><circle cx="65" cy="104" r="3.5" fill="#FF9FB0" opacity=".7"/></svg>
+      <svg viewBox="0 0 100 140"><path d="M78 42 C75 27 63 18 50 18 C34 18 22 30 22 45 C22 61 34 71 50 71 C66 71 78 60 78 42 L76 128" stroke="#2E7BE0" stroke-width="15" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="42" cy="42" r="3.6" fill="#2A2547"/><circle cx="58" cy="42" r="3.6" fill="#2A2547"/><path d="M43 51 Q50 57 57 51" stroke="#2A2547" stroke-width="2.6" fill="none" stroke-linecap="round"/><circle cx="36" cy="50" r="3.5" fill="#FF9FB0" opacity=".7"/><circle cx="64" cy="50" r="3.5" fill="#FF9FB0" opacity=".7"/></svg>
+    </div>
   </section>
-  <div class="list">
-    <a class="card" href="so-6-9/">
-      <span class="ic" style="background:var(--six-bg)"><span style="color:var(--six)">6</span><span style="color:var(--nine)">9</span></span>
-      <span><span class="k">Số đếm</span><h3>Số 6 và số 9</h3><p>Tròn ở dưới là 6, tròn ở trên là 9. Tìm số, đếm hình, đếm ngược, tập tô.</p></span>
-    </a>
-    <div class="card soon" aria-disabled="true">
-      <span class="ic" style="background:var(--good-bg)">a</span>
-      <span><span class="k">Sắp có</span><h3>Chữ cái theo âm</h3><p>29 chữ cái đọc theo âm như sách Tiếng Việt 1.</p></span>
+
+  <nav class="levels" aria-label="Các cấp học">
+    <div class="lv on"><b>Vào lớp 1</b><span>Đang học</span></div>
+    <div class="lv"><b>Lớp 1</b><span>Sắp có</span></div>
+    <div class="lv"><b>Lớp 2</b><span>Sắp có</span></div>
+    <div class="lv"><b>Lớp 3</b><span>Sắp có</span></div>
+    <div class="lv"><b>Lớp 4</b><span>Sắp có</span></div>
+    <div class="lv"><b>Lớp 5</b><span>Sắp có</span></div>
+  </nav>
+
+  <section class="sec-h" id="vao-lop-1">
+    <span class="eyebrow">Bé 4–6 tuổi</span>
+    <h2>Chuẩn bị vào lớp 1</h2>
+    <p>Làm quen số và chữ trước khi đi học. Chưa cần viết chữ, chỉ cần nhận ra, đọc to và tô nét.</p>
+  </section>
+  <div class="skills">
+    <div class="skill">
+      <h3><i style="background:var(--orange-bg);color:var(--orange)">12</i>Số đếm</h3>
+      <a class="lesson" href="so-6-9/"><span><b>Số 6 và số 9</b><small>Tròn ở dưới là 6, tròn ở trên là 9. Tìm số, đếm hình, đếm ngược, tập tô.</small></span><span class="go">Chơi ›</span></a>
+      <div class="lesson soon"><span><b>Số từ 1 đến 10</b><small>Đếm đồ vật, nhận mặt số</small></span><span class="go">Sắp có</span></div>
+      <div class="lesson soon"><span><b>Nhiều hơn, ít hơn</b><small>So sánh, thêm 1, bớt 1</small></span><span class="go">Sắp có</span></div>
     </div>
-    <div class="card soon" aria-disabled="true">
-      <span class="ic" style="background:var(--sun)">20</span>
-      <span><span class="k">Sắp có</span><h3>Số từ 1 đến 20</h3><p>Đếm, nhận mặt số, nhiều hơn và ít hơn.</p></span>
+    <div class="skill">
+      <h3><i style="background:var(--blue-bg);color:var(--blue)">a</i>Chữ cái</h3>
+      <div class="lesson soon"><span><b>Nguyên âm a, o, ô, ơ…</b><small>Đọc theo âm như sách Tiếng Việt 1</small></span><span class="go">Sắp có</span></div>
+      <div class="lesson soon"><span><b>Phụ âm b, c, d, đ…</b><small>Đọc “bờ”, “cờ”, kèm tranh</small></span><span class="go">Sắp có</span></div>
+      <div class="lesson soon"><span><b>Chữ dễ nhầm</b><small>b và d, p và q, m và n</small></span><span class="go">Sắp có</span></div>
     </div>
-    <div class="card soon" aria-disabled="true">
-      <span class="ic" style="background:var(--lilac)">b d</span>
-      <span><span class="k">Sắp có</span><h3>Chữ dễ nhầm</h3><p>b và d, p và q, số 2 và số 5.</p></span>
+    <div class="skill">
+      <h3><i style="background:var(--gold-bg);color:#9C7416">✎</i>Tô nét</h3>
+      <div class="lesson soon"><span><b>Nét cơ bản</b><small>Nét thẳng, nét cong, nét móc</small></span><span class="go">Sắp có</span></div>
+      <div class="lesson soon"><span><b>Phiếu tô in A4</b><small>In ra cho bé tô bằng bút chì</small></span><span class="go">Sắp có</span></div>
     </div>
+  </div>
+
+  <section class="sec-h" id="cach-hoc">
+    <h2>Học như thế nào?</h2>
+  </section>
+  <div class="steps">
+    <div class="step"><div><b>Mẹ chọn một bài</b><p>Mỗi bài chỉ một điều nhỏ, ví dụ phân biệt số 6 và số 9.</p></div></div>
+    <div class="step"><div><b>Bé chơi 10 phút</b><p>Chạm, nghe đọc, đếm, tô. Làm đúng được ngôi sao.</p></div></div>
+    <div class="step"><div><b>Chơi lại với đồ thật</b><p>Đếm thìa, đếm kẹo, tìm số trên lịch để bé nhớ lâu.</p></div></div>
   </div>
 
   <section class="mom">
     <h2>Gợi ý cho mẹ</h2>
     <ul>
-      <li>Mỗi ngày 10 phút là đủ. Bé còn thích thì chơi thêm, bé chán thì nghỉ.</li>
-      <li>Đọc chữ theo âm (“bờ”, “cờ”), không đọc theo tên chữ (“bê”, “xê”), để bé vào lớp 1 khỏi học lại.</li>
-      <li>Cho bé đếm đồ thật trong nhà sau mỗi bài trên máy.</li>
+      <li>Bé còn thích thì chơi thêm, bé chán thì nghỉ. Mỗi ngày một ít tốt hơn học dồn.</li>
+      <li>Đọc chữ theo âm (“bờ”, “cờ”), không theo tên chữ (“bê”, “xê”), để vào lớp 1 bé khỏi học lại.</li>
+      <li>Khen bé khi bé cố gắng, không chỉ khi bé làm đúng.</li>
     </ul>
   </section>
-  <footer>Nari Tiểu Học · trang miễn phí cho các mẹ dạy con ở nhà.</footer>
+
+  <footer>
+    <img src="logo/nari-tieu-hoc-icon.svg" alt="">
+    <span class="sl">Vui từng bài – Vững từng lớp</span>
+    <span>Nari Tiểu Học · trang học miễn phí, mẹ cùng con học ở nhà</span>
+  </footer>
 </div>
 </body>
 </html>

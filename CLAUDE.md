@@ -17,6 +17,16 @@ Dự án tách khỏi Nari TOPIK (kho `narikoreanbox`, `nari-lop`), chỉ chung 
 - Sao thưởng, cài đặt lưu localStorage (`ns69-stars`, `ns69-snd`); bọc try/catch.
 - Kiểm tra bằng Playwright khung 390px trước khi push.
 
+## Logo (mẹ chốt 7/11: hướng A bản 1)
+- Cùng họ logo Nari TOPIK: quyển sách mở + nét lượn chép nguyên (tím `#53468F` / vàng `#D4A843`), thay tháp Namsan bằng **bút chì cam** (`#F07A35`, khâu xanh `#2E7BE0`)
+  đầu là **ngôi sao vàng**. Chữ “Nari” tím + “Tiểu Học” cam (Baloo 2), khẩu hiệu **Vui từng bài – Vững từng lớp** (xanh). Nền ảnh đại diện `#EFEAF8`.
+- `logo/nari-tieu-hoc-bieu-tuong.svg` (chỉ hình), `-icon.svg` (tròn nền tím nhạt, dùng làm favicon), `-icon-180.png`, `-icon-512.png`. Bản nháp so sánh: https://claude.ai/artifact/Hx35G27AocMsH4fewNaebf
+- Chưa làm: logo có chữ đổi thành nét vẽ (như `tools/logo/mklogo.py` của narikoreanbox), bản đơn giản cho cỡ rất nhỏ.
+
+## Trang chủ (`index.html`)
+Đầu trang logo ngang · khối mở đầu (Bạn Sáu, Bạn Chín, nút vào bài) · thanh cấp học Vào lớp 1 → Lớp 5 (chỉ “Vào lớp 1” đang học) · mục Chuẩn bị vào lớp 1 chia
+thẻ kỹ năng Số đếm / Chữ cái / Tô nét (bài có thì là link xanh “Chơi ›”, chưa có thì “Sắp có”) · Học như thế nào (3 bước) · Gợi ý cho mẹ · chân trang.
+
 ## Bài đã có
 - `so-6-9/` Số 6 và số 9 (bé Nam San chưa nhớ 6, 9 khi đếm ngược 12 → 1): Làm quen (Bạn Sáu tròn dưới / Bạn Chín tròn trên, cách viết, chấm 5+1 / 5+4,
   lộn ngược 6 thành 9) · Tìm số · Đếm hình · Đếm ngược / xuôi 12 ↔ 1 (lượt đầu thiếu 6, 9; lượt sau thiếu thêm) · Tập viết (tô theo nét, chấm đỏ chỗ chưa tô).
