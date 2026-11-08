@@ -37,13 +37,20 @@ hoặc ô gập “👩 Dành cho mẹ ›” cuối trang mỗi trò.
 - `chu-cai`: chọn nhóm chữ là việc của mẹ → nằm trong “Dành cho mẹ”; trang đầu: menu 5 trò rồi bảng “Học từng chữ”.
 
 ## Trang chủ (`index.html`) và Góc của mẹ (`me/`)
-Trang chủ chỉ cho bé (tiền tiểu học, 4–6 tuổi): logo · “Bé muốn chơi gì?” + nút 🔊 · 4 ô to: Số (cam, Bạn Sáu – Bạn Chín → `so-6-9/`) ·
-Chữ cái (xanh, “ab” → `chu-cai/`) · Đánh vần (xanh lá, “b + a = ba” → `chu-cai/#danh-van`) · Tập viết (vàng, số 6 viền + bút chì → `viet-so/`).
-Chạm ô: cô đọc tên (`data-say`) rồi chuyển trang; ô vào lần trước có “⭐ Lần trước” (localStorage `nth-last`) · nút nhỏ “👩 Góc của mẹ” → `me/` · chân trang.
+Trang chủ chỉ cho bé (tiền tiểu học, 4–6 tuổi), mẹ chốt 8/11 dạng **lộ trình**: logo · khối **Đường đến lớp 1** (🔊, thanh tiến bộ 🧒→🏫, ★ x/40,
+kệ 8 bạn thú 🐶🐱🐰🐼🦊🐯🦄🦁 — mỗi 5 bài xong mở 1 hộp quà, lần đầu mở có màn chúc mừng, localStorage `nth-gifts`) · nút ▶ to vào bài đang học
+(bài đầu tiên chưa xong) · **con đường** 40 bài uốn lượn: 29 chữ theo thứ tự `BOOK` (ô tròn, cam nguyên âm / xanh phụ âm → `chu-cai/#bai-<chữ>`)
+xen 11 bài số (ô vuông tím: 1…9 → `so/#so-n`, “6 9” ôn → `so-6-9/`, rồi 0), cứ 5 bài một 🎁, cuối là 🏫 Lớp 1. Bài xong có ★ (đọc `ncc-done`,
+`nso-done`; bài 6 9 tính xong khi đã vào, `nth-seen`). Không khóa bài. Thứ tự tính trong JS (`numAt`): bài số đặt ở `floor((k+.5)*40/11)`.
+· **Chơi tự do**: 4 ô Số (→ `so/`) · Chữ cái · Đánh vần · Tập viết. Chạm bài / ô: cô đọc tên (`data-say`) rồi chuyển trang · nút nhỏ “👩 Góc của mẹ” → `me/` · chân trang.
 `me/index.html`: giới thiệu cho mẹ, danh sách bài chi tiết theo kỹ năng (Số đếm / Chữ cái / Tô nét; “Chơi ›” hoặc “Sắp có”), Học như thế nào,
 Gợi ý cho mẹ, ô gập “Lên tiểu học: Lớp 1 – Lớp 5 · sắp có”. Bài mới: thêm ô ở trang chủ (nếu là trò mới cho bé) **và** thẻ trong `me/`.
 
 ## Bài đã có
+- `so/` **10 chữ số 0–9** (8/11): trang đầu lưới 10 ô số (màu riêng `COL`/`CBG`, chấm đếm, ★ khi xong) + ô Sáu và Chín · Tập viết · Ai đứng đúng.
+  Bài `#so-n` 4 bước (biểu tượng 👀 🍎 🔍 ✏️ ở đầu, chạm để nhảy bước): Làm quen (số to, chạm từng đồ vật để đếm “một, hai…”, 0 = đĩa trống) ·
+  Đếm hình (3 lượt, chọn 1 trong 3 số, nhiễu `CONF` + số liền kề) · Tìm số (lưới 12, 3 số đúng) → xong thì `nso-done[n]=1`, ★, hộp chúc mừng ✏️ / ➡ số tiếp / 🏠 ·
+  Tập viết → `viet-so/#so-n`. Thứ tự học 1→9 rồi 0. localStorage `nso-stars`, `nso-snd`, `nso-done`.
 - `so-6-9/` Số 6 và số 9 (bé Nam San chưa nhớ 6, 9 khi đếm ngược 12 → 1): Làm quen (Bạn Sáu tròn dưới / Bạn Chín tròn trên, cách viết, chấm 5+1 / 5+4,
   lộn ngược 6 thành 9) · Tìm số · Đếm hình · Đếm ngược / xuôi 12 ↔ 1 (lượt đầu thiếu 6, 9; lượt sau thiếu thêm) · Tập viết (tô theo nét, chấm đỏ chỗ chưa tô).
   Link `so-6-9/#lam-quen|tim-so|dem-hinh|dem-nguoc|tap-viet`. Bản đầu nằm ở artifact https://claude.ai/artifact/H1vNUgXtd4M9QFL5VfdJMJ (giờ sửa ở kho này).

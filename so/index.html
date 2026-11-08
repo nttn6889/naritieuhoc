@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Bé học 10 chữ số 0–9: làm quen, đếm hình, tìm số, tập viết. Trò chơi chạm cho bé 4–6 tuổi.">
+<title>Số 0–9 · Nari Tiểu Học</title>
+<link rel="icon" href="../logo/nari-tieu-hoc-icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../logo/nari-tieu-hoc-icon-180.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#53468F">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@500;700;800&display=swap">
+<style>
+/* Bài số 0–9: mỗi số một bài 4 bước (👀 làm quen · 🍎 đếm hình · 🔍 tìm số · ✏️ tập viết). App cho bé: ít chữ, chạm là nghe. Một giao diện sáng có chủ ý. */
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --bg:#EEF5FF; --card:#FFFFFF; --ink:#22304D; --soft:#5B6B8C; --line:#D5E1F5;
+  --orange:#F07A35; --orange-bg:#FFE9DB; --blue:#2E7BE0; --blue-bg:#DDEBFF; --purple:#53468F; --purple-bg:#EFEAF8;
+  --good:#22A866; --good-bg:#DDF6E8; --bad:#E04A5F; --star:#F5B700; --gold-bg:#FFF3C4;
+  --f-num:"Baloo 2","Nunito",system-ui,sans-serif;
+  --f-body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html,body{background:var(--bg);color:var(--ink)}
+body{margin:0;font-family:var(--f-body);font-size:17px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px 40px}
+[hidden]{display:none!important}
+.wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible{outline:4px solid var(--blue);outline-offset:3px}
+h1,h2,h3{font-family:var(--f-num);line-height:1.15;margin:0;text-wrap:balance}
+p{margin:0}
+
+.top{display:flex;align-items:center;gap:10px}
+.top .sp{flex:1}
+.back,.pill{min-width:54px;height:54px;padding:0 14px;border:0;background:var(--card);border-radius:999px;box-shadow:0 2px 0 var(--line);
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;font-weight:800;font-size:24px;text-decoration:none;color:inherit}
+.pill{font-size:20px}
+.pill .st{color:var(--star);font-size:22px;line-height:1}
+
+.panel{background:var(--card);border-radius:26px;padding:18px 16px 20px;box-shadow:0 4px 0 var(--line);display:flex;flex-direction:column;gap:14px;align-items:center;text-align:center}
+.panel h2{font-size:clamp(24px,6vw,32px)}
+.ear{border:0;background:var(--bg);border-radius:50%;width:44px;height:44px;font-size:22px;margin-left:8px;vertical-align:middle;box-shadow:0 2px 0 var(--line)}
+.hello{border:0;border-radius:50%;width:68px;height:68px;background:var(--ink);color:#fff;font-size:32px;display:grid;place-items:center;box-shadow:0 4px 0 rgba(0,0,0,.25)}
+.hello:active,.ear:active{transform:translateY(3px);box-shadow:none}
+
+/* trang đầu: lưới 10 số */
+.hero{display:flex;flex-direction:column;align-items:center;gap:10px}
+.strip{font:800 clamp(34px,10vw,52px)/1 var(--f-num);display:flex;gap:2px;flex-wrap:wrap;justify-content:center}
+.nums{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;width:100%}
+@media (min-width:600px){.nums{grid-template-columns:repeat(5,minmax(0,1fr))}}
+.nb{position:relative;border:0;border-radius:26px;min-height:140px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  box-shadow:0 5px 0 rgba(34,48,77,.13);transition:transform .12s}
+.nb b{font:800 clamp(64px,19vw,84px)/.9 var(--f-num)}
+.nb .dd{display:flex;flex-wrap:wrap;justify-content:center;gap:3px;max-width:90px;min-height:12px}
+.nb .dd i{width:10px;height:10px;border-radius:50%;background:currentColor;opacity:.55}
+.nb .ok{position:absolute;top:8px;right:10px;font-size:22px;color:var(--star)}
+.nb.go{transform:scale(.94)}
+nav.menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+nav.menu .tile:last-child:nth-child(odd){grid-column:1/-1}
+.tile{border:0;border-radius:28px;min-height:150px;padding:14px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-decoration:none;color:inherit;box-shadow:0 5px 0 rgba(34,48,77,.13);transition:transform .12s}
+.tile .ic{width:80px;height:80px;border-radius:24px;background:rgba(255,255,255,.75);display:grid;place-items:center;font:800 40px/1 var(--f-num)}
+.tile h3{font-size:clamp(20px,5.6vw,25px)}
+.tile.go{transform:scale(.94)}
+details.mom{background:var(--card);border-radius:22px;padding:14px 18px;border:2px dashed var(--line)}
+details.mom>summary{cursor:pointer;font-weight:800;color:var(--soft);font-size:15px;list-style:none}
+details.mom>summary::-webkit-details-marker{display:none}
+details.mom h2{font-size:20px;margin:10px 0 6px}
+details.mom ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px}
+
+/* bài */
+.steps{display:flex;gap:10px;justify-content:center}
+.sb{border:0;width:60px;height:60px;border-radius:18px;background:var(--bg);font-size:28px;box-shadow:0 3px 0 var(--line);position:relative}
+.sb[aria-current="true"]{background:var(--gold-bg);box-shadow:0 3px 0 #E9CF73;transform:scale(1.1)}
+.sb .ok{position:absolute;right:-4px;top:-6px;font-size:16px}
+.bignum{font:800 clamp(140px,44vw,200px)/.85 var(--f-num);border:0;background:none;padding:0}
+.objs{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;max-width:420px;min-height:70px}
+.ob{border:0;background:var(--bg);width:66px;height:66px;border-radius:18px;font-size:38px;display:grid;place-items:center;box-shadow:0 3px 0 var(--line);position:relative}
+.ob.on{background:var(--good-bg);box-shadow:0 3px 0 #9EDFBC}
+.ob .c{position:absolute;bottom:-2px;right:4px;font:800 16px/1 var(--f-num);color:var(--good)}
+.ob.on{animation:hop .3s}
+@keyframes hop{50%{transform:translateY(-8px)}}
+.plate{font-size:96px;line-height:1}
+.count{font:800 34px/1 var(--f-num);min-height:34px;color:var(--good)}
+.next{border:0;border-radius:999px;background:var(--purple);color:#fff;font:800 30px/1 var(--f-body);padding:14px 34px;box-shadow:0 4px 0 #352c62}
+.next:active{transform:translateY(3px);box-shadow:none}
+.opts{display:flex;gap:14px;justify-content:center}
+.opt{border:0;width:92px;height:92px;border-radius:24px;background:var(--bg);font:800 58px/1 var(--f-num);box-shadow:0 4px 0 var(--line)}
+.opt.right{background:var(--good-bg);box-shadow:0 4px 0 #9EDFBC}
+.pips{display:flex;gap:8px}.pips i{width:14px;height:14px;border-radius:50%;background:var(--line)}.pips i.on{background:var(--good)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;width:100%;max-width:440px}
+.cell{border:0;aspect-ratio:1;border-radius:20px;background:var(--bg);font:800 clamp(40px,12vw,58px)/1 var(--f-num);box-shadow:0 3px 0 var(--line)}
+.cell.right{background:var(--good-bg);box-shadow:0 3px 0 #9EDFBC;color:var(--good)}
+.shake{animation:sh .4s}
+@keyframes sh{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+.write{display:flex;flex-direction:column;align-items:center;gap:10px;text-decoration:none;color:inherit;background:var(--gold-bg);border-radius:28px;padding:18px 30px;box-shadow:0 5px 0 #E9CF73}
+.write b{font:800 120px/.9 var(--f-num);color:transparent;-webkit-text-stroke:4px #C9A23C}
+.write span{font-size:46px}
+
+.win{position:fixed;inset:0;background:rgba(34,48,77,.45);display:grid;place-items:center;padding:20px;z-index:10}
+.win .box{background:var(--card);border-radius:30px;padding:24px 22px;max-width:340px;width:100%;text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center;animation:pop .35s}
+.win .bigstar{font-size:84px;line-height:1;color:var(--star)}
+.win .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.win .row button{border:0;width:76px;height:76px;border-radius:22px;font-size:36px;background:var(--bg);box-shadow:0 4px 0 var(--line)}
+.win .row button.main{background:var(--purple);color:#fff;box-shadow:0 4px 0 #352c62}
+@keyframes pop{from{transform:scale(.7);opacity:0}}
+.burst{position:fixed;font-size:28px;pointer-events:none;z-index:11;animation:burst 1.1s ease-out forwards}
+@keyframes burst{to{transform:translate(var(--dx),var(--dy)) rotate(var(--r));opacity:0}}
+.note{font-size:14px;color:var(--soft);font-weight:700;text-align:center}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="back" id="all" href="../" aria-label="Về trang chính">🏠</a>
+    <button class="back" id="back" hidden aria-label="Quay lại">⬅</button>
+    <span class="sp"></span>
+    <span class="pill" title="Số sao bé đã có"><span class="st">★</span><span id="stars">0</span></span>
+    <button class="pill" id="snd" aria-pressed="true" aria-label="Bật tắt tiếng">🔊</button>
+  </div>
+  <main id="view"></main>
+  <p class="note" id="voiceNote" hidden>Máy này chưa có giọng đọc tiếng Việt, mẹ đọc to giúp bé nhé.</p>
+</div>
+
+<script>
+(function(){
+var $=function(s,r){return (r||document).querySelector(s)};
+var view=$('#view'),backB=$('#back');
+function load(k,d){try{var v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+var stars=load('nso-stars',0),sound=load('nso-snd',true),done=load('nso-done',{});
+function showStars(){$('#stars').textContent=stars}
+function addStar(){stars++;save('nso-stars',stars);showStars()}
+var sndB=$('#snd');
+function showSnd(){sndB.setAttribute('aria-pressed',sound?'true':'false');sndB.textContent=sound?'🔊':'🔇'}
+sndB.onclick=function(){sound=!sound;save('nso-snd',sound);showSnd();if(!sound&&window.speechSynthesis)speechSynthesis.cancel();else say('Đọc to')};
+var viVoice=null,voiceChecked=false;
+function pickVoice(){if(!window.speechSynthesis)return;var vs=speechSynthesis.getVoices()||[];if(!vs.length)return;voiceChecked=true;
+  viVoice=vs.filter(function(v){return /^vi/i.test(v.lang)})[0]||null;$('#voiceNote').hidden=!!viVoice}
+if(window.speechSynthesis){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}else $('#voiceNote').hidden=false;
+function say(t){
+  if(!sound||!window.speechSynthesis)return;if(!voiceChecked)pickVoice();if(voiceChecked&&!viVoice)return;
+  try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='vi-VN';if(viVoice)u.voice=viVoice;u.rate=.85;u.pitch=1.1;speechSynthesis.speak(u)}catch(e){}
+}
+function rnd(n){return Math.floor(Math.random()*n)}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=rnd(i+1),t=a[i];a[i]=a[j];a[j]=t}return a}
+function shakeEl(el){el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake')}
+
+/* ---------- dữ liệu ---------- */
+var W=['không','một','hai','ba','bốn','năm','sáu','bảy','tám','chín','mười'];
+// màu từng số (dùng ở lưới và ở con đường trang chính)
+var COL=['#8A6510','#F07A35','#2E7BE0','#22A866','#9B4FD1','#E04A5F','#F07A35','#1F9AA8','#C2410C','#2E7BE0'];
+var CBG=['#FFF3C4','#FFE9DB','#DDEBFF','#DDF6E8','#F1E6FF','#FFE1E6','#FFE9DB','#D8F4F6','#FDE7D6','#DDEBFF'];
+// đồ vật để đếm (đổi theo lượt)
+var THINGS=[['🍎','quả táo'],['🐟','con cá'],['⭐','ngôi sao'],['🎈','quả bóng bay'],['🐤','con gà con'],['🍓','quả dâu'],['🚗','cái xe'],['🌸','bông hoa'],['🐞','con bọ rùa']];
+// số dễ nhầm với từng số
+var CONF={0:[8,6,9],1:[7,4],2:[5,7,3],3:[8,5,2],4:[1,7,9],5:[2,3,6],6:[9,0,8],7:[1,2,4],8:[3,0,6],9:[6,0,7]};
+var PRAISE=['Giỏi quá!','Tuyệt vời!','Nam San giỏi lắm!','Đúng rồi!'];
+var NEXT=[1,2,3,4,5,6,7,8,9,0]; // thứ tự học: 1 → 9 rồi 0
+function nextOf(n){var i=NEXT.indexOf(n);return i<NEXT.length-1?NEXT[i+1]:null}
+
+/* ---------- chúc mừng ---------- */
+function burst(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  var E=['★','🎈','🌟','✨','🎉'];
+  for(var i=0;i<16;i++){var b=document.createElement('span');b.className='burst';b.textContent=E[i%E.length];
+    b.style.left='50%';b.style.top='40%';var a=Math.random()*Math.PI*2,r=120+Math.random()*140;
+    b.style.setProperty('--dx',Math.cos(a)*r+'px');b.style.setProperty('--dy',Math.sin(a)*r+'px');b.style.setProperty('--r',rnd(360)+'deg');
+    document.body.appendChild(b);setTimeout(function(x){return function(){x.remove()}}(b),1200)}
+}
+function win(n){
+  addStar();burst();
+  var pr=PRAISE[rnd(PRAISE.length)],nx=nextOf(n);
+  say(pr+' Bé học xong số '+W[n]+' rồi!');
+  var d=document.createElement('div');d.className='win';
+  d.innerHTML='<div class="box" role="dialog" aria-live="polite"><div class="bigstar">★</div><h2>'+pr+'</h2>'+
+    '<div class="row"><button id="wWrite" aria-label="Tập viết số '+n+'">✏️</button>'+
+    (nx!==null?'<button class="main" id="wNext" aria-label="Học số '+nx+'">➡</button>':'')+
+    '<button id="wHome" aria-label="Về trang chính">🏠</button></div></div>';
+  document.body.appendChild(d);
+  $('#wWrite',d).onclick=function(){location.href='../viet-so/#so-'+n};
+  if(nx!==null)$('#wNext',d).onclick=function(){d.remove();go('so-'+nx)};
+  $('#wHome',d).onclick=function(){location.href='../'};
+}
+
+/* ---------- trang đầu ---------- */
+function dotsHTML(n){var h='';for(var i=0;i<n;i++)h+='<i></i>';return '<span class="dd">'+h+'</span>'}
+function home(){
+  view.innerHTML='<div class="wrap">'+
+  '<section class="panel hero"><div class="strip" aria-hidden="true">'+NEXT.slice(0,9).concat([0]).map(function(n){return '<span style="color:'+COL[n]+'">'+n+'</span>'}).join('')+'</div>'+
+  '<button class="hello" id="hello" aria-label="Nghe cô nói">🔊</button></section>'+
+  '<div class="nums">'+NEXT.map(function(n){return '<button class="nb" data-n="'+n+'" style="background:'+CBG[n]+';color:'+COL[n]+'" aria-label="Số '+n+(done[n]?', đã học':'')+'"><b>'+n+'</b>'+dotsHTML(n)+(done[n]?'<span class="ok">★</span>':'')+'</button>'}).join('')+'</div>'+
+  '<nav class="menu">'+
+    '<a class="tile" href="../so-6-9/" data-say="Bạn Sáu và Bạn Chín" style="background:#FFE9DB"><span class="ic"><span style="color:#F07A35">6</span><span style="color:#2E7BE0">9</span></span><h3>Sáu và Chín</h3></a>'+
+    '<a class="tile" href="../viet-so/" data-say="Tập viết số" style="background:#FFF3C4"><span class="ic">✏️</span><h3>Tập viết</h3></a>'+
+    '<a class="tile" href="../viet-so/#dung-nguoc" data-say="Ai đứng đúng" style="background:#DDEBFF"><span class="ic"><span>6</span><span style="transform:scaleX(-1);display:inline-block;color:#E04A5F">6</span></span><h3>Ai đứng đúng?</h3></a>'+
+  '</nav>'+
+  '<details class="mom"><summary>👩 Dành cho mẹ ›</summary><h2>Bài số 0–9</h2><ul>'+
+  '<li>Mỗi số một bài 4 bước: 👀 làm quen (chạm từng đồ vật để đếm) · 🍎 đếm hình (3 lượt) · 🔍 tìm số giữa các số dễ nhầm · ✏️ tập viết. Xong bước 🔍 được ★.</li>'+
+  '<li>Thứ tự học 1 → 9 rồi mới đến 0 (“không có quả nào”). Trên con đường ở trang chính, bài số xen giữa các bài chữ.</li>'+
+  '<li>Đếm đồ thật sau mỗi bài: bé lấy đúng 4 cái thìa, 7 viên kẹo, rồi tìm số đó trên lịch, đồng hồ, bảng số nhà.</li>'+
+  '<li>Bé chạm từng đồ vật khi đếm (mỗi lần chạm một cái) để không đếm sót, đếm trùng.</li>'+
+  '</ul></details></div>';
+  $('#hello').onclick=function(){say('Bé chọn một số nhé.')};
+  view.querySelectorAll('.nb').forEach(function(b){b.onclick=function(){var n=+b.dataset.n;b.classList.add('go');say('Số '+W[n]);setTimeout(function(){go('so-'+n)},sound?800:100)}});
+  view.querySelectorAll('.tile').forEach(function(t){t.onclick=function(e){e.preventDefault();t.classList.add('go');say(t.dataset.say);setTimeout(function(){location.href=t.getAttribute('href')},sound?900:100)}});
+}
+
+/* ---------- một bài số ---------- */
+var STEP_IC=['👀','🍎','🔍','✏️'],STEP_SAY=['Làm quen','Đếm hình','Tìm số','Tập viết'];
+var cur={n:1,step:0};
+function lesson(n,step){
+  cur={n:n,step:step||0};
+  view.innerHTML='<section class="panel"><div class="steps">'+STEP_IC.map(function(ic,i){return '<button class="sb" data-s="'+i+'" aria-label="'+STEP_SAY[i]+'" aria-current="'+(i===cur.step)+'">'+ic+'</button>'}).join('')+'</div><div id="stage" style="display:contents"></div></section>';
+  view.querySelectorAll('.sb').forEach(function(b){b.onclick=function(){say(STEP_SAY[+b.dataset.s]);lesson(n,+b.dataset.s)}});
+  [meet,countGame,findGame,writeStep][cur.step](n);
+}
+function stage(){return $('#stage')}
+function ear(text){return '<button class="ear" type="button" aria-label="Nghe" data-t="'+text+'">🔊</button>'}
+function bindEar(){view.querySelectorAll('.ear').forEach(function(e){e.onclick=function(){say(e.dataset.t)}})}
+
+function meet(n){
+  var th=THINGS[(n+8)%THINGS.length];
+  var intro=n===0?'Đây là số không. Số không là không có gì cả.':'Đây là số '+W[n]+'. Bé chạm vào từng '+th[1].split(' ')[0]+' để đếm nhé.';
+  stage().innerHTML='<h2>'+ear(intro)+'</h2>'+
+    '<button class="bignum" id="big" style="color:'+COL[n]+'" aria-label="Nghe số '+n+'">'+n+'</button>'+
+    (n===0?'<div class="plate" aria-label="Cái đĩa trống">🍽️</div>':'<div class="objs">'+Array.from({length:n},function(_,i){return '<button class="ob" data-i="'+i+'" aria-label="'+th[1]+'">'+th[0]+'</button>'}).join('')+'</div>')+
+    '<div class="count" id="cnt"></div>'+
+    '<button class="next" id="nx" aria-label="Tiếp"'+(n===0?'':' hidden')+'>➡</button>';
+  bindEar();say(intro);
+  $('#big').onclick=function(){say('Số '+W[n])};
+  var k=0;
+  view.querySelectorAll('.ob').forEach(function(o){o.onclick=function(){
+    if(o.classList.contains('on'))return;k++;o.classList.add('on');o.insertAdjacentHTML('beforeend','<span class="c">'+k+'</span>');
+    $('#cnt').textContent=k;
+    if(k===n){say(W[n]+'. Có '+W[n]+' '+th[1]+'. Số '+W[n]+'!');$('#nx').hidden=false}else say(W[k]);
+  }});
+  $('#nx').onclick=function(){lesson(n,1)};
+}
+
+function countGame(n){
+  var round=0,R=3;
+  function opts(){var o=[n],c=CONF[n].concat([n-1,n+1]).filter(function(x){return x>=0&&x<=9&&x!==n});
+    shuffle(c);c.forEach(function(x){if(o.length<3&&o.indexOf(x)<0)o.push(x)});return shuffle(o)}
+  function draw(){
+    var th=THINGS[(n+round*3)%THINGS.length],q='Có mấy '+th[1]+'?';
+    stage().innerHTML='<h2>'+ear(q)+'</h2><div class="pips">'+Array.from({length:R},function(_,i){return '<i class="'+(i<round?'on':'')+'"></i>'}).join('')+'</div>'+
+      (n===0?'<div class="plate">🍽️</div>':'<div class="objs">'+Array.from({length:n},function(){return '<span class="ob" aria-hidden="true">'+th[0]+'</span>'}).join('')+'</div>')+
+      '<div class="opts">'+opts().map(function(x){return '<button class="opt" data-v="'+x+'">'+x+'</button>'}).join('')+'</div>';
+    bindEar();say(q);
+    view.querySelectorAll('.opt').forEach(function(b){b.onclick=function(){
+      if(+b.dataset.v===n){b.classList.add('right');round++;say(PRAISE[rnd(PRAISE.length)]+' '+W[n]+'!');
+        setTimeout(function(){if(round>=R)lesson(n,2);else draw()},1300)}
+      else{shakeEl(b);say('Chưa đúng. Bé đếm lại nhé.')}
+    }});
+  }
+  draw();
+}
+
+function findGame(n){
+  var cells=[n,n,n],pool=CONF[n].slice();
+  while(cells.length<12){var x=pool.length&&Math.random()<.7?pool[rnd(pool.length)]:rnd(10);if(x!==n)cells.push(x)}
+  shuffle(cells);
+  var q='Bé tìm hết số '+W[n]+' nhé. Có ba số '+W[n]+'.',got=0;
+  stage().innerHTML='<h2>'+ear(q)+'</h2><div class="bignum" style="font-size:90px;color:'+COL[n]+'" aria-hidden="true">'+n+'</div>'+
+    '<div class="pips" id="pp"><i></i><i></i><i></i></div>'+
+    '<div class="grid">'+cells.map(function(x){return '<button class="cell" data-v="'+x+'">'+x+'</button>'}).join('')+'</div>';
+  bindEar();say(q);
+  view.querySelectorAll('.cell').forEach(function(c){c.onclick=function(){
+    if(c.classList.contains('right'))return;
+    if(+c.dataset.v===n){c.classList.add('right');got++;$('#pp').children[got-1].className='on';
+      if(got===3){done[n]=1;save('nso-done',done);setTimeout(function(){win(n)},500)}else say(W[n]+'!')}
+    else{shakeEl(c);say('Đây là số '+W[+c.dataset.v]+'.')}
+  }});
+}
+
+function writeStep(n){
+  var q='Bé tập viết số '+W[n]+' nhé.';
+  stage().innerHTML='<h2>'+ear(q)+'</h2><a class="write" href="../viet-so/#so-'+n+'" aria-label="Tập viết số '+n+'"><b>'+n+'</b><span>✏️</span></a>';
+  bindEar();say(q);
+}
+
+/* ---------- chuyển trang ---------- */
+function go(h){if(location.hash.slice(1)===h)render();else location.hash=h}
+function render(){
+  var h=location.hash.slice(1),m=/^so-(\d)$/.exec(h);
+  if(window.speechSynthesis)try{speechSynthesis.cancel()}catch(e){}
+  document.querySelectorAll('.win').forEach(function(w){w.remove()});
+  backB.hidden=!m;$('#all').hidden=!!m;
+  if(m)lesson(+m[1],0);else home();
+  window.scrollTo(0,0);
+}
+backB.onclick=function(){go('')};
+window.addEventListener('hashchange',render);
+addEventListener('pageshow',function(){document.querySelectorAll('.go').forEach(function(t){t.classList.remove('go')})});
+showStars();showSnd();render();
+})();
+</script>
+<script>if('serviceWorker' in navigator)navigator.serviceWorker.register('../sw.js',{scope:'../'}).catch(function(){});</script>
+</body>
+</html>

@@ -79,6 +79,52 @@ a:focus-visible,button:focus-visible{outline:4px solid var(--blue);outline-offse
 .btn.alt{background:var(--purple-bg);color:var(--purple);box-shadow:0 3px 0 var(--line)}
 .btn:active{transform:translateY(2px);box-shadow:none}
 
+/* con đường học: bài chữ (tròn) xen bài số (vuông), mỗi 5 bài một hộp quà bạn thú; bài đang học to và nhấp nháy */
+.road-top{background:var(--card);border-radius:30px;padding:18px 16px 20px;display:flex;flex-direction:column;align-items:center;gap:12px;box-shadow:0 4px 0 var(--line)}
+.prog{display:flex;align-items:center;gap:8px;width:100%;max-width:460px}
+.prog .pi{font-size:30px}
+.prog .bar{flex:1;height:18px;border-radius:999px;background:var(--purple-bg);overflow:hidden}
+.prog .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--orange));border-radius:999px;transition:width .6s}
+.pnum{font:800 22px/1 var(--f-logo);color:var(--purple)}.pnum .st{color:#F5B700}
+.shelf{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+.shelf span{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-size:28px;background:var(--purple-bg)}
+.shelf span.lock{filter:grayscale(1);opacity:.45;font-size:22px}
+.play{display:flex;align-items:center;gap:14px;text-decoration:none;background:var(--green-bg);border:4px solid #74CC9E;border-radius:999px;padding:10px 26px 10px 10px;box-shadow:0 6px 0 #74CC9E;animation:bob 1.6s ease-in-out infinite}
+.play:active{transform:translateY(4px);box-shadow:none}
+.ptri{font-size:44px;color:#18794A;line-height:1}
+.pbadge{width:84px;height:84px;display:grid;place-items:center}
+@keyframes bob{50%{transform:translateY(-4px)}}
+.road{position:relative;padding:10px 0 20px}
+.lane{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.row{position:relative;height:118px}
+.stop{position:absolute;top:8px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;color:var(--ink);-webkit-tap-highlight-color:transparent}
+.node{width:80px;height:80px;display:grid;place-items:center;font:800 44px/1 var(--f-logo);border:4px solid #fff;box-shadow:0 5px 0 rgba(42,37,71,.18);position:relative;transition:transform .12s}
+.node.L{border-radius:50%}
+.node.N{border-radius:24px}
+.node.v{background:var(--orange-bg);color:#B8501A}
+.node.c{background:var(--blue-bg);color:#1F5FB4}
+.node.n{background:var(--purple-bg);color:var(--purple)}
+.node.x{background:var(--gold-bg);font-size:30px}
+.node .ok{position:absolute;top:-10px;right:-10px;width:30px;height:30px;border-radius:50%;background:#F5B700;color:#fff;font-size:18px;display:grid;place-items:center;box-shadow:0 2px 0 #C79400}
+.stop small{font-weight:800;font-size:13px;color:var(--soft);background:var(--bg);border-radius:999px;padding:0 8px}
+.stop.done .node{border-color:#9EDFBC}
+.stop.cur .node{width:96px;height:96px;font-size:54px;border-color:#F5B700;animation:pulse 1.4s ease-in-out infinite}
+.stop.cur small{background:#F5B700;color:#fff}
+.stop .me{position:absolute;left:-46px;top:20px;font-size:40px;animation:bob 1.2s ease-in-out infinite}
+.stop.go .node{transform:scale(.9)}
+@keyframes pulse{0%,100%{box-shadow:0 5px 0 rgba(42,37,71,.18),0 0 0 0 rgba(245,183,0,.55)}50%{box-shadow:0 5px 0 rgba(42,37,71,.18),0 0 0 14px rgba(245,183,0,0)}}
+.gift{font-size:44px;width:70px;height:70px;border-radius:22px;display:grid;place-items:center;background:#fff;box-shadow:0 4px 0 var(--line)}
+.gift.lock{filter:grayscale(.6);opacity:.8}
+.goal .node{width:100px;height:100px;border-radius:30px;background:var(--gold-bg);font-size:56px}
+.kid h2{font-size:clamp(24px,6vw,30px);color:var(--purple)}
+.tiles .tile{min-height:150px}
+.pop{position:fixed;inset:0;background:rgba(42,37,71,.45);display:grid;place-items:center;z-index:20;padding:20px}
+.pop .box{background:#fff;border-radius:30px;padding:26px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;animation:popin .35s}
+.pop .ani{font-size:110px;line-height:1}
+.pop button{border:0;border-radius:50%;width:76px;height:76px;font-size:36px;background:var(--purple);color:#fff;box-shadow:0 4px 0 #352c62;cursor:pointer}
+@keyframes popin{from{transform:scale(.6);opacity:0}}
+@media (prefers-reduced-motion:reduce){.play,.stop.cur .node,.stop .me{animation:none}}
+
 /* tiêu đề mục */
 .sec-h{display:flex;flex-direction:column;gap:4px}
 .sec-h h2{font-size:clamp(24px,5vw,30px)}
@@ -134,13 +180,25 @@ footer .sl{font-family:var(--f-logo);font-size:19px;color:var(--purple);font-wei
     </a>
   </header>
 
-  <section class="kid" aria-labelledby="kid-h">
+  <section class="road-top" aria-labelledby="kid-h">
     <div class="kid-h">
-      <h1 id="kid-h">Bé muốn chơi gì?</h1>
-      <button class="ask" id="ask" type="button" aria-label="Nghe câu hỏi">🔊</button>
+      <h1 id="kid-h">Đường đến lớp 1</h1>
+      <button class="ask" id="ask" type="button" aria-label="Nghe">🔊</button>
     </div>
+    <div class="prog" aria-label="Tiến bộ của bé"><span class="pi">🧒</span><span class="bar"><i id="pbar"></i></span><span class="pi">🏫</span></div>
+    <p class="pnum"><span class="st">★</span> <b id="pdone">0</b> / <span id="ptotal">40</span></p>
+    <div class="shelf" id="shelf" aria-label="Bạn thú bé đã có"></div>
+    <a class="play" id="play" href="#"><span class="pbadge" id="pbadge"></span><span class="ptri">▶</span></a>
+  </section>
+
+  <section class="road" id="road" aria-label="Các bài theo thứ tự">
+    <svg class="lane" id="lane" aria-hidden="true"></svg>
+  </section>
+
+  <section class="kid" aria-labelledby="free-h">
+    <div class="kid-h"><h2 id="free-h">Chơi tự do</h2></div>
     <div class="tiles">
-      <a class="tile t-so" href="so-6-9/" data-say="Số đếm">
+      <a class="tile t-so" href="so/" data-say="Số">
         <span class="pic"><svg viewBox="0 0 100 140"><path d="M72 16 C50 20 27 44 23 86 C20 116 34 128 51 128 C69 128 80 115 80 98 C80 80 67 70 52 70 C38 70 27 79 23 92" stroke="#F07A35" stroke-width="15" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="43" cy="96" r="3.6" fill="#2A2547"/><circle cx="59" cy="96" r="3.6" fill="#2A2547"/><path d="M44 105 Q51 111 58 105" stroke="#2A2547" stroke-width="2.6" fill="none" stroke-linecap="round"/><circle cx="37" cy="104" r="3.5" fill="#FF9FB0" opacity=".7"/><circle cx="65" cy="104" r="3.5" fill="#FF9FB0" opacity=".7"/></svg><svg viewBox="0 0 100 140"><path d="M78 42 C75 27 63 18 50 18 C34 18 22 30 22 45 C22 61 34 71 50 71 C66 71 78 60 78 42 L76 128" stroke="#2E7BE0" stroke-width="15" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="42" cy="42" r="3.6" fill="#2A2547"/><circle cx="58" cy="42" r="3.6" fill="#2A2547"/><path d="M43 51 Q50 57 57 51" stroke="#2A2547" stroke-width="2.6" fill="none" stroke-linecap="round"/><circle cx="36" cy="50" r="3.5" fill="#FF9FB0" opacity=".7"/><circle cx="64" cy="50" r="3.5" fill="#FF9FB0" opacity=".7"/></svg></span><b>Số</b>
       </a>
       <a class="tile t-chu" href="chu-cai/" data-say="Chữ cái">
@@ -164,7 +222,8 @@ footer .sl{font-family:var(--f-logo);font-size:19px;color:var(--purple);font-wei
   </footer>
 </div>
 <script>
-/* Góc của bé: chạm ô → cô đọc tên (giọng vi-VN của máy, nếu có) rồi vào bài; ô bé vào lần trước có nhãn ⭐. */
+/* Trang chính cho bé: con đường 40 bài (29 chữ theo thứ tự sách + 10 số + ôn 6–9), hộp quà bạn thú mỗi 5 bài,
+   nút ▶ vào bài đang học. Chạm ô / bài → cô đọc tên (giọng vi-VN của máy, nếu có) rồi chuyển trang. */
 (function(){
   var V=null;function pick(){var vs=(window.speechSynthesis&&speechSynthesis.getVoices())||[];V=vs.filter(function(v){return /^vi/i.test(v.lang)})[0]||null}
   if(window.speechSynthesis){pick();speechSynthesis.onvoiceschanged=pick}
@@ -172,15 +231,80 @@ footer .sl{font-family:var(--f-logo);font-size:19px;color:var(--purple);font-wei
     if(!ok){if(done)setTimeout(done,250);return}
     var fired=false,fin=function(){if(!fired){fired=true;if(done)done()}};
     try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.voice=V;u.lang=V.lang;u.rate=.9;u.onend=fin;u.onerror=fin;speechSynthesis.speak(u)}catch(e){fin()}
-    setTimeout(fin,1800)}
-  addEventListener('pageshow',function(){[].forEach.call(document.querySelectorAll('.tile.go'),function(t){t.classList.remove('go')})});
-  document.getElementById('ask').onclick=function(){say('Bé muốn chơi gì? Chạm vào một ô nhé.')};
-  var last=null;try{last=localStorage.getItem('nth-last')}catch(e){}
-  [].forEach.call(document.querySelectorAll('.tile'),function(t){
-    if(last&&t.getAttribute('href')===last){var m=document.createElement('span');m.className='last';m.textContent='⭐ Lần trước';t.appendChild(m)}
-    t.addEventListener('click',function(e){if(e.metaKey||e.ctrlKey||e.shiftKey)return;e.preventDefault();var h=t.getAttribute('href');
-      try{localStorage.setItem('nth-last',h)}catch(x){}t.classList.add('go');say(t.getAttribute('data-say'),function(){location.href=h})});
+    setTimeout(fin,2200)}
+  function load(k,d){try{var v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}}
+  function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+  addEventListener('pageshow',function(){[].forEach.call(document.querySelectorAll('.go'),function(t){t.classList.remove('go')})});
+
+  /* ---- dữ liệu con đường ---- */
+  // chữ theo thứ tự sách Tiếng Việt 1 (giống BOOK trong chu-cai), kèm âm để cô đọc
+  var LET=[['a','a'],['b','bờ'],['c','cờ'],['e','e'],['ê','ê'],['o','o'],['ô','ô'],['d','dờ'],['đ','đờ'],['ơ','ơ'],['i','i'],['k','ca'],['h','hờ'],['l','lờ'],
+    ['u','u'],['ư','ư'],['m','mờ'],['n','nờ'],['g','gờ'],['r','rờ'],['s','sờ'],['t','tờ'],['q','cu'],['v','vờ'],['x','xờ'],['y','i dài'],['ă','á'],['â','ớ'],['p','pờ']];
+  var VOW='aăâeêioôơuưy',W=['không','một','hai','ba','bốn','năm','sáu','bảy','tám','chín'];
+  var NUMS=[1,2,3,4,5,6,7,8,9,'69',0];
+  var TOTAL=LET.length+NUMS.length, numAt={};
+  NUMS.forEach(function(n,k){numAt[Math.floor((k+.5)*TOTAL/NUMS.length)]=n});
+  var cd=load('ncc-done',{}),nd=load('nso-done',{}),seen=load('nth-seen',{});
+  var STOPS=[],li=0;
+  for(var i=0;i<TOTAL;i++){
+    if(numAt[i]!==undefined){var n=numAt[i];
+      if(n==='69')STOPS.push({k:'x',label:'6 9',href:'so-6-9/',say:'Bạn Sáu và Bạn Chín',done:!!seen['69']});
+      else STOPS.push({k:'n',label:String(n),href:'so/#so-'+n,say:'Số '+W[n],done:!!nd[n]});
+    }else{var l=LET[li++];STOPS.push({k:VOW.indexOf(l[0])>=0?'v':'c',label:l[0],href:'chu-cai/#bai-'+l[0],say:'Chữ '+l[1],done:!!cd[l[0]]})}
+  }
+  var ANI=['🐶','🐱','🐰','🐼','🦊','🐯','🦄','🦁'],GIFT=5;
+  var nDone=STOPS.filter(function(s){return s.done}).length;
+  var curI=STOPS.findIndex(function(s){return !s.done});
+  var gifts=Math.floor(nDone/GIFT);
+
+  /* ---- đầu trang: thanh tiến bộ, kệ bạn thú, nút ▶ ---- */
+  document.getElementById('pdone').textContent=nDone;document.getElementById('ptotal').textContent=TOTAL;
+  setTimeout(function(){document.getElementById('pbar').style.width=(100*nDone/TOTAL)+'%'},60);
+  document.getElementById('shelf').innerHTML=ANI.map(function(a,i){return i<gifts?'<span>'+a+'</span>':'<span class="lock">🎁</span>'}).join('');
+  function nodeHTML(s,i){
+    var cls='node '+(s.k==='n'?'N n':s.k==='x'?'N x':'L '+s.k);
+    return '<span class="'+cls+'">'+s.label+(s.done?'<span class="ok">★</span>':'')+'</span>';
+  }
+  var play=document.getElementById('play');
+  if(curI<0){play.querySelector('.pbadge').innerHTML='<span class="node N x" style="width:84px;height:84px;font-size:46px">🏫</span>';play.href='#road';play.dataset.say='Bé học xong cả con đường rồi! Giỏi quá!'}
+  else{var c=STOPS[curI];play.querySelector('.pbadge').innerHTML=nodeHTML(c).replace('class="node','style="width:84px;height:84px" class="node');play.href=c.href;play.dataset.say='Học tiếp. Bài '+(curI+1)+'. '+c.say;play.dataset.i=curI}
+  document.getElementById('ask').onclick=function(){say(curI<0?'Bé đi hết đường đến lớp một rồi!':'Đường đến lớp một. Bé đã học '+nDone+' bài. Chạm nút xanh để học tiếp nhé.')};
+
+  /* ---- con đường ---- */
+  var road=document.getElementById('road'),X=[0,.5,.8,.5,0,-.5,-.8,-.5],h='',xi=0;
+  function row(inner,x,extra){return '<div class="row'+(extra||'')+'"><div style="position:absolute;left:calc(50% + '+x+' * min(130px, 30vw));top:0;height:100%">'+inner+'</div></div>'}
+  STOPS.forEach(function(s,i){
+    var x=X[xi++%X.length];
+    h+=row('<a class="stop'+(s.done?' done':'')+(i===curI?' cur':'')+'" href="'+s.href+'" data-say="Bài '+(i+1)+'. '+s.say+'" data-i="'+i+'" aria-label="Bài '+(i+1)+': '+s.say+(s.done?', đã học':'')+'">'+nodeHTML(s,i)+(i===curI?'<span class="me" aria-hidden="true">🧒</span>':'')+'<small>Bài '+(i+1)+'</small></a>',x);
+    if((i+1)%GIFT===0){var g=(i+1)/GIFT-1,open=g<gifts;x=X[xi++%X.length];
+      h+=row('<button class="stop gift-b" type="button" data-g="'+g+'" aria-label="'+(open?'Bạn thú':'Hộp quà')+'"><span class="gift'+(open?'':' lock')+'">'+(open?ANI[g]:'🎁')+'</span></button>',x)}
   });
+  h+=row('<span class="stop goal"><span class="node">🏫</span><small>Lớp 1</small></span>',X[xi%X.length]);
+  road.insertAdjacentHTML('beforeend',h);
+  [].forEach.call(road.querySelectorAll('.gift-b'),function(b){b.style.border='0';b.style.background='none';b.style.cursor='pointer';
+    b.onclick=function(){var g=+b.dataset.g;say(g<gifts?'Bạn này là quà của bé!':'Bé học thêm '+(GIFT*(g+1)-nDone)+' bài nữa để mở hộp quà nhé.')}});
+  function lane(){
+    var svg=document.getElementById('lane'),r=road.getBoundingClientRect(),pts=[];
+    [].forEach.call(road.querySelectorAll('.row>div'),function(d){var q=d.getBoundingClientRect();pts.push([q.left-r.left,q.top-r.top+50])});
+    var d='M'+pts[0][0]+' '+pts[0][1];
+    for(var i=1;i<pts.length;i++){var a=pts[i-1],b=pts[i],my=(a[1]+b[1])/2;d+=' C'+a[0]+' '+my+' '+b[0]+' '+my+' '+b[0]+' '+b[1]}
+    svg.innerHTML='<path d="'+d+'" stroke="#E6E0F2" stroke-width="26" fill="none" stroke-linecap="round"/><path d="'+d+'" stroke="#fff" stroke-width="4" fill="none" stroke-dasharray="2 14" stroke-linecap="round"/>';
+  }
+  lane();addEventListener('resize',lane);if(document.fonts)document.fonts.ready.then(lane);
+
+  /* ---- chạm: đọc tên rồi đi ---- */
+  function goWith(t,href,say_){t.classList.add('go');say(say_,function(){location.href=href})}
+  [].forEach.call(document.querySelectorAll('a.stop, a.play, .tiles .tile'),function(t){
+    t.addEventListener('click',function(e){if(e.metaKey||e.ctrlKey||e.shiftKey)return;var href=t.getAttribute('href');if(href.charAt(0)==='#')return;e.preventDefault();
+      var i=t.dataset.i;if(i!==undefined&&STOPS[+i]&&STOPS[+i].k==='x'){seen['69']=1;save('nth-seen',seen)}
+      goWith(t,href,t.getAttribute('data-say'))});
+  });
+
+  /* ---- vừa mở được hộp quà mới thì chúc mừng ---- */
+  var shown=load('nth-gifts',0);
+  if(gifts>shown){save('nth-gifts',gifts);var a=ANI[gifts-1],p=document.createElement('div');p.className='pop';
+    p.innerHTML='<div class="box" role="dialog" aria-live="polite"><div class="ani">'+a+'</div><button type="button" aria-label="Đóng">✔</button></div>';
+    document.body.appendChild(p);p.querySelector('button').onclick=function(){p.remove()};setTimeout(function(){say('Hoan hô! Bé được thêm một bạn thú mới!')},300)}
 })();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js',{scope:'./'}).catch(function(){});</script>
 </body>
