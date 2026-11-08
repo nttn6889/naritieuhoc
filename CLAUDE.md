@@ -10,8 +10,8 @@ Dự án tách khỏi Nari TOPIK (kho `narikoreanbox`, `nari-lop`), chỉ chung 
 - Nam San là con gái của chủ kho, 5 tuổi, là nhân vật của trang. Kho công khai: **không đưa ảnh, ngày sinh, trường lớp hay thông tin riêng nào khác của bé**.
 - Người dùng: các mẹ ở Việt Nam, bé chơi bằng ngón tay trên điện thoại / máy tính bảng. Nút to, chữ to, câu ngắn, giọng nhẹ nhàng; có mục “Gợi ý cho mẹ”.
 - Chữ cái dạy theo **âm** của sách Tiếng Việt 1 (bờ, cờ…), không theo tên chữ. Chưa dạy viết chữ, chỉ tô nét / tô số.
-- Mỗi bài một thư mục (`so-6-9/`…), một file `index.html` tự chứa (CSS + JS trong file, font Google Baloo 2 + Nunito). Làm bài mới thì thêm thẻ vào `index.html` ở gốc
-  (bỏ thẻ “Sắp có” tương ứng) và có nút “‹ Tất cả bài” về `../`.
+- Mỗi bài một thư mục (`so-6-9/`…), một file `index.html` tự chứa (CSS + JS trong file, font Google Baloo 2 + Nunito). Làm bài mới thì thêm thẻ vào `me/index.html`
+  (bỏ thẻ “Sắp có” tương ứng), thêm ô ở trang chủ nếu cần, và có nút 🏠 về `../`.
 - Giọng đọc: `speechSynthesis` tiếng Việt (`vi-VN`) của máy; máy không có giọng Việt thì hiện “mẹ đọc to giúp bé nhé”. Sau này có thể thay bằng file mp3 mẹ tự thu.
 - Màu: cam `#F07A35` / xanh `#2E7BE0` trên nền `#EEF5FF`. Trong trò chơi phân biệt, các số cùng một màu mực để bé nhìn hình dáng chứ không nhìn màu.
 - Sao thưởng, cài đặt lưu localStorage (`ns69-stars`, `ns69-snd`); bọc try/catch.
@@ -26,14 +26,22 @@ Dự án tách khỏi Nari TOPIK (kho `narikoreanbox`, `nari-lop`), chỉ chung 
 - `logo/nari-tieu-hoc-bieu-tuong.svg` (chỉ hình), `-icon.svg` (tròn nền tím nhạt, dùng làm favicon), `-icon-180.png`, `-icon-512.png`. Bản nháp so sánh: https://claude.ai/artifact/Hx35G27AocMsH4fewNaebf
 - Chưa làm: logo có chữ đổi thành nét vẽ (như `tools/logo/mklogo.py` của narikoreanbox), bản đơn giản cho cỡ rất nhỏ.
 
-## Trang chủ (`index.html`)
-Màn hình chính chỉ dành cho **tiền tiểu học (bé 4–6 tuổi)** (mẹ dặn 8/11). Đầu trang logo ngang ·
-**Góc của bé** (8/11, để bé tự chọn bài không cần đọc): “Bé muốn chơi gì?” + nút 🔊 đọc câu hỏi, 4 ô to mỗi ô một màu + một hình:
-Số (cam, Bạn Sáu – Bạn Chín → `so-6-9/`) · Chữ cái (xanh, “ab” → `chu-cai/`) · Đánh vần (xanh lá, “b + a = ba” → `chu-cai/#danh-van`) ·
-Tập viết (vàng, số 6 viền + bút chì → `viet-so/`). Chạm ô: cô đọc tên (`data-say`, giọng vi-VN, không có giọng thì vào luôn) rồi mới chuyển trang;
-ô vào lần trước có nhãn “⭐ Lần trước” (localStorage `nth-last`). Bài mới dành cho bé thì thêm ô (2 cột trên điện thoại, 4 cột màn rộng). ·
-Góc của mẹ (dòng “Góc của mẹ · tiền tiểu học · bé 4–6 tuổi”, lời giới thiệu) · mục Chuẩn bị vào lớp 1 chia
-thẻ kỹ năng Số đếm / Chữ cái / Tô nét (bài có thì là link xanh “Chơi ›”, chưa có thì “Sắp có”) · Học như thế nào (3 bước) · Gợi ý cho mẹ · ô gập “Lên tiểu học: Lớp 1 – Lớp 5 · sắp có” (`details.later`, đóng sẵn, chỉ để mẹ xem trước) · chân trang. Khi có bài lớp 1 thì mới đưa các lớp lên lại.
+## Thiết kế “app cho bé” (mẹ dặn 8/11)
+App dành cho **bé dùng trước**: gần như không có chữ, không có hướng dẫn cho mẹ trên màn của bé; lời dặn nào cũng nói với bé và có nút 🔊 để nghe.
+Lựa chọn nào cũng là **ô to có màu + hình riêng + 1–2 chữ**, chạm là cô đọc tên rồi mới vào. Mọi nội dung cho mẹ gom về `me/` (Góc của mẹ)
+hoặc ô gập “👩 Dành cho mẹ ›” cuối trang mỗi trò.
+- Trong mỗi trò (`so-6-9`, `chu-cai`, `viet-so`): thanh trên chỉ có biểu tượng 🏠 (về trang chính) / ⬅ (về menu trò) · ★ số sao · 🔊/🔇.
+  Khối CSS + JS “app cho bé” giống nhau ở cả 3 file: `kidTiles()` (ô `.menu .tile` 2 cột, 3 cột màn rộng, nền lấy màu biểu tượng, ẩn “Bài n” và dòng mô tả,
+  chạm → `say(tên)` rồi `go`), `kidHello()` (nút 🔊 tròn trong `.hero`, đọc tiêu đề + câu phụ đã ẩn), `kidEars()` (nút 🔊 cạnh mỗi `.panel>h1/h2`,
+  đọc tiêu đề + dòng `.hint`/`.ask` ngay sau). Gọi trong `render()`. Trò mới làm cùng cách này.
+- `chu-cai`: chọn nhóm chữ là việc của mẹ → nằm trong “Dành cho mẹ”; trang đầu: menu 5 trò rồi bảng “Học từng chữ”.
+
+## Trang chủ (`index.html`) và Góc của mẹ (`me/`)
+Trang chủ chỉ cho bé (tiền tiểu học, 4–6 tuổi): logo · “Bé muốn chơi gì?” + nút 🔊 · 4 ô to: Số (cam, Bạn Sáu – Bạn Chín → `so-6-9/`) ·
+Chữ cái (xanh, “ab” → `chu-cai/`) · Đánh vần (xanh lá, “b + a = ba” → `chu-cai/#danh-van`) · Tập viết (vàng, số 6 viền + bút chì → `viet-so/`).
+Chạm ô: cô đọc tên (`data-say`) rồi chuyển trang; ô vào lần trước có “⭐ Lần trước” (localStorage `nth-last`) · nút nhỏ “👩 Góc của mẹ” → `me/` · chân trang.
+`me/index.html`: giới thiệu cho mẹ, danh sách bài chi tiết theo kỹ năng (Số đếm / Chữ cái / Tô nét; “Chơi ›” hoặc “Sắp có”), Học như thế nào,
+Gợi ý cho mẹ, ô gập “Lên tiểu học: Lớp 1 – Lớp 5 · sắp có”. Bài mới: thêm ô ở trang chủ (nếu là trò mới cho bé) **và** thẻ trong `me/`.
 
 ## Bài đã có
 - `so-6-9/` Số 6 và số 9 (bé Nam San chưa nhớ 6, 9 khi đếm ngược 12 → 1): Làm quen (Bạn Sáu tròn dưới / Bạn Chín tròn trên, cách viết, chấm 5+1 / 5+4,

@@ -101,16 +101,37 @@ svg.pad{overflow:visible}
 @keyframes pop{from{transform:scale(.6);opacity:0}}
 .note{font-size:14px;color:var(--soft);font-weight:700;text-align:center}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ===== app cho bé (8/11): nút biểu tượng, menu ô to 2 cột, hình to, chữ ngắn; chạm ô là nghe tên rồi vào trò ===== */
+.top{flex-wrap:nowrap}
+.top .back,.top .pill{min-width:54px;height:54px;padding:0 14px;font-size:24px;display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;cursor:pointer}
+.top .pill{font-size:20px}
+nav.menu{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+nav.menu .tile:last-child:nth-child(odd){grid-column:1/-1}
+@media (min-width:700px){nav.menu{grid-template-columns:repeat(3,minmax(0,1fr))}nav.menu .tile:last-child:nth-child(odd){grid-column:auto}}
+.menu .tile{flex-direction:column;justify-content:center;text-align:center;gap:10px;min-height:168px;padding:16px 8px 14px;border-radius:28px;box-shadow:0 5px 0 rgba(34,48,77,.13)}
+.menu .tile .ic{width:88px;height:88px;border-radius:26px;font-size:48px;background:rgba(255,255,255,.75)!important}
+.menu .tile h3{font-size:clamp(21px,5.8vw,27px);line-height:1.1}
+.menu .tile p,.menu .tile .k{display:none}
+.menu .tile.go{transform:scale(.94)}
+.hero .sub,.hero h1{display:none}
+.hello{border:0;border-radius:50%;width:68px;height:68px;background:var(--ink);color:#fff;font-size:32px;display:grid;place-items:center;box-shadow:0 4px 0 rgba(0,0,0,.25);cursor:pointer}
+.hello:active{transform:translateY(3px);box-shadow:none}
+.ear{border:0;background:var(--bg);border-radius:50%;width:44px;height:44px;font-size:22px;margin-left:8px;vertical-align:middle;cursor:pointer;box-shadow:0 2px 0 var(--line)}
+details.mom{margin-top:6px}
+details.mom>summary{cursor:pointer;font-weight:800;color:var(--soft);font-size:15px;list-style:none}
+details.mom>summary::-webkit-details-marker{display:none}
+details.mom[open]>summary{margin-bottom:8px}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="top">
-    <a class="back" id="all" href="../">‹ Tất cả bài</a>
-    <button class="back" id="back" hidden>‹ Chọn số</button>
+    <a class="back" id="all" href="../" aria-label="Về trang chính">🏠</a>
+    <button class="back" id="back" hidden aria-label="Quay lại">⬅</button>
     <span class="sp"></span>
     <span class="pill" title="Số sao bé đã có"><span class="st">★</span><span id="stars">0</span></span>
-    <button class="pill snd" id="snd" aria-pressed="true">🔊 Đọc to</button>
+    <button class="pill snd" id="snd" aria-pressed="true" aria-label="Bật tắt tiếng">🔊</button>
   </div>
   <main id="view"></main>
   <p class="note" id="voiceNote" hidden>Máy này chưa có giọng đọc tiếng Việt, mẹ đọc to các bước giúp bé nhé.</p>
@@ -182,7 +203,7 @@ var stars=load('nvs-stars',0),sound=load('nvs-snd',true),done=load('nvs-done',{}
 function showStars(){$('#stars').textContent=stars}
 function addStar(){stars++;save('nvs-stars',stars);showStars()}
 var sndB=$('#snd');
-function showSnd(){sndB.setAttribute('aria-pressed',sound?'true':'false');sndB.textContent=sound?'🔊 Đọc to':'🔇 Tắt tiếng'}
+function showSnd(){sndB.setAttribute('aria-pressed',sound?'true':'false');sndB.textContent=sound?'🔊':'🔇'}
 sndB.onclick=function(){sound=!sound;save('nvs-snd',sound);showSnd();if(!sound&&window.speechSynthesis)speechSynthesis.cancel();else say('Đọc to')};
 
 /* ---------- giọng đọc ---------- */
@@ -231,17 +252,16 @@ function shakeEl(el){el.classList.remove('shake');void el.offsetWidth;el.classLi
 /* ---------- trang đầu ---------- */
 function home(){
   view.innerHTML='<div class="wrap"><section class="panel"><h1>Tập viết số</h1>'+
-  '<p class="hint">Bé chọn một số. Mỗi số có 3 bước: xem cách viết, tô từng nét, rồi tự viết. Cây ở bên trái, ngôi nhà ở bên phải giúp bé nhớ hướng đi của nét.</p>'+
+  '<p class="hint">Bé chọn một số nhé.</p>'+
   '<div class="digits">'+[0,1,2,3,4,5,6,7,8,9].map(function(n){return '<button class="dg'+(n===6||n===9?' focus':'')+'" data-n="'+n+'" aria-label="Số '+n+'">'+n+(done[n]?'<span class="ok">✓</span>':'')+'</button>'}).join('')+'</div>'+
-  '<p class="hint">Hai ô cam (6 và 9) là hai số Nam San đang luyện.</p>'+
-  '<button class="game" id="gm"><span class="mir"><span>6</span><span>6</span></span><span><b>Ai đứng đúng?</b><small>Một bạn viết đúng, một bạn bị quay ngược. Bé tìm bạn đúng nhé.</small></span></button></section>'+
-  '<section class="mom"><h2>Khi bé viết số bị ngược</h2><ul>'+
+  '<button class="game" id="gm"><span class="mir"><span>6</span><span>6</span></span><span><b>Ai đứng đúng?</b><small>Bé tìm bạn đứng đúng nhé.</small></span></button></section>'+
+  '<details class="mom"><summary>👩 Dành cho mẹ ›</summary><h2>Khi bé viết số bị ngược</h2><ul>'+
   '<li>Bé 5–6 tuổi viết ngược số (6 quay lưng sai phía, 9 cây gậy bên trái) là chuyện rất thường gặp. Phần lớn các bé hết dần khi lên lớp 1, lớp 2.</li>'+
   '<li>Cho bé <b>nói to hướng đi</b> khi viết: “đặt bút gần nhà, cong về phía cây, xuống dưới, cuộn về phía nhà”.</li>'+
   '<li>Dán một hình nhỏ (cái cây) ở <b>mép trái</b> trang vở thật, để bé có mốc như trên màn hình.</li>'+
   '<li>Viết bằng ngón tay lên lưng bé, lên khay cát hay khay bột, đoán xem là số mấy. Bé nhớ hướng nét bằng cả cơ thể.</li>'+
   '<li>Mỗi ngày chỉ 1–2 số, viết ít mà đúng chiều tốt hơn viết nhiều mà sai chiều.</li>'+
-  '</ul></section></div>';
+  '</ul></details></div>';
   view.querySelectorAll('.dg').forEach(function(b){b.onclick=function(){go('so-'+b.dataset.n)}});
   $('#gm').onclick=function(){go('dung-nguoc')};
 }
@@ -407,11 +427,35 @@ function mirrorGame(){
 
 /* ---------- chuyển trang ---------- */
 function go(h){if(location.hash.slice(1)===h)render();else location.hash=h}
+
+/* app cho bé: chạm ô → nghe tên rồi vào; mỗi màn có nút 🔊 cạnh tiêu đề để nghe lời dặn */
+function kidTiles(){
+  view.querySelectorAll('.menu .tile').forEach(function(b){
+    var bg=b.querySelector('.ic')&&b.querySelector('.ic').style.background;if(bg)b.style.background=bg;
+    var h=b.dataset.go,name=(b.querySelector('h3')||b).textContent;
+    b.onclick=function(){b.classList.add('go');say(name);setTimeout(function(){b.classList.remove('go');go(h)},sound?950:120)};
+  });
+}
+function kidHello(){
+  var hr=view.querySelector('.hero');if(!hr||hr.querySelector('.hello'))return;
+  var h1=hr.querySelector('h1'),sub=hr.querySelector('.sub'),t=(h1?h1.textContent:'')+' '+(sub?sub.textContent:'');
+  var b=document.createElement('button');b.type='button';b.className='hello';b.textContent='🔊';b.setAttribute('aria-label','Nghe cô nói');
+  b.onclick=function(){say(t)};(h1||hr.lastChild).insertAdjacentElement('afterend',b);
+}
+function kidEars(){kidHello();
+  view.querySelectorAll('.panel>h2, .panel>h1').forEach(function(h){
+    if(h.querySelector('.ear'))return;
+    var t=h.textContent,n=h.nextElementSibling,x=(n&&/hint|ask/.test(n.className))?n.textContent:'';
+    var e=document.createElement('button');e.type='button';e.className='ear';e.textContent='🔊';e.setAttribute('aria-label','Nghe');
+    e.onclick=function(){say(t+'. '+x)};h.appendChild(e);
+  });
+}
 function render(){
   var h=location.hash.slice(1),m=/^so-(\d)$/.exec(h);
   if(window.speechSynthesis)try{speechSynthesis.cancel()}catch(e){}
   var inner=!!m||h==='dung-nguoc';backB.hidden=!inner;allA.hidden=inner;
   if(m){mode='xem';digit(+m[1])}else if(h==='dung-nguoc')mirrorGame();else home();
+  kidTiles();kidEars();
   window.scrollTo(0,0);
 }
 backB.onclick=function(){go('')};

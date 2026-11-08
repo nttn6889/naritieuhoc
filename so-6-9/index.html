@@ -16,6 +16,27 @@
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 body{margin:0}img{max-width:100%}[hidden]{display:none!important}
 a.back{text-decoration:none;color:inherit}
+
+/* ===== app cho bé (8/11): nút biểu tượng, menu ô to 2 cột, hình to, chữ ngắn; chạm ô là nghe tên rồi vào trò ===== */
+.top{flex-wrap:nowrap}
+.top .back,.top .pill{min-width:54px;height:54px;padding:0 14px;font-size:24px;display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;cursor:pointer}
+.top .pill{font-size:20px}
+nav.menu{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+nav.menu .tile:last-child:nth-child(odd){grid-column:1/-1}
+@media (min-width:700px){nav.menu{grid-template-columns:repeat(3,minmax(0,1fr))}nav.menu .tile:last-child:nth-child(odd){grid-column:auto}}
+.menu .tile{flex-direction:column;justify-content:center;text-align:center;gap:10px;min-height:168px;padding:16px 8px 14px;border-radius:28px;box-shadow:0 5px 0 rgba(34,48,77,.13)}
+.menu .tile .ic{width:88px;height:88px;border-radius:26px;font-size:48px;background:rgba(255,255,255,.75)!important}
+.menu .tile h3{font-size:clamp(21px,5.8vw,27px);line-height:1.1}
+.menu .tile p,.menu .tile .k{display:none}
+.menu .tile.go{transform:scale(.94)}
+.hero .sub,.hero h1{display:none}
+.hello{border:0;border-radius:50%;width:68px;height:68px;background:var(--ink);color:#fff;font-size:32px;display:grid;place-items:center;box-shadow:0 4px 0 rgba(0,0,0,.25);cursor:pointer}
+.hello:active{transform:translateY(3px);box-shadow:none}
+.ear{border:0;background:var(--bg);border-radius:50%;width:44px;height:44px;font-size:22px;margin-left:8px;vertical-align:middle;cursor:pointer;box-shadow:0 2px 0 var(--line)}
+details.mom{margin-top:6px}
+details.mom>summary{cursor:pointer;font-weight:800;color:var(--soft);font-size:15px;list-style:none}
+details.mom>summary::-webkit-details-marker{display:none}
+details.mom[open]>summary{margin-bottom:8px}
 </style>
 <style>
 /* Một màn hình kiểu sách tranh: thẻ to, nút to cho ngón tay bé; cam = Bạn Sáu (tròn dưới), xanh = Bạn Chín (tròn trên).
@@ -155,11 +176,11 @@ p{margin:0}
 <body>
 <div class="wrap">
   <div class="top">
-    <a class="back" id="all" href="../">‹ Tất cả bài</a>
-    <button class="back" id="back" hidden>‹ Trang đầu</button>
+    <a class="back" id="all" href="../" aria-label="Về trang chính">🏠</a>
+    <button class="back" id="back" hidden aria-label="Quay lại">⬅</button>
     <span class="sp"></span>
     <span class="pill" title="Số sao bé đã có"><span class="st">★</span><span id="stars">0</span></span>
-    <button class="pill snd" id="snd" aria-pressed="true">🔊 Đọc to</button>
+    <button class="pill snd" id="snd" aria-pressed="true" aria-label="Bật tắt tiếng">🔊</button>
   </div>
   <main id="view"></main>
   <p class="note" id="voiceNote" hidden>Máy này chưa có giọng đọc tiếng Việt, mẹ đọc to giúp bé nhé.</p>
@@ -182,7 +203,7 @@ var sound=true; try{sound=localStorage.getItem('ns69-snd')!=='0'}catch(e){}
 function showStars(){$('#stars').textContent=stars}
 function addStar(){stars++;try{localStorage.setItem('ns69-stars',stars)}catch(e){}showStars()}
 var sndB=$('#snd');
-function showSnd(){sndB.setAttribute('aria-pressed',sound?'true':'false');sndB.textContent=sound?'🔊 Đọc to':'🔇 Tắt tiếng'}
+function showSnd(){sndB.setAttribute('aria-pressed',sound?'true':'false');sndB.textContent=sound?'🔊':'🔇'}
 sndB.onclick=function(){sound=!sound;try{localStorage.setItem('ns69-snd',sound?'1':'0')}catch(e){}showSnd();if(!sound&&window.speechSynthesis)speechSynthesis.cancel();else say('Đọc to')};
 var viVoice=null, voiceChecked=false;
 function pickVoice(){
@@ -266,12 +287,12 @@ function home(){
   '<h1>Nam San ơi, mình học số 6 và số 9 nhé!</h1><p class="sub">Nhìn chỗ cái vòng tròn là biết ngay.</p>'+
   '<div class="rule"><div class="r6"><b>6</b>Tròn ở DƯỚI</div><div class="r9"><b>9</b>Tròn ở TRÊN</div></div></section>'+
   '<nav class="menu">'+ACTS.map(function(a,i){return '<button class="tile" data-go="'+a[0]+'"><span class="ic" style="background:'+a[4]+'">'+a[3]+'</span><span><span class="k">Bài '+(i+1)+'</span><h3>'+a[1]+'</h3><p>'+a[2]+'</p></span></button>'}).join('')+'</nav>'+
-  '<section class="mom"><h2>Gợi ý cho mẹ</h2><ul>'+
+  '<details class="mom"><summary>👩 Dành cho mẹ ›</summary><h2>Gợi ý cho mẹ</h2><ul>'+
   '<li>Mỗi ngày chơi 10 phút là đủ. Bé còn thích thì chơi thêm, bé chán thì nghỉ.</li>'+
   '<li>Khi bé lúng túng, mẹ chỉ hỏi: <b>“Vòng tròn nằm ở đâu?”</b> Ở dưới là 6, ở trên là 9.</li>'+
   '<li>Cho bé đếm đồ thật: 6 cái thìa, 9 viên kẹo. Đếm xong, bé tự tìm số đó trên lịch, trên đồng hồ.</li>'+
   '<li>Khi bé đếm ngược, đọc chậm đoạn “mười, <b>chín</b>, tám, bảy, <b>sáu</b>, năm”, để bé nói to hai số này.</li>'+
-  '</ul></section></div>';
+  '</ul></details></div>';
   view.querySelectorAll('[data-go]').forEach(function(b){b.onclick=function(){go(b.dataset.go)}});
 }
 
@@ -456,11 +477,35 @@ function trace(){
 /* ---------- chuyển trang ---------- */
 var ROUTES={'lam-quen':learn,'tim-so':find,'dem-hinh':count,'dem-nguoc':seq,'tap-viet':trace};
 function go(h){if(location.hash.slice(1)===h)render();else location.hash=h}
+
+/* app cho bé: chạm ô → nghe tên rồi vào; mỗi màn có nút 🔊 cạnh tiêu đề để nghe lời dặn */
+function kidTiles(){
+  view.querySelectorAll('.menu .tile').forEach(function(b){
+    var bg=b.querySelector('.ic')&&b.querySelector('.ic').style.background;if(bg)b.style.background=bg;
+    var h=b.dataset.go,name=(b.querySelector('h3')||b).textContent;
+    b.onclick=function(){b.classList.add('go');say(name);setTimeout(function(){b.classList.remove('go');go(h)},sound?950:120)};
+  });
+}
+function kidHello(){
+  var hr=view.querySelector('.hero');if(!hr||hr.querySelector('.hello'))return;
+  var h1=hr.querySelector('h1'),sub=hr.querySelector('.sub'),t=(h1?h1.textContent:'')+' '+(sub?sub.textContent:'');
+  var b=document.createElement('button');b.type='button';b.className='hello';b.textContent='🔊';b.setAttribute('aria-label','Nghe cô nói');
+  b.onclick=function(){say(t)};(h1||hr.lastChild).insertAdjacentElement('afterend',b);
+}
+function kidEars(){kidHello();
+  view.querySelectorAll('.panel>h2, .panel>h1').forEach(function(h){
+    if(h.querySelector('.ear'))return;
+    var t=h.textContent,n=h.nextElementSibling,x=(n&&/hint|ask/.test(n.className))?n.textContent:'';
+    var e=document.createElement('button');e.type='button';e.className='ear';e.textContent='🔊';e.setAttribute('aria-label','Nghe');
+    e.onclick=function(){say(t+'. '+x)};h.appendChild(e);
+  });
+}
 function render(){
   var h=location.hash.slice(1);
   if(window.speechSynthesis)try{speechSynthesis.cancel()}catch(e){}
   backB.hidden=!ROUTES[h];document.getElementById('all').hidden=!!ROUTES[h];
   (ROUTES[h]||home)();
+  kidTiles();kidEars();
   window.scrollTo(0,0);
 }
 backB.onclick=function(){go('')};
