@@ -27,7 +27,12 @@ Dự án tách khỏi Nari TOPIK (kho `narikoreanbox`, `nari-lop`), chỉ chung 
 - Chưa làm: logo có chữ đổi thành nét vẽ (như `tools/logo/mklogo.py` của narikoreanbox), bản đơn giản cho cỡ rất nhỏ.
 
 ## Trang chủ (`index.html`)
-Màn hình chính chỉ dành cho **tiền tiểu học (bé 4–6 tuổi)** (mẹ dặn 8/11). Đầu trang logo ngang · khối mở đầu (dòng “Tiền tiểu học · bé 4–6 tuổi”, Bạn Sáu, Bạn Chín, nút vào bài) · mục Chuẩn bị vào lớp 1 chia
+Màn hình chính chỉ dành cho **tiền tiểu học (bé 4–6 tuổi)** (mẹ dặn 8/11). Đầu trang logo ngang ·
+**Góc của bé** (8/11, để bé tự chọn bài không cần đọc): “Bé muốn chơi gì?” + nút 🔊 đọc câu hỏi, 4 ô to mỗi ô một màu + một hình:
+Số (cam, Bạn Sáu – Bạn Chín → `so-6-9/`) · Chữ cái (xanh, “ab” → `chu-cai/`) · Đánh vần (xanh lá, “b + a = ba” → `chu-cai/#danh-van`) ·
+Tập viết (vàng, số 6 viền + bút chì → `viet-so/`). Chạm ô: cô đọc tên (`data-say`, giọng vi-VN, không có giọng thì vào luôn) rồi mới chuyển trang;
+ô vào lần trước có nhãn “⭐ Lần trước” (localStorage `nth-last`). Bài mới dành cho bé thì thêm ô (2 cột trên điện thoại, 4 cột màn rộng). ·
+Góc của mẹ (dòng “Góc của mẹ · tiền tiểu học · bé 4–6 tuổi”, lời giới thiệu) · mục Chuẩn bị vào lớp 1 chia
 thẻ kỹ năng Số đếm / Chữ cái / Tô nét (bài có thì là link xanh “Chơi ›”, chưa có thì “Sắp có”) · Học như thế nào (3 bước) · Gợi ý cho mẹ · ô gập “Lên tiểu học: Lớp 1 – Lớp 5 · sắp có” (`details.later`, đóng sẵn, chỉ để mẹ xem trước) · chân trang. Khi có bài lớp 1 thì mới đưa các lớp lên lại.
 
 ## Bài đã có
