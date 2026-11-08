@@ -7,6 +7,8 @@
 <title>Chữ cái theo âm · Nari Tiểu Học</title>
 <link rel="icon" href="../logo/nari-tieu-hoc-icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="../logo/nari-tieu-hoc-icon-180.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#53468F">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@500;700;800&display=swap">
 <style>
@@ -804,5 +806,6 @@ window.addEventListener('hashchange',render);
 showStars();showSnd();render();
 })();
 </script>
+<script>if('serviceWorker' in navigator)navigator.serviceWorker.register('../sw.js',{scope:'../'}).catch(function(){});</script>
 </body>
 </html>

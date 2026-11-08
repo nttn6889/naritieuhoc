@@ -1,0 +1,29 @@
+{
+ "name": "Nari Tiểu Học",
+ "short_name": "Nari Tiểu Học",
+ "description": "Mẹ cùng con học ở nhà, mỗi ngày 10 phút. Vui từng bài – Vững từng lớp.",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "background_color": "#F7F4FC",
+ "theme_color": "#53468F",
+ "lang": "vi",
+ "icons": [
+  {
+   "src": "logo/nari-tieu-hoc-icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "logo/nari-tieu-hoc-icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  },
+  {
+   "src": "logo/nari-tieu-hoc-maskable-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

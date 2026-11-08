@@ -16,6 +16,9 @@ Dự án tách khỏi Nari TOPIK (kho `narikoreanbox`, `nari-lop`), chỉ chung 
 - Màu: cam `#F07A35` / xanh `#2E7BE0` trên nền `#EEF5FF`. Trong trò chơi phân biệt, các số cùng một màu mực để bé nhìn hình dáng chứ không nhìn màu.
 - Sao thưởng, cài đặt lưu localStorage (`ns69-stars`, `ns69-snd`); bọc try/catch.
 - Kiểm tra bằng Playwright khung 390px trước khi push.
+- **Cài như app** (8/11, máy Samsung của mẹ không thêm được vào màn hình chính): `manifest.webmanifest` ở gốc (start_url `./`, icon 192/512 + maskable 512 nền `#EFEAF8`),
+  `sw.js` ở gốc (lấy mạng trước, mất mạng dùng bản lưu, cache `nth-v1`). Trang mới phải gắn `<link rel="manifest" href="../manifest.webmanifest">`, `theme-color`
+  và dòng đăng ký `sw.js` (scope `../`) trước `</body>` như các bài đã có.
 
 ## Logo (mẹ chốt 7/11: hướng A bản 1)
 - Cùng họ logo Nari TOPIK: quyển sách mở + nét lượn chép nguyên (tím `#53468F` / vàng `#D4A843`), thay tháp Namsan bằng **bút chì cam** (`#F07A35`, khâu xanh `#2E7BE0`)

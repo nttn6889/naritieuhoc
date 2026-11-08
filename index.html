@@ -7,6 +7,8 @@
 <meta name="description" content="Nari Tiểu Học: trang học miễn phí cho bé, mẹ cùng con học ở nhà. Chuẩn bị vào lớp 1: chữ cái, số đếm, trò chơi chạm trên điện thoại.">
 <link rel="icon" href="logo/nari-tieu-hoc-icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="logo/nari-tieu-hoc-icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#53468F">
 <meta property="og:title" content="Nari Tiểu Học">
 <meta property="og:description" content="Vui từng bài – Vững từng lớp. Mẹ cùng con học ở nhà, mỗi ngày 10 phút.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -178,5 +180,6 @@ footer .sl{font-family:var(--f-logo);font-size:19px;color:var(--purple);font-wei
     <span>Nari Tiểu Học · trang học miễn phí, mẹ cùng con học ở nhà</span>
   </footer>
 </div>
+<script>if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js',{scope:'./'}).catch(function(){});</script>
 </body>
 </html>
