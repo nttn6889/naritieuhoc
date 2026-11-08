@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Tập viết số 0–9 · Nari Tiểu Học</title>
+<meta name="description" content="Bé tập viết chữ số 0–9 từng nét: xem cách viết, tô từng nét đúng chiều, tự viết. Trang báo khi bé viết ngược chiều hay viết số bị quay ngược.">
+<link rel="icon" href="../logo/nari-tieu-hoc-icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../logo/nari-tieu-hoc-icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@500;700;800&display=swap">
+<style>
+/* Bảng viết của bé: cây ở bên trái, ngôi nhà ở bên phải làm mốc hướng (“về phía cây”, “về phía nhà”),
+   ba dòng kẻ như vở, chấm xanh = chỗ đặt bút, mũi tên = hướng đi. Một giao diện sáng có chủ ý. */
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --bg:#EEF5FF; --card:#FFFFFF; --ink:#22304D; --soft:#5B6B8C; --line:#D5E1F5;
+  --purple:#53468F; --orange:#F07A35; --orange-bg:#FFE9DB; --blue:#2E7BE0; --blue-bg:#DDEBFF;
+  --good:#22A866; --good-bg:#DDF6E8; --bad:#E04A5F; --star:#F5B700; --tree:#E6F6E4; --house:#FFF1E2;
+  --f-num:"Baloo 2","Nunito",system-ui,sans-serif; --f-body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html,body{background:var(--bg);color:var(--ink)}
+body{margin:0;font-family:var(--f-body);font-size:17px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px 40px}
+[hidden]{display:none!important}
+.wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible{outline:4px solid var(--blue);outline-offset:3px}
+h1,h2,h3{font-family:var(--f-num);line-height:1.15;margin:0;text-wrap:balance}
+p{margin:0}
+.top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.back{border:0;background:var(--card);border-radius:999px;padding:8px 16px;font-weight:800;box-shadow:0 2px 0 var(--line);text-decoration:none;color:inherit}
+.sp{flex:1}
+.pill{display:inline-flex;align-items:center;gap:6px;background:var(--card);border-radius:999px;padding:6px 14px;font-weight:800;box-shadow:0 2px 0 var(--line);border:0}
+.pill .st{color:var(--star);font-size:22px;line-height:1}
+.snd[aria-pressed="false"]{opacity:.55}
+.panel{background:var(--card);border-radius:26px;padding:18px 16px 20px;box-shadow:0 4px 0 var(--line);display:flex;flex-direction:column;gap:14px;align-items:center;text-align:center}
+.panel h1{font-size:clamp(26px,6.5vw,36px);color:var(--purple)}
+.panel h2{font-size:clamp(24px,6vw,32px)}
+.hint{color:var(--soft);font-weight:700;font-size:15px}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.btn{border:0;border-radius:999px;padding:12px 20px;font-weight:800;font-size:16px;background:var(--ink);color:#fff;box-shadow:0 3px 0 #0e1628}
+.btn.light{background:var(--bg);color:var(--ink);box-shadow:0 3px 0 var(--line)}
+.btn:active{transform:translateY(2px);box-shadow:none}
+
+/* chọn số */
+.digits{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;width:100%;max-width:520px}
+.dg{border:0;aspect-ratio:1;border-radius:20px;background:var(--bg);box-shadow:0 3px 0 var(--line);font:800 clamp(38px,11vw,56px)/1 var(--f-num);position:relative;display:grid;place-items:center}
+.dg.focus{background:var(--orange-bg);box-shadow:0 3px 0 #F3C3A3}
+.dg .ok{position:absolute;top:4px;right:8px;font:800 14px/1 var(--f-body);color:var(--good)}
+.dg:active{transform:translateY(2px)}
+.game{border:0;width:100%;max-width:520px;background:var(--blue-bg);border-radius:20px;padding:14px 16px;display:flex;gap:14px;align-items:center;text-align:left;box-shadow:0 3px 0 #BCD4F5}
+.game .mir{font:800 44px/1 var(--f-num);display:flex;gap:4px;flex:none}
+.game .mir span:last-child{transform:scaleX(-1);color:var(--bad)}
+.game b{display:block;font-size:19px;font-family:var(--f-num)}
+.game small{display:block;color:var(--soft);font-weight:700}
+.mom{background:var(--card);border-radius:22px;padding:16px 18px;border:2px dashed var(--line)}
+.mom h2{font-size:20px;margin-bottom:6px}
+.mom ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px}
+
+/* trang một số */
+.seg{display:inline-flex;background:var(--bg);border-radius:999px;padding:4px;gap:4px;flex-wrap:wrap;justify-content:center}
+.seg button{border:0;background:transparent;border-radius:999px;padding:8px 14px;font-weight:800;font-size:15px}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.board{display:flex;align-items:stretch;justify-content:center;gap:6px;width:100%}
+.mark{flex:none;width:52px;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-weight:800;font-size:13px;color:var(--soft)}
+.mark i{font-style:normal;font-size:30px;line-height:1}
+.mark.l{background:var(--tree)} .mark.r{background:var(--house)}
+.pad{width:min(100%,250px);aspect-ratio:100/146;background:#fff;border-radius:20px;border:2px solid var(--line);display:block;touch-action:none;flex:0 1 auto;min-width:0}
+svg.pad{overflow:visible}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;width:100%;max-width:520px;text-align:left}
+.steps li{display:flex;gap:10px;align-items:flex-start;background:var(--bg);border-radius:16px;padding:10px 12px;font-weight:700;border:0;width:100%;text-align:left}
+.steps li b{flex:none;width:30px;height:30px;border-radius:50%;background:var(--line);display:grid;place-items:center;font:800 16px/1 var(--f-num)}
+.steps li.cur{background:#FFF8DC;box-shadow:0 0 0 3px var(--star) inset}
+.steps li.cur b{background:var(--star);color:#fff}
+.steps li.done b{background:var(--good);color:#fff}
+.steps li button{all:unset;cursor:pointer;display:flex;gap:10px;align-items:flex-start;width:100%}
+.msg{min-height:1.6em;font-weight:800;font-size:17px}
+.msg.good{color:var(--good)} .msg.bad{color:var(--bad)}
+.tip{background:var(--orange-bg);border-radius:16px;padding:10px 14px;font-weight:800;color:#8A3A0E;max-width:520px}
+.shake{animation:shake .45s}
+@keyframes shake{20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(4px)}}
+
+/* ai đứng đúng */
+.pair{display:flex;gap:16px;justify-content:center}
+.card{border:0;width:clamp(120px,36vw,160px);aspect-ratio:3/4;border-radius:26px;background:var(--bg);box-shadow:0 4px 0 var(--line);font:800 clamp(90px,26vw,120px)/1 var(--f-num);display:grid;place-items:center}
+.card span{display:block}
+.card.m span{transform:scaleX(-1)}
+.card.ok{background:var(--good-bg);color:var(--good)}
+.card.no{background:#FFE3E7;color:var(--bad)}
+.prog{font-weight:800;color:var(--soft)}
+
+.win{position:fixed;inset:0;display:grid;place-items:center;background:rgba(34,48,77,.45);z-index:20;padding:20px}
+.win .box{background:var(--card);border-radius:30px;padding:24px 22px;max-width:340px;width:100%;text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center;animation:pop .35s}
+.win .bigstar{font-size:84px;line-height:1;color:var(--star)}
+.win h2{font-size:32px}
+@keyframes pop{from{transform:scale(.6);opacity:0}}
+.note{font-size:14px;color:var(--soft);font-weight:700;text-align:center}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="back" id="all" href="../">‹ Tất cả bài</a>
+    <button class="back" id="back" hidden>‹ Chọn số</button>
+    <span class="sp"></span>
+    <span class="pill" title="Số sao bé đã có"><span class="st">★</span><span id="stars">0</span></span>
+    <button class="pill snd" id="snd" aria-pressed="true">🔊 Đọc to</button>
+  </div>
+  <main id="view"></main>
+  <p class="note" id="voiceNote" hidden>Máy này chưa có giọng đọc tiếng Việt, mẹ đọc to các bước giúp bé nhé.</p>
+</div>
+<svg id="measure" width="0" height="0" style="position:absolute;visibility:hidden" aria-hidden="true"></svg>
+
+<script>
+(function(){
+/* Mỗi số: các bước, mỗi bước một đoạn nét (khung 100 × 146; dòng trên y 16, dòng giữa 72, dòng dưới 130).
+   “cây” = bên trái, “nhà” = bên phải. Các đoạn nối liền nhau trừ khi bước ghi “Nhấc bút”. */
+var D={
+ 0:{n:'không',s:[
+   ['M50 16 C27 16 18 44 18 73 C18 104 28 130 50 130','Đặt bút ở chấm xanh trên cùng. Vòng về phía cây, đi xuống dòng dưới.'],
+   ['M50 130 C72 130 82 104 82 73 C82 44 73 16 50 16','Vòng về phía ngôi nhà, đi lên, gặp lại chấm xanh.']],
+   tip:'Số 0 như quả trứng: đi về phía cây trước.'},
+ 1:{n:'một',s:[
+   ['M30 44 L60 16','Kéo một nét xiên ngắn đi lên.'],
+   ['M60 16 L60 130','Kéo thẳng xuống tới dòng dưới.']],
+   tip:'Mũ của số 1 quay về phía cây.'},
+ 2:{n:'hai',s:[
+   ['M22 42 C24 22 40 16 52 16 C70 16 80 28 80 44 C80 62 66 78 50 92','Cong như cái móc về phía ngôi nhà, rồi vòng vào giữa.'],
+   ['M50 92 L20 130','Kéo xiên xuống, về phía cây.'],
+   ['M20 130 L82 130','Kẻ một nét ngang trên dòng dưới, về phía ngôi nhà.']],
+   tip:'Cái móc của số 2 quay về phía ngôi nhà.'},
+ 3:{n:'ba',s:[
+   ['M24 30 C30 18 44 16 52 16 C70 16 78 28 78 40 C78 58 64 70 46 72','Bụng trên: cong về phía ngôi nhà, quay vào giữa.'],
+   ['M46 72 C66 72 82 84 82 102 C82 120 66 130 50 130 C36 130 24 124 20 114','Bụng dưới to hơn: cong về phía ngôi nhà, xuống dòng dưới.']],
+   tip:'Hai cái bụng của số 3 đều quay về phía ngôi nhà.'},
+ 4:{n:'bốn',s:[
+   ['M58 16 L18 94','Kéo xiên xuống, về phía cây.'],
+   ['M18 94 L84 94','Kẻ ngang về phía ngôi nhà.'],
+   ['M64 48 L64 130','Nhấc bút. Kẻ thẳng từ trên xuống, cắt qua nét ngang.']],
+   tip:'Cột đứng của số 4 ở bên phía ngôi nhà.'},
+ 5:{n:'năm',s:[
+   ['M26 16 L22 66','Kéo thẳng xuống một đoạn ngắn.'],
+   ['M22 66 C34 58 46 56 54 56 C72 56 82 72 82 92 C82 116 66 130 48 130 C34 130 24 124 20 114','Cong cái bụng to về phía ngôi nhà, xuống dòng dưới.'],
+   ['M26 16 L78 16','Nhấc bút. Đội mũ: kẻ ngang về phía ngôi nhà.']],
+   tip:'Bụng của số 5 quay về phía ngôi nhà, mũ đội sau cùng.'},
+ 6:{n:'sáu',s:[
+   ['M72 16 C50 20 27 44 23 86 C20 116 34 130 51 130','Đặt bút ở chấm xanh, gần ngôi nhà. Cong về phía cây, trượt xuống dòng dưới.'],
+   ['M51 130 C69 130 80 117 80 100 C80 82 67 72 52 72','Cuộn tròn về phía ngôi nhà, đi lên tới dòng giữa.'],
+   ['M52 72 C38 72 27 81 23 94','Quay về phía cây, khép cái bụng lại.']],
+   tip:'Lưng Bạn Sáu dựa về phía cây, bụng tròn ở dưới.'},
+ 7:{n:'bảy',s:[
+   ['M20 16 L80 16','Kẻ ngang về phía ngôi nhà.'],
+   ['M80 16 L42 130','Kéo xiên xuống, về phía cây.']],
+   tip:'Số 7 kẻ ngang trước, rồi xiên xuống.'},
+ 8:{n:'tám',s:[
+   ['M74 34 C74 22 62 16 50 16 C36 16 26 24 26 38 C26 54 40 62 50 72 C64 80 80 90 80 106 C80 122 66 130 50 130','Đặt bút trên cao. Cong về phía cây, rồi lượn xuống về phía ngôi nhà.'],
+   ['M50 130 C34 130 20 122 20 106 C20 90 36 80 50 72 C60 64 74 54 74 34','Vòng về phía cây, lượn ngược lên chỗ đặt bút.']],
+   tip:'Số 8 lượn như con rắn rồi quay về.'},
+ 9:{n:'chín',s:[
+   ['M78 42 C75 27 63 18 50 18 C34 18 22 30 22 45','Đặt bút ở chấm xanh, bên phía ngôi nhà. Vòng lên, rồi đi về phía cây.'],
+   ['M22 45 C22 61 34 72 50 72 C66 72 78 60 78 42','Vòng xuống, quay về phía ngôi nhà, khép tròn cái đầu.'],
+   ['M78 42 L76 130','Kéo cây gậy thẳng xuống dòng dưới, ở bên phía ngôi nhà.']],
+   tip:'Đầu tròn ở trên, cây gậy đứng bên phía ngôi nhà.'}
+};
+var W=100,H=146,INK='#53468F',PEN='#F07A35';
+var view=document.getElementById('view'),backB=document.getElementById('back'),allA=document.getElementById('all');
+function $(s,r){return (r||document).querySelector(s)}
+function rnd(n){return Math.floor(Math.random()*n)}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=rnd(i+1),t=a[i];a[i]=a[j];a[j]=t}return a}
+var RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- lưu trên máy ---------- */
+function load(k,d){try{var v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+var stars=load('nvs-stars',0),sound=load('nvs-snd',true),done=load('nvs-done',{});
+function showStars(){$('#stars').textContent=stars}
+function addStar(){stars++;save('nvs-stars',stars);showStars()}
+var sndB=$('#snd');
+function showSnd(){sndB.setAttribute('aria-pressed',sound?'true':'false');sndB.textContent=sound?'🔊 Đọc to':'🔇 Tắt tiếng'}
+sndB.onclick=function(){sound=!sound;save('nvs-snd',sound);showSnd();if(!sound&&window.speechSynthesis)speechSynthesis.cancel();else say('Đọc to')};
+
+/* ---------- giọng đọc ---------- */
+var viVoice=null,voiceChecked=false;
+function pickVoice(){if(!window.speechSynthesis)return;var vs=speechSynthesis.getVoices()||[];if(!vs.length)return;voiceChecked=true;
+  viVoice=vs.filter(function(v){return /^vi/i.test(v.lang)})[0]||null;$('#voiceNote').hidden=!!viVoice}
+if(window.speechSynthesis){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}else $('#voiceNote').hidden=false;
+function say(t){
+  if(!sound||!window.speechSynthesis)return;if(!voiceChecked)pickVoice();if(voiceChecked&&!viVoice)return;
+  try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='vi-VN';if(viVoice)u.voice=viVoice;u.rate=.85;u.pitch=1.1;speechSynthesis.speak(u)}catch(e){}
+}
+
+/* ---------- đo nét (điểm mẫu dọc theo từng bước) ---------- */
+var meas=document.getElementById('measure');
+function samplePath(d,n){
+  var p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',d);meas.appendChild(p);
+  var L=p.getTotalLength(),out=[];for(var i=0;i<=n;i++){var q=p.getPointAtLength(L*i/n);out.push([q.x,q.y])}
+  meas.removeChild(p);return {pts:out,len:L};
+}
+var SM={};
+function stepSamples(n,k){var key=n+'_'+k;if(!SM[key])SM[key]=samplePath(D[n].s[k][0],30);return SM[key]}
+function nearest(S,p){var bi=0,bd=1e9;for(var i=0;i<S.length;i++){var dx=S[i][0]-p[0],dy=S[i][1]-p[1],d=dx*dx+dy*dy;if(d<bd){bd=d;bi=i}}return [bi,Math.sqrt(bd)]}
+function judge(S,P){
+  if(P.length<4)return {short:1};
+  var near=0,idx=[];P.forEach(function(p){var r=nearest(S,p);idx.push(r[0]);if(r[1]<17)near++});
+  var cov=0;S.forEach(function(s){if(P.some(function(p){var dx=p[0]-s[0],dy=p[1]-s[1];return dx*dx+dy*dy<15*15}))cov++});
+  var q=Math.max(1,Math.floor(P.length/4)),a=0,b=0;
+  for(var i=0;i<q;i++){a+=idx[i];b+=idx[P.length-1-i]}a/=q;b/=q;
+  var d0=Math.hypot(P[0][0]-S[0][0],P[0][1]-S[0][1]),d1=Math.hypot(P[0][0]-S[S.length-1][0],P[0][1]-S[S.length-1][1]);
+  return {near:near/P.length,cov:cov/S.length,rev:(b<a-3)||(d1<20&&d0>26&&b<a)};
+}
+
+/* ---------- chúc mừng ---------- */
+var PRAISE=['Giỏi quá!','Tuyệt vời!','Nam San giỏi lắm!','Viết đẹp lắm!'];
+function win(msg,next,nextLabel){
+  addStar();var pr=PRAISE[rnd(PRAISE.length)];say(pr);
+  var d=document.createElement('div');d.className='win';
+  d.innerHTML='<div class="box" role="dialog" aria-live="polite"><div class="bigstar">★</div><h2>'+pr+'</h2><p class="hint">'+msg+'</p><p class="hint">Bé có '+stars+' sao rồi!</p><div class="row"><button class="btn" id="wNext">'+(nextLabel||'Chơi tiếp')+'</button><button class="btn light" id="wHome">Chọn số khác</button></div></div>';
+  document.body.appendChild(d);
+  $('#wNext',d).onclick=function(){d.remove();next&&next()};
+  $('#wHome',d).onclick=function(){d.remove();go('')};
+  $('#wNext',d).focus();
+}
+function shakeEl(el){el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake')}
+
+/* ---------- trang đầu ---------- */
+function home(){
+  view.innerHTML='<div class="wrap"><section class="panel"><h1>Tập viết số</h1>'+
+  '<p class="hint">Bé chọn một số. Mỗi số có 3 bước: xem cách viết, tô từng nét, rồi tự viết. Cây ở bên trái, ngôi nhà ở bên phải giúp bé nhớ hướng đi của nét.</p>'+
+  '<div class="digits">'+[0,1,2,3,4,5,6,7,8,9].map(function(n){return '<button class="dg'+(n===6||n===9?' focus':'')+'" data-n="'+n+'" aria-label="Số '+n+'">'+n+(done[n]?'<span class="ok">✓</span>':'')+'</button>'}).join('')+'</div>'+
+  '<p class="hint">Hai ô cam (6 và 9) là hai số Nam San đang luyện.</p>'+
+  '<button class="game" id="gm"><span class="mir"><span>6</span><span>6</span></span><span><b>Ai đứng đúng?</b><small>Một bạn viết đúng, một bạn bị quay ngược. Bé tìm bạn đúng nhé.</small></span></button></section>'+
+  '<section class="mom"><h2>Khi bé viết số bị ngược</h2><ul>'+
+  '<li>Bé 5–6 tuổi viết ngược số (6 quay lưng sai phía, 9 cây gậy bên trái) là chuyện rất thường gặp. Phần lớn các bé hết dần khi lên lớp 1, lớp 2.</li>'+
+  '<li>Cho bé <b>nói to hướng đi</b> khi viết: “đặt bút gần nhà, cong về phía cây, xuống dưới, cuộn về phía nhà”.</li>'+
+  '<li>Dán một hình nhỏ (cái cây) ở <b>mép trái</b> trang vở thật, để bé có mốc như trên màn hình.</li>'+
+  '<li>Viết bằng ngón tay lên lưng bé, lên khay cát hay khay bột, đoán xem là số mấy. Bé nhớ hướng nét bằng cả cơ thể.</li>'+
+  '<li>Mỗi ngày chỉ 1–2 số, viết ít mà đúng chiều tốt hơn viết nhiều mà sai chiều.</li>'+
+  '</ul></section></div>';
+  view.querySelectorAll('.dg').forEach(function(b){b.onclick=function(){go('so-'+b.dataset.n)}});
+  $('#gm').onclick=function(){go('dung-nguoc')};
+}
+
+/* ---------- vẽ bảng viết ---------- */
+function lines(ctx){
+  ctx.lineWidth=1;ctx.strokeStyle='#C9D7EE';
+  [16,130].forEach(function(y){ctx.beginPath();ctx.moveTo(4,y);ctx.lineTo(96,y);ctx.stroke()});
+  ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(4,72);ctx.lineTo(96,72);ctx.stroke();ctx.setLineDash([]);
+}
+function arrowAt(ctx,d,f,col){
+  var s=samplePath(d,40),i=Math.min(39,Math.round(f*40)),p=s.pts[i],q=s.pts[i+1],a=Math.atan2(q[1]-p[1],q[0]-p[0]);
+  ctx.save();ctx.translate(p[0],p[1]);ctx.rotate(a);ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(7,0);ctx.lineTo(-4,-5.5);ctx.lineTo(-4,5.5);ctx.closePath();ctx.fill();ctx.restore();
+}
+
+/* ---------- trang một số ---------- */
+var mode='xem';
+function digit(n){
+  var X=D[n];
+  view.innerHTML='<section class="panel"><h2>Số '+n+'</h2>'+
+  '<div class="seg" role="group" aria-label="Bước học"><button data-m="xem">① Xem cách viết</button><button data-m="to">② Tô từng nét</button><button data-m="tu">③ Tự viết</button></div>'+
+  '<p class="tip">'+X.tip+'</p>'+
+  '<div class="board"><div class="mark l"><i>🌳</i>cây</div><div id="padBox" style="display:contents"></div><div class="mark r"><i>🏠</i>nhà</div></div>'+
+  '<p class="msg" id="msg" aria-live="polite">&nbsp;</p>'+
+  '<div class="row" id="ctl"></div>'+
+  '<ol class="steps" id="steps"></ol></section>';
+  view.querySelectorAll('.seg button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.m===mode?'true':'false');b.onclick=function(){mode=b.dataset.m;digit(n)}});
+  ({xem:watch,to:trace,tu:free})[mode](n);
+}
+function stepList(n,cur,doneUpTo,clickable){
+  $('#steps').innerHTML=D[n].s.map(function(s,i){
+    var c=i===cur?'cur':(i<doneUpTo?'done':'');
+    var inner='<b>'+(i<doneUpTo&&i!==cur?'✓':i+1)+'</b><span>'+s[1]+'</span>';
+    return '<li class="'+c+'">'+(clickable?'<button data-k="'+i+'">'+inner+'</button>':inner)+'</li>';
+  }).join('');
+}
+function setMsg(t,cls){var m=$('#msg');m.textContent=t||' ';m.className='msg'+(cls?' '+cls:'')}
+
+/* ① xem cách viết: nét chạy từng bước, chấm bút đi theo */
+function watch(n){
+  var X=D[n],ns='http://www.w3.org/2000/svg';
+  $('#padBox').outerHTML='<svg class="pad" id="pad" viewBox="0 0 100 146" role="img" aria-label="Cách viết số '+n+'">'+
+    '<line x1="4" y1="16" x2="96" y2="16" stroke="#C9D7EE"/><line x1="4" y1="130" x2="96" y2="130" stroke="#C9D7EE"/><line x1="4" y1="72" x2="96" y2="72" stroke="#C9D7EE" stroke-dasharray="3 3"/>'+
+    X.s.map(function(s){return '<path d="'+s[0]+'" stroke="#E4EAF5" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'}).join('')+
+    X.s.map(function(s,i){return '<path class="st" data-k="'+i+'" d="'+s[0]+'" stroke="'+INK+'" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'}).join('')+
+    '<circle id="pen" r="6" fill="'+PEN+'" stroke="#fff" stroke-width="2" cx="'+samplePath(X.s[0][0],1).pts[0][0]+'" cy="'+samplePath(X.s[0][0],1).pts[0][1]+'"/></svg>';
+  $('#ctl').innerHTML='<button class="btn" id="play">▶ Xem cô viết</button><button class="btn light" id="goTo">Bé tô thử ›</button>';
+  stepList(n,-1,0,true);
+  var paths=[].slice.call(document.querySelectorAll('#pad .st')),pen=$('#pen'),timer=null,token=0;
+  paths.forEach(function(p){var L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L});
+  function showAll(){paths.forEach(function(p){p.style.strokeDashoffset=0})}
+  function animStep(k,cb,my){
+    var p=paths[k],L=p.getTotalLength(),t0=null,dur=RM?1:Math.max(1400,L*22);
+    stepList(n,k,k,true);setMsg('Bước '+(k+1));say(X.s[k][1]);
+    function f(ts){if(my!==token||!pen.isConnected)return;if(t0===null)t0=ts;var t=Math.min(1,(ts-t0)/dur);
+      p.style.strokeDashoffset=L*(1-t);var q=p.getPointAtLength(L*t);pen.setAttribute('cx',q.x);pen.setAttribute('cy',q.y);
+      if(t<1)requestAnimationFrame(f);else timer=setTimeout(function(){if(my===token&&pen.isConnected)cb&&cb()},RM?300:1700)}
+    requestAnimationFrame(f);
+  }
+  function playFrom(k,only){
+    var my=++token;clearTimeout(timer);
+    paths.forEach(function(p,i){var L=p.getTotalLength();p.style.strokeDashoffset=i<k?0:L});
+    (function run(i){if(i>=paths.length||(only&&i>k)){stepList(n,-1,paths.length,true);setMsg('Bé thấy chưa? Giờ bé tô thử nhé!','good');done[n]=done[n]||0;showAll();return}
+      animStep(i,function(){run(i+1)},my)})(k);
+  }
+  $('#play').onclick=function(){playFrom(0)};
+  $('#goTo').onclick=function(){mode='to';digit(n)};
+  $('#steps').addEventListener('click',function(e){var b=e.target.closest('button[data-k]');if(b)playFrom(+b.dataset.k,true)});
+  setTimeout(function(){if(document.body.contains(pen))playFrom(0)},400);
+}
+
+/* canvas dùng chung cho ② và ③ */
+function makePad(onUp){
+  $('#padBox').outerHTML='<canvas class="pad" id="pad" aria-label="Bảng viết"></canvas>';
+  var cv=$('#pad'),ctx=cv.getContext('2d'),dpr=window.devicePixelRatio||1,sc=1,strokes=[],cur=null,painter=function(){};
+  function size(){var r=cv.getBoundingClientRect();if(!r.width)return;cv.width=r.width*dpr;cv.height=r.height*dpr;sc=r.width/W;draw()}
+  function draw(){ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,cv.width,cv.height);ctx.save();ctx.scale(sc,sc);ctx.lineCap='round';ctx.lineJoin='round';
+    lines(ctx);painter(ctx);
+    ctx.strokeStyle=PEN;ctx.lineWidth=7;
+    strokes.forEach(function(st){ctx.beginPath();ctx.moveTo(st[0][0],st[0][1]);st.forEach(function(p){ctx.lineTo(p[0],p[1])});if(st.length===1)ctx.lineTo(st[0][0]+.1,st[0][1]);ctx.stroke()});
+    ctx.restore()}
+  function pos(e){var r=cv.getBoundingClientRect();return [(e.clientX-r.left)/sc,(e.clientY-r.top)/sc]}
+  cv.addEventListener('pointerdown',function(e){e.preventDefault();try{cv.setPointerCapture(e.pointerId)}catch(x){}cur=[pos(e)];strokes.push(cur);draw()});
+  cv.addEventListener('pointermove',function(e){if(!cur)return;cur.push(pos(e));draw()});
+  function up(){if(!cur)return;cur=null;onUp&&onUp()}
+  cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
+  requestAnimationFrame(size);if(window.ResizeObserver)new ResizeObserver(function(){if(document.body.contains(cv))size()}).observe(cv);
+  return {draw:draw,setPainter:function(f){painter=f;draw()},strokes:function(){return strokes},clear:function(){strokes=[];draw()},cv:cv};
+}
+
+/* ② tô từng nét: chỉ hiện nét của bước đang làm, kiểm tra cả chiều đi */
+function trace(n){
+  var X=D[n],k=0,rev=0,pad;
+  $('#ctl').innerHTML='<button class="btn light" id="again">Tô lại bước này</button><button class="btn light" id="restart">Làm lại từ đầu</button>';
+  function paint(ctx){
+    X.s.forEach(function(s,i){var p=new Path2D(s[0]);
+      if(i<k){ctx.strokeStyle=INK;ctx.lineWidth=8;ctx.stroke(p)}
+      else if(i>k){ctx.strokeStyle='#EEF2F9';ctx.lineWidth=10;ctx.stroke(p)}});
+    if(k<X.s.length){var p=new Path2D(X.s[k][0]),S=stepSamples(n,k).pts;
+      ctx.strokeStyle='#D8E4F6';ctx.lineWidth=18;ctx.stroke(p);
+      ctx.setLineDash([2.5,4]);ctx.strokeStyle='#7F95BD';ctx.lineWidth=1.6;ctx.stroke(p);ctx.setLineDash([]);
+      arrowAt(ctx,X.s[k][0],.42,'#7F95BD');
+      var e=S[S.length-1];ctx.strokeStyle='#E04A5F';ctx.lineWidth=2;ctx.beginPath();ctx.arc(e[0],e[1],5.5,0,7);ctx.stroke();
+      ctx.fillStyle='#22A866';ctx.beginPath();ctx.arc(S[0][0],S[0][1],6.5,0,7);ctx.fill();}
+  }
+  function startStep(){pad.clear();pad.setPainter(paint);stepList(n,k,k,false);setMsg('Bước '+(k+1)+': đặt bút ở chấm xanh');say(X.s[k][1])}
+  pad=makePad(function(){
+    var P=[].concat.apply([],pad.strokes()),r=judge(stepSamples(n,k).pts,P);
+    if(r.short)return;
+    if(r.rev&&r.cov>.25){rev++;pad.clear();setMsg('Ồ, bé đi ngược chiều rồi. Bắt đầu ở chấm xanh, đi theo mũi tên nhé.','bad');say('Ồ, bé đi ngược chiều rồi. Mình bắt đầu ở chấm xanh nhé.');shakeEl(pad.cv);return}
+    if(r.near<.6){pad.clear();setMsg('Bé đi theo đường chấm nhé.','bad');say('Bé đi theo đường chấm nhé.');shakeEl(pad.cv);return}
+    if(r.cov>=.8){
+      k++;
+      if(k>=X.s.length){pad.clear();pad.setPainter(paint);stepList(n,-1,k,false);setMsg('Xong số '+n+'!','good');done[n]=1;save('nvs-done',done);
+        win('Bé tô đủ '+X.s.length+' bước của số '+n+(rev?'. Lần sau nhớ bắt đầu ở chấm xanh nhé.':', đúng chiều hết!'),function(){mode='tu';digit(n)},'Bé tự viết ›');return}
+      setMsg('Đúng rồi! Sang bước '+(k+1)+'.','good');setTimeout(startStep,700);return}
+    setMsg('Bé tô tiếp tới vòng đỏ cuối đường nhé.');
+  });
+  $('#again').onclick=function(){startStep()};
+  $('#restart').onclick=function(){k=0;rev=0;startStep()};
+  startStep();
+}
+
+/* ③ tự viết: không có nét mẫu, chỉ có dòng kẻ; kiểm tra có giống mẫu không và có bị quay ngược không */
+function free(n){
+  var X=D[n],ghost=false,pad;
+  $('#ctl').innerHTML='<button class="btn light" id="clr">Xóa</button><button class="btn light" id="gh">Hiện mẫu mờ</button><button class="btn" id="chk">Bé viết xong ★</button>';
+  stepList(n,-1,0,false);
+  setMsg('Bé tự viết số '+n+' giữa hai dòng kẻ.');say('Bé tự viết số '+X.n+' nhé.');
+  function paint(ctx){if(!ghost)return;ctx.strokeStyle='#E4EAF5';ctx.lineWidth=10;X.s.forEach(function(s){ctx.stroke(new Path2D(s[0]))})}
+  pad=makePad(null);pad.setPainter(paint);
+  $('#clr').onclick=function(){pad.clear();setMsg(' ')};
+  $('#gh').onclick=function(){ghost=!ghost;this.textContent=ghost?'Ẩn mẫu':'Hiện mẫu mờ';pad.draw()};
+  $('#chk').onclick=function(){
+    var P=[].concat.apply([],pad.strokes());if(P.length<6){setMsg('Bé viết số '+n+' vào bảng trước nhé.');return}
+    var all=[],mir=[];X.s.forEach(function(s,i){stepSamples(n,i).pts.forEach(function(p){all.push(p);mir.push([W-p[0],p[1]])})});
+    function cover(S,r){var c=0;S.forEach(function(s){if(P.some(function(p){var dx=p[0]-s[0],dy=p[1]-s[1];return dx*dx+dy*dy<r*r}))c++});return c/S.length}
+    var c=cover(all,16),c2=cover(all,9),m2=cover(mir,9);
+    var mirrorAsym=[2,3,4,5,6,7,9,1].indexOf(n)>=0;
+    if(mirrorAsym&&m2>.45&&m2>c2+.12){ghost=true;$('#gh').textContent='Ẩn mẫu';pad.draw();
+      setMsg('Hình như số '+n+' bị quay ngược rồi! '+X.tip,'bad');say('Hình như số '+X.n+' bị quay ngược rồi. '+X.tip);shakeEl(pad.cv);return}
+    if(c>=.7){done[n]=2;save('nvs-done',done);win('Bé tự viết số '+n+' đúng rồi!',function(){pad.clear();setMsg('Bé viết thêm một số '+n+' nữa nhé.')},'Viết thêm');return}
+    ghost=true;$('#gh').textContent='Ẩn mẫu';pad.draw();setMsg('Bé so với mẫu mờ, rồi viết lại nhé.','bad');say('Bé so với mẫu, rồi viết lại nhé.');
+  };
+}
+
+/* ---------- Ai đứng đúng? ---------- */
+function mirrorGame(){
+  var pool=shuffle([6,9,6,9,2,3,5,7]),i=0,miss=0;
+  function round(){
+    var n=pool[i],left=Math.random()<.5;
+    view.innerHTML='<section class="panel"><h2>Ai đứng đúng?</h2><p class="hint">Một bạn viết đúng, một bạn bị quay ngược. Bé chạm vào bạn viết đúng.</p>'+
+      '<div class="pair"><button class="card'+(left?'':' m')+'" data-ok="'+(left?1:0)+'"><span>'+n+'</span></button><button class="card'+(left?' m':'')+'" data-ok="'+(left?0:1)+'"><span>'+n+'</span></button></div>'+
+      '<p class="prog">Câu '+(i+1)+' / '+pool.length+'</p><p class="tip">'+D[n].tip+'</p></section>';
+    say('Bạn số '+D[n].n+' nào đứng đúng?');
+    view.querySelectorAll('.card').forEach(function(b){b.onclick=function(){
+      if(b.dataset.ok==='1'){b.classList.add('ok');say('Đúng rồi!');i++;setTimeout(function(){i<pool.length?round():win('Bé tìm đúng '+(pool.length)+' bạn'+(miss?', sai '+miss+' lần':' mà không sai lần nào')+'.',mirrorGame)},700)}
+      else{miss++;b.classList.add('no');shakeEl(b);say('Bạn này bị quay ngược rồi. '+D[n].tip);setTimeout(function(){b.classList.remove('no')},900)}
+    }});
+  }
+  round();
+}
+
+/* ---------- chuyển trang ---------- */
+function go(h){if(location.hash.slice(1)===h)render();else location.hash=h}
+function render(){
+  var h=location.hash.slice(1),m=/^so-(\d)$/.exec(h);
+  if(window.speechSynthesis)try{speechSynthesis.cancel()}catch(e){}
+  var inner=!!m||h==='dung-nguoc';backB.hidden=!inner;allA.hidden=inner;
+  if(m){mode='xem';digit(+m[1])}else if(h==='dung-nguoc')mirrorGame();else home();
+  window.scrollTo(0,0);
+}
+backB.onclick=function(){go('')};
+window.addEventListener('hashchange',render);
+showStars();showSnd();render();
+})();
+</script>
+</body>
+</html>

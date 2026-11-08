@@ -46,5 +46,12 @@ thẻ kỹ năng Số đếm / Chữ cái / Tô nét (bài có thì là link xan
   localStorage `ncc-stars`, `ncc-snd`, `ncc-grp`, `ncc-done`. Link `chu-cai/#lam-quen|nghe-chon|tranh|tim-chu|danh-van|bai-b`.
   Ghi chú: công cụ ghi file có thể đổi `\u0300`… thành ký tự dấu ghép thật trong JS — vẫn chạy đúng.
 
+- `viet-so/` Tập viết số 0–9 (8/11: Nam San viết 6, 9 ngược — móc quay sai phía). Bảng viết có **🌳 cây bên trái, 🏠 nhà bên phải** làm mốc hướng,
+  3 dòng kẻ (khung 100 × 146: trên y 16, giữa 72, dưới 130). Mỗi số = các bước trong `D` ([đoạn nét SVG, lời hướng dẫn “về phía cây / nhà”], `tip`).
+  ① Xem cách viết (nét chạy từng bước, chấm bút đi theo, chạm bước để xem lại) · ② Tô từng nét (chỉ hiện nét của bước đang làm: chấm xanh đặt bút, mũi tên, vòng đỏ cuối;
+  `judge` kiểm tra đi theo đường, phủ ≥ 80 % và **chiều đi** — đi ngược thì xóa, nhắc “bắt đầu ở chấm xanh”) · ③ Tự viết (không có mẫu; so với mẫu và với **mẫu lật gương**,
+  giống bản lật hơn thì báo “số bị quay ngược” + `tip`). Trò **Ai đứng đúng?** `#dung-nguoc` (chọn số đúng giữa số thật và số lật gương, 8 câu, nhiều 6 và 9).
+  localStorage `nvs-stars`, `nvs-snd`, `nvs-done`. Link `viet-so/#so-6`. Thẻ ở mục Tô nét trang chủ; `so-6-9/#tap-viet` có nút sang đây.
+
 ## Dự định
 Vần có âm cuối (an, am…) · chữ ghép (ch, nh, ng, gh, ngh…) · số 1–20 · chữ / số dễ nhầm (b–d, p–q, 2–5) · phiếu tô in A4.

@@ -410,7 +410,8 @@ function trace(){
     '<p class="hint">'+(n===6?'Bắt đầu ở chấm xanh, kéo xuống rồi cuộn tròn ở DƯỚI.':'Bắt đầu ở chấm xanh, vẽ vòng tròn ở TRÊN rồi kéo dây xuống.')+'</p>'+
     '<canvas class="cv" id="cv" aria-label="Bảng tô số"></canvas>'+
     '<p class="prog" id="tmsg">&nbsp;</p>'+
-    '<div class="row"><button class="btn light" id="clr">Xóa</button><button class="btn" id="chk">Bé tô xong ★</button></div></section>';
+    '<div class="row"><button class="btn light" id="clr">Xóa</button><button class="btn" id="chk">Bé tô xong ★</button></div>'+
+    '<a class="btn light" style="text-decoration:none" href="../viet-so/#so-'+n+'">Học viết số '+n+' từng nét ›</a></section>';
   view.querySelectorAll('.seg button').forEach(function(b){b.onclick=function(){traceN=+b.dataset.n;trace()}});
   say(n===6?'Tập viết số sáu. Kéo xuống, rồi cuộn tròn ở dưới.':'Tập viết số chín. Vẽ vòng tròn ở trên, rồi kéo dây xuống.');
   var cv=$('#cv'),ctx=cv.getContext('2d'),dpr=window.devicePixelRatio||1,W,H,sc;
