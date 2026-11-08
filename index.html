@@ -45,6 +45,7 @@ a:focus-visible,button:focus-visible{outline:4px solid var(--blue);outline-offse
 /* mở đầu */
 .hero{background:var(--card);border-radius:30px;padding:26px 22px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:18px;align-items:center;box-shadow:0 4px 0 var(--line)}
 @media (max-width:640px){.hero{grid-template-columns:minmax(0,1fr);text-align:center}.hero .cta{justify-content:center}}
+.hero .eyebrow{display:block;margin-bottom:6px}
 .hero h1{font-size:clamp(30px,6.4vw,46px);color:var(--purple)}
 .hero h1 em{font-style:normal;color:var(--orange)}
 .hero p{color:var(--soft);font-weight:700;margin-top:10px;max-width:46ch}
@@ -55,13 +56,7 @@ a:focus-visible,button:focus-visible{outline:4px solid var(--blue);outline-offse
 .pals{display:flex;justify-content:center;align-items:flex-end;gap:10px}
 .pals svg{width:clamp(84px,22vw,124px);height:auto}
 
-/* cấp học */
-.levels{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 8px;scrollbar-width:thin}
-.lv{flex:none;border-radius:18px;padding:10px 14px;min-width:104px;background:var(--card);border:2px solid var(--line);display:flex;flex-direction:column;gap:2px}
-.lv b{font-family:var(--f-logo);font-size:19px;line-height:1.1}
-.lv span{font-size:12.5px;font-weight:800;color:var(--soft)}
-.lv.on{border-color:var(--orange);background:var(--orange-bg)}
-.lv.on span{color:#9A3F0C}
+/* tiêu đề mục */
 .sec-h{display:flex;flex-direction:column;gap:4px}
 .sec-h h2{font-size:clamp(24px,5vw,30px)}
 .sec-h p{color:var(--soft);font-weight:700}
@@ -92,6 +87,14 @@ a.lesson:active{transform:translateY(2px)}
 .mom h2{font-size:22px;margin-bottom:8px}
 .mom ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
 
+/* các lớp sau: để ở chân trang cho mẹ xem trước, đóng sẵn */
+.later{border:2px dashed var(--line);border-radius:20px;padding:12px 16px;color:var(--soft);font-size:15px;font-weight:700}
+.later summary{cursor:pointer;font-weight:800;color:var(--ink)}
+.later summary span{font-size:12.5px;color:var(--soft);margin-left:4px}
+.later p{margin-top:8px}
+.later .lvs{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.later .lvs span{border:2px solid var(--line);border-radius:12px;padding:4px 10px;background:var(--card);font-size:14px}
+
 footer{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;color:var(--soft);font-size:14px;font-weight:700;padding-top:6px}
 footer img{width:72px;height:72px}
 footer .sl{font-family:var(--f-logo);font-size:19px;color:var(--purple);font-weight:800}
@@ -108,6 +111,7 @@ footer .sl{font-family:var(--f-logo);font-size:19px;color:var(--purple);font-wei
 
   <section class="hero">
     <div>
+      <span class="eyebrow">Tiền tiểu học · bé 4–6 tuổi</span>
       <h1>Mẹ cùng con học ở nhà, <em>mỗi ngày 10 phút</em></h1>
       <p>Trò chơi chạm trên điện thoại cho bé chuẩn bị vào lớp 1: nhận mặt số, đếm, làm quen chữ cái. Học cùng bé Nam San, Bạn Sáu và Bạn Chín.</p>
       <div class="cta">
@@ -122,17 +126,7 @@ footer .sl{font-family:var(--f-logo);font-size:19px;color:var(--purple);font-wei
     </div>
   </section>
 
-  <nav class="levels" aria-label="Các cấp học">
-    <div class="lv on"><b>Vào lớp 1</b><span>Đang học</span></div>
-    <div class="lv"><b>Lớp 1</b><span>Sắp có</span></div>
-    <div class="lv"><b>Lớp 2</b><span>Sắp có</span></div>
-    <div class="lv"><b>Lớp 3</b><span>Sắp có</span></div>
-    <div class="lv"><b>Lớp 4</b><span>Sắp có</span></div>
-    <div class="lv"><b>Lớp 5</b><span>Sắp có</span></div>
-  </nav>
-
   <section class="sec-h" id="vao-lop-1">
-    <span class="eyebrow">Bé 4–6 tuổi</span>
     <h2>Chuẩn bị vào lớp 1</h2>
     <p>Làm quen số và chữ trước khi đi học. Chưa cần viết chữ, chỉ cần nhận ra, đọc to và tô nét.</p>
   </section>
@@ -173,6 +167,12 @@ footer .sl{font-family:var(--f-logo);font-size:19px;color:var(--purple);font-wei
       <li>Khen bé khi bé cố gắng, không chỉ khi bé làm đúng.</li>
     </ul>
   </section>
+
+  <details class="later">
+    <summary>Lên tiểu học: Lớp 1 – Lớp 5 <span>sắp có</span></summary>
+    <p>Khi bé vào lớp 1, Nari Tiểu Học sẽ có thêm bài theo từng lớp. Mẹ xem trước để biết, bây giờ bé chỉ cần học phần chuẩn bị ở trên.</p>
+    <div class="lvs"><span>Lớp 1</span><span>Lớp 2</span><span>Lớp 3</span><span>Lớp 4</span><span>Lớp 5</span></div>
+  </details>
 
   <footer>
     <img src="logo/nari-tieu-hoc-icon.svg" alt="">

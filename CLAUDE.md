@@ -27,8 +27,8 @@ Dự án tách khỏi Nari TOPIK (kho `narikoreanbox`, `nari-lop`), chỉ chung 
 - Chưa làm: logo có chữ đổi thành nét vẽ (như `tools/logo/mklogo.py` của narikoreanbox), bản đơn giản cho cỡ rất nhỏ.
 
 ## Trang chủ (`index.html`)
-Đầu trang logo ngang · khối mở đầu (Bạn Sáu, Bạn Chín, nút vào bài) · thanh cấp học Vào lớp 1 → Lớp 5 (chỉ “Vào lớp 1” đang học) · mục Chuẩn bị vào lớp 1 chia
-thẻ kỹ năng Số đếm / Chữ cái / Tô nét (bài có thì là link xanh “Chơi ›”, chưa có thì “Sắp có”) · Học như thế nào (3 bước) · Gợi ý cho mẹ · chân trang.
+Màn hình chính chỉ dành cho **tiền tiểu học (bé 4–6 tuổi)** (mẹ dặn 8/11). Đầu trang logo ngang · khối mở đầu (dòng “Tiền tiểu học · bé 4–6 tuổi”, Bạn Sáu, Bạn Chín, nút vào bài) · mục Chuẩn bị vào lớp 1 chia
+thẻ kỹ năng Số đếm / Chữ cái / Tô nét (bài có thì là link xanh “Chơi ›”, chưa có thì “Sắp có”) · Học như thế nào (3 bước) · Gợi ý cho mẹ · ô gập “Lên tiểu học: Lớp 1 – Lớp 5 · sắp có” (`details.later`, đóng sẵn, chỉ để mẹ xem trước) · chân trang. Khi có bài lớp 1 thì mới đưa các lớp lên lại.
 
 ## Bài đã có
 - `so-6-9/` Số 6 và số 9 (bé Nam San chưa nhớ 6, 9 khi đếm ngược 12 → 1): Làm quen (Bạn Sáu tròn dưới / Bạn Chín tròn trên, cách viết, chấm 5+1 / 5+4,
