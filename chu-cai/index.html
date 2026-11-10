@@ -233,6 +233,7 @@ details.mom[open]>summary{margin-bottom:8px}
   <p class="note" id="voiceNote" hidden>Máy này chưa có giọng đọc tiếng Việt, mẹ đọc to giúp bé nhé.</p>
 </div>
 
+<script src="../giong.js"></script>
 <script>
 (function(){
 /* ---------- 29 chữ cái: [chữ, âm đọc như sách Tiếng Việt 1, từ có âm đó, tranh, ghi chú cho mẹ] ---------- */
@@ -312,27 +313,9 @@ function addStar(){stars++;try{localStorage.setItem('ncc-stars',stars)}catch(e){
 var sndB=$('#snd');
 function showSnd(){sndB.setAttribute('aria-pressed',sound?'true':'false');sndB.textContent=sound?'🔊':'🔇'}
 sndB.onclick=function(){sound=!sound;try{localStorage.setItem('ncc-snd',sound?'1':'0')}catch(e){}showSnd();if(!sound&&window.speechSynthesis)speechSynthesis.cancel();else say('Đọc to')};
-var viVoice=null, voiceChecked=false;
-function pickVoice(){
-  if(!window.speechSynthesis)return;
-  var vs=speechSynthesis.getVoices()||[];
-  if(!vs.length)return;
-  voiceChecked=true;
-  viVoice=vs.filter(function(v){return /^vi/i.test(v.lang)})[0]||null;
-  $('#voiceNote').hidden=!!viVoice;
-}
-if(window.speechSynthesis){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
-else $('#voiceNote').hidden=false;
 function say(t,done){
-  if(!sound||!window.speechSynthesis){if(done)setTimeout(done,700);return}
-  if(!voiceChecked)pickVoice();
-  if(voiceChecked&&!viVoice){if(done)setTimeout(done,700);return}
-  try{
-    speechSynthesis.cancel();
-    var u=new SpeechSynthesisUtterance(t);u.lang='vi-VN';if(viVoice)u.voice=viVoice;u.rate=.8;u.pitch=1.15;
-    if(done){var fired=false;var f=function(){if(!fired){fired=true;done()}};u.onend=f;setTimeout(f,3000)}
-    speechSynthesis.speak(u);
-  }catch(e){if(done)setTimeout(done,700)}
+  if(!sound){if(done)setTimeout(done,700);return}
+  NTH.say(t,{rate:.8,pitch:1.15,done:done});
 }
 /* đọc âm hai lần rồi đọc từ: “bờ. bờ. bò” */
 function sayLetter(ch){var o=L[ch];say(o.snd+'. '+o.snd+'. '+o.word+'.')}
@@ -779,7 +762,7 @@ function lesson(ch,quiet){
   }else if(st==='tai'){
     var cards=view.querySelectorAll('.words .pic');
     var readAll=function(){var i=0;(function step(){cards.forEach(function(c){c.classList.remove('say')});if(i>=cards.length)return;
-      var c=cards[i++];c.classList.add('say');if(sound&&viVoice)say(c.dataset.w,function(){setTimeout(step,250)});else setTimeout(step,900)})()};
+      var c=cards[i++];c.classList.add('say');if(sound)say(c.dataset.w,function(){setTimeout(step,250)});else setTimeout(step,900)})()};
     say('Tiếng nào có âm '+o.snd+'?',readAll);
     $('#tAgain').onclick=readAll;
     var locked=false;
@@ -803,7 +786,7 @@ function lesson(ch,quiet){
     btns.forEach(function(x){x.onclick=function(){sayWord(ws2[+x.dataset.i].replace(/[.,!?]/g,''))}});
     var readSent=function(){var i=0;(function step(){btns.forEach(function(x){x.classList.remove('say')});
       if(i>=btns.length){say(b.cau);return}var x=btns[i++];x.classList.add('say');
-      if(sound&&viVoice)say(ws2[i-1].replace(/[.,!?]/g,''),function(){setTimeout(step,200)});else setTimeout(step,800)})()};
+      if(sound)say(ws2[i-1].replace(/[.,!?]/g,''),function(){setTimeout(step,200)});else setTimeout(step,800)})()};
     $('#cRead').onclick=readSent;
     if(!quiet)say('Bé đọc câu nhé. Cô đọc mẫu.',readSent);
   }

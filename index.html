@@ -221,17 +221,15 @@ footer .sl{font-family:var(--f-logo);font-size:19px;color:var(--purple);font-wei
     <span>Nari Tiểu Học · trang học miễn phí, mẹ cùng con học ở nhà</span>
   </footer>
 </div>
+<script src="giong.js"></script>
 <script>
 /* Trang chính cho bé: con đường 40 bài (29 chữ theo thứ tự sách + 10 số + ôn 6–9), hộp quà bạn thú mỗi 5 bài,
    nút ▶ vào bài đang học. Chạm ô / bài → cô đọc tên (giọng vi-VN của máy, nếu có) rồi chuyển trang. */
 (function(){
   var V=null;function pick(){var vs=(window.speechSynthesis&&speechSynthesis.getVoices())||[];V=vs.filter(function(v){return /^vi/i.test(v.lang)})[0]||null}
   if(window.speechSynthesis){pick();speechSynthesis.onvoiceschanged=pick}
-  function say(t,done){var ok=false;try{ok=!!(window.speechSynthesis&&V)}catch(e){}
-    if(!ok){if(done)setTimeout(done,250);return}
-    var fired=false,fin=function(){if(!fired){fired=true;if(done)done()}};
-    try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.voice=V;u.lang=V.lang;u.rate=.9;u.onend=fin;u.onerror=fin;speechSynthesis.speak(u)}catch(e){fin()}
-    setTimeout(fin,2200)}
+  function say(t,done){var fired=false,fin=function(){if(!fired){fired=true;if(done)done()}};
+    if(!window.NTH){fin();return}NTH.say(t,{rate:.9,done:fin});setTimeout(fin,2200)}
   function load(k,d){try{var v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}}
   function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
   addEventListener('pageshow',function(){[].forEach.call(document.querySelectorAll('.go'),function(t){t.classList.remove('go')})});

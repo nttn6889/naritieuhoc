@@ -186,6 +186,7 @@ p{margin:0}
   <p class="note" id="voiceNote" hidden>Máy này chưa có giọng đọc tiếng Việt, mẹ đọc to giúp bé nhé.</p>
 </div>
 
+<script src="../giong.js"></script>
 <script>
 (function(){
 var P6='M72 16 C50 20 27 44 23 86 C20 116 34 128 51 128 C69 128 80 115 80 98 C80 80 67 70 52 70 C38 70 27 79 23 92';
@@ -205,27 +206,9 @@ function addStar(){stars++;try{localStorage.setItem('ns69-stars',stars)}catch(e)
 var sndB=$('#snd');
 function showSnd(){sndB.setAttribute('aria-pressed',sound?'true':'false');sndB.textContent=sound?'🔊':'🔇'}
 sndB.onclick=function(){sound=!sound;try{localStorage.setItem('ns69-snd',sound?'1':'0')}catch(e){}showSnd();if(!sound&&window.speechSynthesis)speechSynthesis.cancel();else say('Đọc to')};
-var viVoice=null, voiceChecked=false;
-function pickVoice(){
-  if(!window.speechSynthesis)return;
-  var vs=speechSynthesis.getVoices()||[];
-  if(!vs.length)return;
-  voiceChecked=true;
-  viVoice=vs.filter(function(v){return /^vi/i.test(v.lang)})[0]||null;
-  $('#voiceNote').hidden=!!viVoice;
-}
-if(window.speechSynthesis){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
-else $('#voiceNote').hidden=false;
 function say(t,done){
-  if(!sound||!window.speechSynthesis){if(done)setTimeout(done,700);return}
-  if(!voiceChecked)pickVoice();
-  if(voiceChecked&&!viVoice){if(done)setTimeout(done,700);return}
-  try{
-    speechSynthesis.cancel();
-    var u=new SpeechSynthesisUtterance(t);u.lang='vi-VN';if(viVoice)u.voice=viVoice;u.rate=.85;u.pitch=1.15;
-    if(done){var fired=false;var f=function(){if(!fired){fired=true;done()}};u.onend=f;setTimeout(f,2500)}
-    speechSynthesis.speak(u);
-  }catch(e){if(done)setTimeout(done,700)}
+  if(!sound){if(done)setTimeout(done,700);return}
+  NTH.say(t,{rate:.85,pitch:1.15,done:done});
 }
 
 /* ---------- nhân vật Bạn Sáu / Bạn Chín ---------- */
@@ -418,7 +401,7 @@ function seq(){
       if(i>=spans.length){done2&&done2();return}
       var s=spans[i];if(s.classList.contains('gap')){i++;return step()}
       s.classList.add('say');var n=+s.dataset.n;i++;
-      if(sound&&viVoice)say(NAME[n],function(){setTimeout(step,120)});else setTimeout(step,600);
+      if(sound)say(NAME[n],function(){setTimeout(step,120)});else setTimeout(step,600);
     })();
   }
   $('#readAll').onclick=function(){readAll()};

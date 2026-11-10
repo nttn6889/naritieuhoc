@@ -138,6 +138,7 @@ details.mom[open]>summary{margin-bottom:8px}
 </div>
 <svg id="measure" width="0" height="0" style="position:absolute;visibility:hidden" aria-hidden="true"></svg>
 
+<script src="../giong.js"></script>
 <script>
 (function(){
 /* Mỗi số: các bước, mỗi bước một đoạn nét (khung 100 × 146; dòng trên y 16, dòng giữa 72, dòng dưới 130).
@@ -207,13 +208,8 @@ function showSnd(){sndB.setAttribute('aria-pressed',sound?'true':'false');sndB.t
 sndB.onclick=function(){sound=!sound;save('nvs-snd',sound);showSnd();if(!sound&&window.speechSynthesis)speechSynthesis.cancel();else say('Đọc to')};
 
 /* ---------- giọng đọc ---------- */
-var viVoice=null,voiceChecked=false;
-function pickVoice(){if(!window.speechSynthesis)return;var vs=speechSynthesis.getVoices()||[];if(!vs.length)return;voiceChecked=true;
-  viVoice=vs.filter(function(v){return /^vi/i.test(v.lang)})[0]||null;$('#voiceNote').hidden=!!viVoice}
-if(window.speechSynthesis){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}else $('#voiceNote').hidden=false;
 function say(t){
-  if(!sound||!window.speechSynthesis)return;if(!voiceChecked)pickVoice();if(voiceChecked&&!viVoice)return;
-  try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='vi-VN';if(viVoice)u.voice=viVoice;u.rate=.85;u.pitch=1.1;speechSynthesis.speak(u)}catch(e){}
+  if(!sound)return;NTH.say(t,{rate:.85,pitch:1.1});
 }
 
 /* ---------- đo nét (điểm mẫu dọc theo từng bước) ---------- */

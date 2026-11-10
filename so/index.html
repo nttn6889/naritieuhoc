@@ -125,6 +125,7 @@ details.mom ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap
   <p class="note" id="voiceNote" hidden>Máy này chưa có giọng đọc tiếng Việt, mẹ đọc to giúp bé nhé.</p>
 </div>
 
+<script src="../giong.js"></script>
 <script>
 (function(){
 var $=function(s,r){return (r||document).querySelector(s)};
@@ -137,13 +138,8 @@ function addStar(){stars++;save('nso-stars',stars);showStars()}
 var sndB=$('#snd');
 function showSnd(){sndB.setAttribute('aria-pressed',sound?'true':'false');sndB.textContent=sound?'🔊':'🔇'}
 sndB.onclick=function(){sound=!sound;save('nso-snd',sound);showSnd();if(!sound&&window.speechSynthesis)speechSynthesis.cancel();else say('Đọc to')};
-var viVoice=null,voiceChecked=false;
-function pickVoice(){if(!window.speechSynthesis)return;var vs=speechSynthesis.getVoices()||[];if(!vs.length)return;voiceChecked=true;
-  viVoice=vs.filter(function(v){return /^vi/i.test(v.lang)})[0]||null;$('#voiceNote').hidden=!!viVoice}
-if(window.speechSynthesis){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}else $('#voiceNote').hidden=false;
 function say(t){
-  if(!sound||!window.speechSynthesis)return;if(!voiceChecked)pickVoice();if(voiceChecked&&!viVoice)return;
-  try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='vi-VN';if(viVoice)u.voice=viVoice;u.rate=.85;u.pitch=1.1;speechSynthesis.speak(u)}catch(e){}
+  if(!sound)return;NTH.say(t,{rate:.85,pitch:1.1});
 }
 function rnd(n){return Math.floor(Math.random()*n)}
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=rnd(i+1),t=a[i];a[i]=a[j];a[j]=t}return a}
