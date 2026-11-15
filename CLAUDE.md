@@ -14,7 +14,10 @@ Dự án tách khỏi Nari TOPIK (kho `narikoreanbox`, `nari-lop`), chỉ chung 
   (bỏ thẻ “Sắp có” tương ứng), thêm ô ở trang chủ nếu cần, và có nút 🏠 về `../`.
 - Giọng đọc: **`giong.js` ở gốc** (gắn `<script src="../giong.js">` trước script của trang; hàm `say` của trang gọi `NTH.say(câu, {rate, pitch, done})`).
   Máy có giọng `vi` → `speechSynthesis`; máy không có giọng Việt (10/11: máy Samsung của mẹ cài app không nghe tiếng, iPhone thì được) hoặc 1,5 giây chưa đọc → giọng dự phòng
-  `translate.google.com/translate_tts` (tl=vi) bằng `<audio>`; cả hai hỏng (mất mạng) mới hiện `#voiceNote` “mẹ đọc to giúp bé nhé”. Trang mới cũng gắn `giong.js`. Sau này có thể thay bằng file mp3 mẹ tự thu.
+  `translate.google.com/translate_tts` (tl=vi) bằng `<audio>`; cả hai hỏng (mất mạng) mới hiện `#voiceNote` “mẹ đọc to giúp bé nhé”.
+  15/11: Samsung vẫn không nghe → Google không trả tiếng khi có Referer, nên mọi trang có `<meta name="referrer" content="no-referrer">` (giong.js cũng tự gắn);
+  nguồn `translate.google.com` (tw-ob) hỏng thì thử `translate.googleapis.com` (gtx); lần chạm đầu “mở khóa” `<audio>`; máy đã phải dùng giọng mạng thì nhớ `nth-vweb`
+  để lần sau đọc ngay. Mẹ chọn tay ở `me/#giong-doc` (Tự chọn / Giọng trên mạng / Giọng của máy + Thử nghe), lưu `nth-voice`. Trang mới cũng gắn `giong.js`. Sau này có thể thay bằng file mp3 mẹ tự thu.
 - Màu: cam `#F07A35` / xanh `#2E7BE0` trên nền `#EEF5FF`. Trong trò chơi phân biệt, các số cùng một màu mực để bé nhìn hình dáng chứ không nhìn màu.
 - Sao thưởng, cài đặt lưu localStorage (`ns69-stars`, `ns69-snd`); bọc try/catch.
 - Kiểm tra bằng Playwright khung 390px trước khi push.

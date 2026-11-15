@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="referrer" content="no-referrer">
 <title>Góc của mẹ · Nari Tiểu Học</title>
 <meta name="description" content="Nari Tiểu Học: trang học miễn phí cho bé, mẹ cùng con học ở nhà. Chuẩn bị vào lớp 1: chữ cái, số đếm, trò chơi chạm trên điện thoại.">
 <link rel="icon" href="../logo/nari-tieu-hoc-icon.svg" type="image/svg+xml">
@@ -121,6 +122,15 @@ a.lesson:active{transform:translateY(2px)}
 footer{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;color:var(--soft);font-size:14px;font-weight:700;padding-top:6px}
 footer img{width:72px;height:72px}
 footer .sl{font-family:var(--f-logo);font-size:19px;color:var(--purple);font-weight:800}
+.voice{background:var(--blue-bg,#E3EEFF);border-radius:24px;padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+.voice h2{font-size:22px;margin:0}
+.voice p{margin:0}
+.voice .opts{display:flex;flex-wrap:wrap;gap:8px}
+.voice .opts button{font:inherit;font-weight:800;font-size:16px;border:2px solid #2E7BE0;background:#fff;color:#2E7BE0;border-radius:999px;padding:10px 16px;cursor:pointer;min-height:48px}
+.voice .opts button[aria-pressed="true"]{background:#2E7BE0;color:#fff}
+.voice .try{font:inherit;font-weight:800;font-size:18px;border:0;background:#F07A35;color:#fff;border-radius:999px;padding:12px 20px;cursor:pointer;align-self:flex-start;min-height:52px}
+.voice .note{color:#C0392B;font-weight:800}
+.voice small{color:var(--soft,#667)}
 </style>
 </head>
 <body>
@@ -182,6 +192,19 @@ footer .sl{font-family:var(--f-logo);font-size:19px;color:var(--purple);font-wei
     </ul>
   </section>
 
+  <section class="voice" id="giong-doc">
+    <h2>🔊 Máy không nghe tiếng?</h2>
+    <p>Trang tự chọn giọng: máy có giọng tiếng Việt (như iPhone) thì đọc bằng giọng của máy, máy không có (nhiều máy Samsung) thì dùng giọng trên mạng. Nếu bé vẫn không nghe tiếng, mẹ chọn <b>Giọng trên mạng</b> rồi bấm <b>Thử nghe</b>. Nhớ bật loa và tăng âm lượng (âm lượng nhạc / media).</p>
+    <div class="opts" role="group" aria-label="Chọn giọng đọc">
+      <button type="button" data-v="auto">Tự chọn</button>
+      <button type="button" data-v="web">Giọng trên mạng</button>
+      <button type="button" data-v="may">Giọng của máy</button>
+    </div>
+    <button type="button" class="try" id="vTry">▶ Thử nghe</button>
+    <small id="vInfo"></small>
+    <p class="note" id="voiceNote" hidden>Chưa phát được tiếng. Mẹ kiểm tra mạng, âm lượng, rồi thử giọng khác nhé.</p>
+  </section>
+
   <details class="later">
     <summary>Lên tiểu học: Lớp 1 – Lớp 5 <span>sắp có</span></summary>
     <p>Khi bé vào lớp 1, Nari Tiểu Học sẽ có thêm bài theo từng lớp. Mẹ xem trước để biết, bây giờ bé chỉ cần học phần chuẩn bị ở trên.</p>
@@ -194,6 +217,20 @@ footer .sl{font-family:var(--f-logo);font-size:19px;color:var(--purple);font-wei
     <span>Nari Tiểu Học · trang học miễn phí, mẹ cùng con học ở nhà</span>
   </footer>
 </div>
+<script src="../giong.js"></script>
+<script>
+(function(){
+  var bs=[].slice.call(document.querySelectorAll('.voice [data-v]')),info=document.getElementById('vInfo');
+  function show(){
+    var m=NTH.mode(),i=NTH.info();
+    bs.forEach(function(b){b.setAttribute('aria-pressed',b.dataset.v===m?'true':'false')});
+    info.textContent=i.vi?'Máy này có giọng tiếng Việt ('+i.vi+').':(i.voices?'Máy này không có giọng tiếng Việt, trang dùng giọng trên mạng (cần có mạng).':'Chưa thấy giọng tiếng Việt trên máy này.');
+  }
+  bs.forEach(function(b){b.addEventListener('click',function(){NTH.mode(b.dataset.v);show();NTH.say('Chào bé! Bé có nghe cô đọc không?')})});
+  document.getElementById('vTry').addEventListener('click',function(){NTH.say('Chào bé! Bé có nghe cô đọc không?')});
+  show();setTimeout(show,800);
+})();
+</script>
 <script>if('serviceWorker' in navigator)navigator.serviceWorker.register('../sw.js',{scope:'../'}).catch(function(){});</script>
 </body>
 </html>
