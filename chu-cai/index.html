@@ -322,7 +322,7 @@ function say(t,done){
 function sayLetter(ch){var o=L[ch];say(o.snd+'. '+o.snd+'. '+o.word+'.')}
 
 /* ---------- chúc mừng ---------- */
-var PRAISE=['Giỏi quá!','Tuyệt vời!','Nam San giỏi lắm!','Đúng rồi, siêu ghê!'];
+var PRAISE=['Giỏi quá!','Tuyệt vời!',NTH.ten(1)+' giỏi lắm!','Giỏi quá, '+NTH.ten()+' ơi!','Đúng rồi, siêu ghê!'];
 function win(msg,next){
   addStar();
   var pr=PRAISE[rnd(PRAISE.length)];
@@ -360,7 +360,7 @@ var ACTS=[
 function home(){
   view.innerHTML='<div class="wrap">'+
   '<section class="hero"><div class="abc" aria-hidden="true"><span>a</span><span>b</span><span>c</span></div>'+
-  '<h1>Nam San ơi, mình học chữ cái nhé!</h1><p class="sub">Mỗi chữ có một âm. Bé nghe, đọc to theo và nhìn tranh.</p>'+
+  '<h1>'+NTH.ten(1)+' ơi, mình học chữ cái nhé!</h1><p class="sub">Mỗi chữ có một âm. Bé nghe, đọc to theo và nhìn tranh.</p>'+
   '</section>'+
   '<nav class="menu">'+ACTS.map(function(a,i){return '<button class="tile" data-go="'+a[0]+'"><span class="ic" style="background:'+a[4]+'">'+a[3]+'</span><span><span class="k">Bài '+(i+1)+'</span><h3>'+a[1]+'</h3><p>'+a[2]+'</p></span></button>'}).join('')+'</nav>'+
   '<section class="panel"><h2>Học từng chữ</h2>'+

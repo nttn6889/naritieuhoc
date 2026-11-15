@@ -142,6 +142,13 @@
   }
   window.NTH = {
     say: say, stop: stop, log: log,
+    /* tên bé (mẹ nhập lần đầu ở trang chính, đổi ở Góc của mẹ), localStorage nth-name, chỉ trên máy này.
+       NTH.name() đọc, NTH.name('An') đặt, NTH.name('') xóa · NTH.ten(1) = tên hoặc “Bé” (đầu câu) / NTH.ten() = tên hoặc “bé” */
+    name: function(v){
+      if(v !== undefined){ v = String(v).replace(/[<>&"'`\\]/g, '').replace(/\s+/g, ' ').trim().slice(0, 20); set('nth-name', v || null); }
+      return (get('nth-name') || '').trim();
+    },
+    ten: function(cap){ var n = (get('nth-name') || '').trim(); return n || (cap ? 'Bé' : 'bé'); },
     logText: function(){ try{ return JSON.parse(localStorage.getItem('nth-vlog') || '[]').join('\n'); }catch(e){ return ''; } },
     logClear: function(){ set('nth-vlog', null); },
     /* NTH.mode() đọc, NTH.mode('auto'|'may'|'web') đặt; đặt lại thì quên điều máy đã tự học */

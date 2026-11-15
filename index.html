@@ -122,6 +122,13 @@ a:focus-visible,button:focus-visible{outline:4px solid var(--blue);outline-offse
 .pop{position:fixed;inset:0;background:rgba(42,37,71,.45);display:grid;place-items:center;z-index:20;padding:20px}
 .pop .box{background:#fff;border-radius:30px;padding:26px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;animation:popin .35s}
 .pop .ani{font-size:110px;line-height:1}
+.pop.name .ani{font-size:80px}
+.pop.name h2{font-size:clamp(26px,7vw,32px);color:var(--purple);margin:0;display:flex;align-items:center;gap:8px}
+.pop.name h2 .ask{width:48px;height:48px;font-size:22px;box-shadow:none}
+.pop.name input{font:inherit;font-family:var(--f-logo,inherit);font-size:30px;font-weight:800;text-align:center;width:min(280px,72vw);padding:10px 14px;border:3px solid #CFC6E8;border-radius:20px;color:var(--ink);background:#FBFAFF}
+.pop.name input:focus{outline:none;border-color:var(--orange)}
+.pop.name .skip{background:none;box-shadow:none;width:auto;height:auto;border-radius:12px;font-size:15px;font-weight:800;color:var(--soft);padding:6px 10px}
+.hi{display:inline-flex;align-items:center;gap:6px;align-self:center;border:0;background:#fff;border-radius:999px;padding:6px 16px;font:inherit;font-weight:800;font-size:18px;color:var(--purple);cursor:pointer;box-shadow:0 3px 0 #E2DCF2}
 .pop button{border:0;border-radius:50%;width:76px;height:76px;font-size:36px;background:var(--purple);color:#fff;box-shadow:0 4px 0 #352c62;cursor:pointer}
 @keyframes popin{from{transform:scale(.6);opacity:0}}
 @media (prefers-reduced-motion:reduce){.play,.stop.cur .node,.stop .me{animation:none}}
@@ -182,6 +189,7 @@ footer .sl{font-family:var(--f-logo);font-size:19px;color:var(--purple);font-wei
   </header>
 
   <section class="road-top" aria-labelledby="kid-h">
+    <button class="hi" id="hi" type="button" hidden></button>
     <div class="kid-h">
       <h1 id="kid-h">Đường đến lớp 1</h1>
       <button class="ask" id="ask" type="button" aria-label="Nghe">🔊</button>
@@ -267,7 +275,7 @@ footer .sl{font-family:var(--f-logo);font-size:19px;color:var(--purple);font-wei
   var play=document.getElementById('play');
   if(curI<0){play.querySelector('.pbadge').innerHTML='<span class="node N x" style="width:84px;height:84px;font-size:46px">🏫</span>';play.href='#road';play.dataset.say='Bé học xong cả con đường rồi! Giỏi quá!'}
   else{var c=STOPS[curI];play.querySelector('.pbadge').innerHTML=nodeHTML(c).replace('class="node','style="width:84px;height:84px" class="node');play.href=c.href;play.dataset.say='Học tiếp. Bài '+(curI+1)+'. '+c.say;play.dataset.i=curI}
-  document.getElementById('ask').onclick=function(){say(curI<0?'Bé đi hết đường đến lớp một rồi!':'Đường đến lớp một. Bé đã học '+nDone+' bài. Chạm nút xanh để học tiếp nhé.')};
+  document.getElementById('ask').onclick=function(){var nm=window.NTH?NTH.ten(1):'Bé';say(curI<0?nm+' đi hết đường đến lớp một rồi!':'Đường đến lớp một. '+nm+' đã học '+nDone+' bài. Chạm nút xanh để học tiếp nhé.')};
 
   /* ---- con đường ---- */
   var road=document.getElementById('road'),X=[0,.5,.8,.5,0,-.5,-.8,-.5],h='',xi=0;
@@ -301,9 +309,27 @@ footer .sl{font-family:var(--f-logo);font-size:19px;color:var(--purple);font-wei
 
   /* ---- vừa mở được hộp quà mới thì chúc mừng ---- */
   var shown=load('nth-gifts',0);
-  if(gifts>shown){save('nth-gifts',gifts);var a=ANI[gifts-1],p=document.createElement('div');p.className='pop';
+  /* ---- lần đầu: hỏi tên bé (để cô khen đúng tên); bỏ qua thì gọi là “bé”, mẹ đổi ở Góc của mẹ ---- */
+  var hi=document.getElementById('hi');
+  function showHi(){var n=window.NTH&&NTH.name();hi.hidden=!n;if(n)hi.textContent='👋 '+n}
+  hi.onclick=function(){say('Chào '+NTH.name()+'! Mình cùng học nhé!')};
+  showHi();
+  var askName=window.NTH&&!NTH.name()&&!load('nth-name-asked',0);
+  if(askName){var q=document.createElement('div');q.className='pop name';
+    q.innerHTML='<form class="box" role="dialog" aria-labelledby="nm-h"><div class="ani">🧒</div>'+
+      '<h2 id="nm-h">Bé tên là gì? <button type="button" class="ask" aria-label="Nghe">🔊</button></h2>'+
+      '<input id="nm" type="text" maxlength="20" autocomplete="off" autocapitalize="words" enterkeyhint="done" aria-label="Tên của bé">'+
+      '<button type="submit" aria-label="Xong">✔</button><button type="button" class="skip">Bỏ qua</button></form>';
+    document.body.appendChild(q);
+    var f=q.querySelector('form'),inp=q.querySelector('#nm');
+    function close(){save('nth-name-asked',1);q.remove();showHi()}
+    q.querySelector('.ask').onclick=function(){say('Bé tên là gì? Mẹ nhập tên giúp bé nhé.')};
+    q.querySelector('.skip').onclick=close;
+    f.onsubmit=function(e){e.preventDefault();var n=NTH.name(inp.value);if(!n){inp.focus();return}close();say('Chào '+n+'! Mình cùng học nhé!')};
+  }
+  if(!askName&&gifts>shown){save('nth-gifts',gifts);var a=ANI[gifts-1],p=document.createElement('div');p.className='pop';
     p.innerHTML='<div class="box" role="dialog" aria-live="polite"><div class="ani">'+a+'</div><button type="button" aria-label="Đóng">✔</button></div>';
-    document.body.appendChild(p);p.querySelector('button').onclick=function(){p.remove()};setTimeout(function(){say('Hoan hô! Bé được thêm một bạn thú mới!')},300)}
+    document.body.appendChild(p);p.querySelector('button').onclick=function(){p.remove()};setTimeout(function(){say('Hoan hô! '+(window.NTH?NTH.ten(1):'Bé')+' được thêm một bạn thú mới!')},300)}
 })();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js',{scope:'./'}).catch(function(){});</script>
 </body>

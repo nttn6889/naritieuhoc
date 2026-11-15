@@ -236,7 +236,7 @@ function animate(svg){
 }
 
 /* ---------- chúc mừng ---------- */
-var PRAISE=['Giỏi quá!','Tuyệt vời!','Nam San giỏi lắm!','Đúng rồi, siêu ghê!'];
+var PRAISE=['Giỏi quá!','Tuyệt vời!',NTH.ten(1)+' giỏi lắm!','Giỏi quá, '+NTH.ten()+' ơi!','Đúng rồi, siêu ghê!'];
 function win(msg,next){
   addStar();
   var pr=PRAISE[rnd(PRAISE.length)];
@@ -268,7 +268,7 @@ var ACTS=[
 function home(){
   view.innerHTML='<div class="wrap">'+
   '<section class="hero"><div class="pair"><figure>'+charSVG(6)+'<figcaption>Bạn Sáu</figcaption></figure><figure>'+charSVG(9)+'<figcaption>Bạn Chín</figcaption></figure></div>'+
-  '<h1>Nam San ơi, mình học số 6 và số 9 nhé!</h1><p class="sub">Nhìn chỗ cái vòng tròn là biết ngay.</p>'+
+  '<h1>'+NTH.ten(1)+' ơi, mình học số 6 và số 9 nhé!</h1><p class="sub">Nhìn chỗ cái vòng tròn là biết ngay.</p>'+
   '<div class="rule"><div class="r6"><b>6</b>Tròn ở DƯỚI</div><div class="r9"><b>9</b>Tròn ở TRÊN</div></div></section>'+
   '<nav class="menu">'+ACTS.map(function(a,i){return '<button class="tile" data-go="'+a[0]+'"><span class="ic" style="background:'+a[4]+'">'+a[3]+'</span><span><span class="k">Bài '+(i+1)+'</span><h3>'+a[1]+'</h3><p>'+a[2]+'</p></span></button>'}).join('')+'</nav>'+
   '<details class="mom"><summary>👩 Dành cho mẹ ›</summary><h2>Gợi ý cho mẹ</h2><ul>'+

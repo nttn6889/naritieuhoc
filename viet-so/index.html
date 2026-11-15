@@ -234,7 +234,7 @@ function judge(S,P){
 }
 
 /* ---------- chúc mừng ---------- */
-var PRAISE=['Giỏi quá!','Tuyệt vời!','Nam San giỏi lắm!','Viết đẹp lắm!'];
+var PRAISE=['Giỏi quá!','Tuyệt vời!',NTH.ten(1)+' giỏi lắm!','Giỏi quá, '+NTH.ten()+' ơi!','Viết đẹp lắm!'];
 function win(msg,next,nextLabel){
   addStar();var pr=PRAISE[rnd(PRAISE.length)];say(pr);
   var d=document.createElement('div');d.className='win';

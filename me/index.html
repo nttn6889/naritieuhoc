@@ -122,6 +122,12 @@ a.lesson:active{transform:translateY(2px)}
 footer{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;color:var(--soft);font-size:14px;font-weight:700;padding-top:6px}
 footer img{width:72px;height:72px}
 footer .sl{font-family:var(--f-logo);font-size:19px;color:var(--purple);font-weight:800}
+.kname{background:var(--orange-bg);border-radius:24px;padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+.kname h2{font-size:22px;margin:0}.kname p{margin:0}
+.kname form{display:flex;gap:8px;flex-wrap:wrap}
+.kname input{font:inherit;font-size:20px;font-weight:800;flex:1;min-width:160px;padding:10px 14px;border:2px solid #F3C3A4;border-radius:16px}
+.kname button{font:inherit;font-weight:800;font-size:17px;border:0;background:#F07A35;color:#fff;border-radius:999px;padding:10px 20px;min-height:48px;cursor:pointer}
+.kname small{color:var(--soft)}
 .voice{background:var(--blue-bg,#E3EEFF);border-radius:24px;padding:18px 20px;display:flex;flex-direction:column;gap:10px}
 .voice h2{font-size:22px;margin:0}
 .voice p{margin:0}
@@ -195,6 +201,13 @@ footer .sl{font-family:var(--f-logo);font-size:19px;color:var(--purple);font-wei
     </ul>
   </section>
 
+  <section class="kname" id="ten-be">
+    <h2>🧒 Tên của bé</h2>
+    <p>Cô sẽ gọi tên bé khi khen (“Nam San giỏi lắm!”). Máy dùng chung cho nhiều bé thì mẹ đổi tên trước khi bé học. Để trống thì cô gọi là “bé”.</p>
+    <form id="nmF"><input id="nmI" type="text" maxlength="20" autocomplete="off" autocapitalize="words" aria-label="Tên của bé" placeholder="Tên bé"><button type="submit">Lưu</button></form>
+    <small id="nmS">Tên chỉ lưu trên máy này, không gửi đi đâu.</small>
+  </section>
+
   <section class="voice" id="giong-doc">
     <h2>🔊 Máy không nghe tiếng?</h2>
     <p>Trang tự chọn giọng: máy có giọng tiếng Việt (như iPhone) thì đọc bằng giọng của máy, máy không có (nhiều máy Samsung) thì dùng giọng trên mạng. Nếu bé vẫn không nghe tiếng, mẹ chọn <b>Giọng trên mạng</b> rồi bấm <b>Thử nghe</b>. Nhớ bật loa và tăng âm lượng (âm lượng nhạc / media).</p>
@@ -239,6 +252,10 @@ footer .sl{font-family:var(--f-logo);font-size:19px;color:var(--purple);font-wei
   var lg=document.getElementById('vLog');function showLog(){lg.textContent=NTH.logText()||'(chưa có)'}
   document.querySelector('.vlog').addEventListener('toggle',showLog);
   document.getElementById('vClr').addEventListener('click',function(){NTH.logClear();showLog()});
+  var nI=document.getElementById('nmI'),nS=document.getElementById('nmS');nI.value=NTH.name();
+  document.getElementById('nmF').addEventListener('submit',function(e){e.preventDefault();var n=NTH.name(nI.value);nI.value=n;
+    try{localStorage.setItem('nth-name-asked','1')}catch(x){}
+    nS.textContent=n?'Đã lưu. Cô sẽ gọi bé là “'+n+'”.':'Đã xóa tên. Cô sẽ gọi là “bé”.';NTH.say(n?'Chào '+n+'! Mình cùng học nhé!':'Chào bé!')});
   show();setTimeout(show,800);setTimeout(showLog,1200);
 })();
 </script>

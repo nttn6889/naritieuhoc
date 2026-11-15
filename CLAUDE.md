@@ -22,6 +22,10 @@ Dự án tách khỏi Nari TOPIK (kho `narikoreanbox`, `nari-lop`), chỉ chung 
   bật lại 🔊 một lần cho mọi trò (`nth-snd-on1` xóa `ncc/nso/ns69/nvs-snd` = 0); trang dừng giọng bằng `NTH.stop()`, không gọi thẳng `speechSynthesis`.
   Nhật ký giọng đọc: `giong.js` ghi 40 dòng cuối (mở trang + UA + số giọng, từng câu đọc, giọng máy/mạng nào, lỗi, lỗi JS trang) vào `nth-vlog`;
   mẹ xem / chụp ở `me/#giong-doc` (ô gập “Nhật ký giọng đọc”). Giọng mạng: mỗi lượt phát có mã riêng, lỗi của lượt cũ bỏ qua (trước đây làm bỏ sót nguồn thứ hai). Trang mới cũng gắn `giong.js`. Sau này có thể thay bằng file mp3 mẹ tự thu.
+- **Tên bé** (15/11, mẹ: Nam San thích nghe “Nam San giỏi quá” nhưng bé khác dùng thì phải gọi đúng tên bé đó): lần đầu mở trang chính hiện hộp
+  “Bé tên là gì?” (🔊, ô nhập, ✔, Bỏ qua → `nth-name-asked`); đổi / xóa ở `me/#ten-be`. Lưu `nth-name` (chỉ trên máy, lọc ký tự `<>&"'`, tối đa 20).
+  Dùng `NTH.name()` / `NTH.ten(1)` (tên hoặc “Bé”) / `NTH.ten()` (tên hoặc “bé”) từ `giong.js`. Lời khen `PRAISE` có “<tên> giỏi lắm!” + “Giỏi quá, <tên> ơi!”,
+  tiêu đề “<tên> ơi, mình học …”, nút 👋 tên ở trang chính (chạm → “Chào <tên>!”). **Không viết cứng “Nam San” vào câu đọc / lời khen nữa.**
 - Màu: cam `#F07A35` / xanh `#2E7BE0` trên nền `#EEF5FF`. Trong trò chơi phân biệt, các số cùng một màu mực để bé nhìn hình dáng chứ không nhìn màu.
 - Sao thưởng, cài đặt lưu localStorage (`ns69-stars`, `ns69-snd`); bọc try/catch.
 - Kiểm tra bằng Playwright khung 390px trước khi push.
