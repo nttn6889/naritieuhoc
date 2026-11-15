@@ -14,6 +14,13 @@
       (document.head || document.documentElement).appendChild(m);
     }
   }catch(e){}
+  /* 15/11: trước khi sửa giọng, mẹ có thể đã bấm 🔊 (thành 🔇) khi thử cho có tiếng → bật lại tiếng một lần cho mọi trò */
+  try{
+    if(!localStorage.getItem('nth-snd-on1')){
+      ['ncc-snd', 'nso-snd', 'ns69-snd', 'nvs-snd'].forEach(function(k){ var v = localStorage.getItem(k); if(v === '0' || v === 'false') localStorage.removeItem(k); });
+      localStorage.setItem('nth-snd-on1', '1');
+    }
+  }catch(e){}
   var ss = window.speechSynthesis || null, voices = [], vi = null, au = null, seq = 0, unlocked = false;
   function get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
   function set(k, v){ try{ if(v == null) localStorage.removeItem(k); else localStorage.setItem(k, v); }catch(e){} }
@@ -64,7 +71,7 @@
     function play(){
       au.onended = function(){ if(my !== seq) return; i++; next(); };
       au.onerror = function(){ fail(); };
-      au.onplaying = function(){ if(my === seq){ note(false); if(mode() === 'auto' && !vi) set('nth-vweb', '1'); } };
+      au.onplaying = function(){ if(my === seq){ note(false); if(mode() === 'auto') set('nth-vweb', '1'); } };
       au.src = SRC[s] + encodeURIComponent(list[i]);
       au.playbackRate = o.rate < .9 ? .9 : 1;
       var p; try{ p = au.play(); }catch(e){ fail(e); return; }
@@ -92,12 +99,19 @@
     load();
     var md = mode();
     if(md === 'web' || !ss){ web(t, o, my); return; }
-    if(md === 'auto' && ((voices.length && !vi) || (!vi && get('nth-vweb')))){ web(t, o, my); return; }
+    if(md === 'auto' && ((voices.length && !vi) || get('nth-vweb'))){ web(t, o, my); return; }
     try{
       var u = new SpeechSynthesisUtterance(t), started = false;
       u.lang = 'vi-VN'; if(vi) u.voice = vi; u.rate = o.rate; u.pitch = o.pitch;
-      u.onstart = function(){ started = true; note(false); };
-      u.onend = function(){ started = true; o.fin(); };
+      var t0 = 0;
+      u.onstart = function(){ started = true; t0 = Date.now(); note(false); };
+      u.onend = function(){
+        if(my !== seq){ o.fin(); return; }
+        /* máy báo đọc xong ngay mà không ra tiếng (giọng Việt chưa tải về, nhiều máy Android) → dùng giọng mạng, lần sau dùng luôn */
+        var quick = !t0 || Date.now() - t0 < Math.min(400, String(t).length * 40);
+        if(quick && md === 'auto'){ started = true; set('nth-vweb', '1'); web(t, o, my); return; }
+        started = true; o.fin();
+      };
       u.onerror = function(e){ if(!started && my === seq && e.error !== 'interrupted' && e.error !== 'canceled'){ if(md === 'may'){ note(true); o.fin(); } else web(t, o, my); } };
       setTimeout(function(){ if(my === seq) ss.speak(u); }, 60); /* Android hay nuốt câu nói ngay sau cancel */
       setTimeout(function(){

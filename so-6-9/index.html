@@ -206,7 +206,7 @@ function showStars(){$('#stars').textContent=stars}
 function addStar(){stars++;try{localStorage.setItem('ns69-stars',stars)}catch(e){}showStars()}
 var sndB=$('#snd');
 function showSnd(){sndB.setAttribute('aria-pressed',sound?'true':'false');sndB.textContent=sound?'🔊':'🔇'}
-sndB.onclick=function(){sound=!sound;try{localStorage.setItem('ns69-snd',sound?'1':'0')}catch(e){}showSnd();if(!sound&&window.speechSynthesis)speechSynthesis.cancel();else say('Đọc to')};
+sndB.onclick=function(){sound=!sound;try{localStorage.setItem('ns69-snd',sound?'1':'0')}catch(e){}showSnd();if(!sound&&window.NTH)NTH.stop();else say('Đọc to')};
 function say(t,done){
   if(!sound){if(done)setTimeout(done,700);return}
   NTH.say(t,{rate:.85,pitch:1.15,done:done});
@@ -486,7 +486,7 @@ function kidEars(){kidHello();
 }
 function render(){
   var h=location.hash.slice(1);
-  if(window.speechSynthesis)try{speechSynthesis.cancel()}catch(e){}
+  if(window.NTH)NTH.stop();
   backB.hidden=!ROUTES[h];document.getElementById('all').hidden=!!ROUTES[h];
   (ROUTES[h]||home)();
   kidTiles();kidEars();

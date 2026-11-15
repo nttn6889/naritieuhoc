@@ -206,7 +206,7 @@ function showStars(){$('#stars').textContent=stars}
 function addStar(){stars++;save('nvs-stars',stars);showStars()}
 var sndB=$('#snd');
 function showSnd(){sndB.setAttribute('aria-pressed',sound?'true':'false');sndB.textContent=sound?'🔊':'🔇'}
-sndB.onclick=function(){sound=!sound;save('nvs-snd',sound);showSnd();if(!sound&&window.speechSynthesis)speechSynthesis.cancel();else say('Đọc to')};
+sndB.onclick=function(){sound=!sound;save('nvs-snd',sound);showSnd();if(!sound&&window.NTH)NTH.stop();else say('Đọc to')};
 
 /* ---------- giọng đọc ---------- */
 function say(t){
@@ -449,7 +449,7 @@ function kidEars(){kidHello();
 }
 function render(){
   var h=location.hash.slice(1),m=/^so-(\d)$/.exec(h);
-  if(window.speechSynthesis)try{speechSynthesis.cancel()}catch(e){}
+  if(window.NTH)NTH.stop();
   var inner=!!m||h==='dung-nguoc';backB.hidden=!inner;allA.hidden=inner;
   if(m){mode='xem';digit(+m[1])}else if(h==='dung-nguoc')mirrorGame();else home();
   kidTiles();kidEars();

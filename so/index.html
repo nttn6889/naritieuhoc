@@ -138,7 +138,7 @@ function showStars(){$('#stars').textContent=stars}
 function addStar(){stars++;save('nso-stars',stars);showStars()}
 var sndB=$('#snd');
 function showSnd(){sndB.setAttribute('aria-pressed',sound?'true':'false');sndB.textContent=sound?'🔊':'🔇'}
-sndB.onclick=function(){sound=!sound;save('nso-snd',sound);showSnd();if(!sound&&window.speechSynthesis)speechSynthesis.cancel();else say('Đọc to')};
+sndB.onclick=function(){sound=!sound;save('nso-snd',sound);showSnd();if(!sound&&window.NTH)NTH.stop();else say('Đọc to')};
 function say(t){
   if(!sound)return;NTH.say(t,{rate:.85,pitch:1.1});
 }
@@ -284,7 +284,7 @@ function writeStep(n){
 function go(h){if(location.hash.slice(1)===h)render();else location.hash=h}
 function render(){
   var h=location.hash.slice(1),m=/^so-(\d)$/.exec(h);
-  if(window.speechSynthesis)try{speechSynthesis.cancel()}catch(e){}
+  if(window.NTH)NTH.stop();
   document.querySelectorAll('.win').forEach(function(w){w.remove()});
   backB.hidden=!m;$('#all').hidden=!!m;
   if(m)lesson(+m[1],0);else home();

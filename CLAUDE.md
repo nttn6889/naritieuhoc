@@ -17,7 +17,9 @@ Dự án tách khỏi Nari TOPIK (kho `narikoreanbox`, `nari-lop`), chỉ chung 
   `translate.google.com/translate_tts` (tl=vi) bằng `<audio>`; cả hai hỏng (mất mạng) mới hiện `#voiceNote` “mẹ đọc to giúp bé nhé”.
   15/11: Samsung vẫn không nghe → Google không trả tiếng khi có Referer, nên mọi trang có `<meta name="referrer" content="no-referrer">` (giong.js cũng tự gắn);
   nguồn `translate.google.com` (tw-ob) hỏng thì thử `translate.googleapis.com` (gtx); lần chạm đầu “mở khóa” `<audio>`; máy đã phải dùng giọng mạng thì nhớ `nth-vweb`
-  để lần sau đọc ngay. Mẹ chọn tay ở `me/#giong-doc` (Tự chọn / Giọng trên mạng / Giọng của máy + Thử nghe), lưu `nth-voice`. Trang mới cũng gắn `giong.js`. Sau này có thể thay bằng file mp3 mẹ tự thu.
+  để lần sau đọc ngay. Mẹ chọn tay ở `me/#giong-doc` (Tự chọn / Giọng trên mạng / Giọng của máy + Thử nghe), lưu `nth-voice`.
+  Sau đó số nghe được mà chữ cái không: giọng máy báo xong quá nhanh (< min(400ms, 40ms × số ký tự)) thì coi là không ra tiếng → giọng mạng + `nth-vweb`;
+  bật lại 🔊 một lần cho mọi trò (`nth-snd-on1` xóa `ncc/nso/ns69/nvs-snd` = 0); trang dừng giọng bằng `NTH.stop()`, không gọi thẳng `speechSynthesis`. Trang mới cũng gắn `giong.js`. Sau này có thể thay bằng file mp3 mẹ tự thu.
 - Màu: cam `#F07A35` / xanh `#2E7BE0` trên nền `#EEF5FF`. Trong trò chơi phân biệt, các số cùng một màu mực để bé nhìn hình dáng chứ không nhìn màu.
 - Sao thưởng, cài đặt lưu localStorage (`ns69-stars`, `ns69-snd`); bọc try/catch.
 - Kiểm tra bằng Playwright khung 390px trước khi push.
