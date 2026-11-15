@@ -19,7 +19,9 @@ Dự án tách khỏi Nari TOPIK (kho `narikoreanbox`, `nari-lop`), chỉ chung 
   nguồn `translate.google.com` (tw-ob) hỏng thì thử `translate.googleapis.com` (gtx); lần chạm đầu “mở khóa” `<audio>`; máy đã phải dùng giọng mạng thì nhớ `nth-vweb`
   để lần sau đọc ngay. Mẹ chọn tay ở `me/#giong-doc` (Tự chọn / Giọng trên mạng / Giọng của máy + Thử nghe), lưu `nth-voice`.
   Sau đó số nghe được mà chữ cái không: giọng máy báo xong quá nhanh (< min(400ms, 40ms × số ký tự)) thì coi là không ra tiếng → giọng mạng + `nth-vweb`;
-  bật lại 🔊 một lần cho mọi trò (`nth-snd-on1` xóa `ncc/nso/ns69/nvs-snd` = 0); trang dừng giọng bằng `NTH.stop()`, không gọi thẳng `speechSynthesis`. Trang mới cũng gắn `giong.js`. Sau này có thể thay bằng file mp3 mẹ tự thu.
+  bật lại 🔊 một lần cho mọi trò (`nth-snd-on1` xóa `ncc/nso/ns69/nvs-snd` = 0); trang dừng giọng bằng `NTH.stop()`, không gọi thẳng `speechSynthesis`.
+  Nhật ký giọng đọc: `giong.js` ghi 40 dòng cuối (mở trang + UA + số giọng, từng câu đọc, giọng máy/mạng nào, lỗi, lỗi JS trang) vào `nth-vlog`;
+  mẹ xem / chụp ở `me/#giong-doc` (ô gập “Nhật ký giọng đọc”). Giọng mạng: mỗi lượt phát có mã riêng, lỗi của lượt cũ bỏ qua (trước đây làm bỏ sót nguồn thứ hai). Trang mới cũng gắn `giong.js`. Sau này có thể thay bằng file mp3 mẹ tự thu.
 - Màu: cam `#F07A35` / xanh `#2E7BE0` trên nền `#EEF5FF`. Trong trò chơi phân biệt, các số cùng một màu mực để bé nhìn hình dáng chứ không nhìn màu.
 - Sao thưởng, cài đặt lưu localStorage (`ns69-stars`, `ns69-snd`); bọc try/catch.
 - Kiểm tra bằng Playwright khung 390px trước khi push.
