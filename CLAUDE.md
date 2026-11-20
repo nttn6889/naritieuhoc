@@ -9,7 +9,7 @@ Dự án tách khỏi Nari TOPIK (kho `narikoreanbox`, `nari-lop`), chỉ chung 
 
 - Nam San là con gái của chủ kho, 5 tuổi, là nhân vật của trang. Kho công khai: **không đưa ảnh, ngày sinh, trường lớp hay thông tin riêng nào khác của bé**.
 - Người dùng: các mẹ ở Việt Nam, bé chơi bằng ngón tay trên điện thoại / máy tính bảng. Nút to, chữ to, câu ngắn, giọng nhẹ nhàng; có mục “Gợi ý cho mẹ”.
-- Chữ cái dạy theo **âm** của sách Tiếng Việt 1 (bờ, cờ…), không theo tên chữ. Viết chữ: chỉ dạy những chữ mẹ gửi vở (20/11: i, t trong `hoc-chu/`), còn lại tô nét / tô số.
+- Chữ cái dạy theo **âm** của sách Tiếng Việt 1 (bờ, cờ…), không theo tên chữ. Chưa dạy viết chữ, chỉ tô nét / tô số.
 - Mỗi bài một thư mục (`so-6-9/`…), một file `index.html` tự chứa (CSS + JS trong file, font Google Baloo 2 + Nunito). Làm bài mới thì thêm thẻ vào `me/index.html`
   (bỏ thẻ “Sắp có” tương ứng), thêm ô ở trang chủ nếu cần, và có nút 🏠 về `../`.
 - Giọng đọc: **`giong.js` ở gốc** (gắn `<script src="../giong.js">` trước script của trang; hàm `say` của trang gọi `NTH.say(câu, {rate, pitch, done})`).
@@ -89,34 +89,10 @@ Gợi ý cho mẹ, ô gập “Lên tiểu học: Lớp 1 – Lớp 5 · sắp c
   giống bản lật hơn thì báo “số bị quay ngược” + `tip`). Trò **Ai đứng đúng?** `#dung-nguoc` (chọn số đúng giữa số thật và số lật gương, 8 câu, nhiều 6 và 9).
   localStorage `nvs-stars`, `nvs-snd`, `nvs-done`. Link `viet-so/#so-6`. Thẻ ở mục Tô nét trang chủ; `so-6-9/#tap-viet` có nút sang đây.
 
-- `hoc-chu/` **Học chữ theo vở** (20/11, mẹ gửi ảnh vở bé đang học: Bài 1 i, Bài 2 t, trang “Làm quen ô li”, mẫu viết i/t có chấm số nét).
-  Menu: Bài 1 i · Bài 2 t · Đường kẻ · Viết chữ i · Viết chữ t (ô “Vở của bé” ở Chơi tự do trang chủ, 2 thẻ trong `me/`).
-  Bài đọc `#bai-i|bai-t` (bảng `LES`, đi như trang vở): Nhận biết (in thường / in hoa / viết thường = nét SVG / viết hoa = font Dancing Script, tranh khóa, 2 câu lục bát
-  **Nari tự viết**) · Tìm tranh có chữ · Luyện đọc (i + 6 dấu; t ghép i a o ô ơ e ê y × 6 dấu, bỏ tõ tỡ tỹ tọ tẹ như vở) · (t) Đọc từ + câu · Nối từ với tranh · Tô đám mây có chữ → ★, rồi sang tập viết.
-  Không chép từ / câu / thơ của vở, chỉ theo cấu trúc bài.
-  Tập viết `#viet-i|viet-t` (bảng `WR`): **ô li** khung 100 × 146, mỗi li 25, đường kẻ 1–5 ở y 125/100/75/50/25 (số đường kẻ in bên trái), cây trái / nhà phải.
-  i cao 2 li: hất (đk2→3) · móc ngược (đk3→1→2) · dấu chấm (nét `dot`, chạm là được). t cao 3 li: hất · lia lên đk4, móc ngược xuống đk1 lên đk2 · nét ngang trên đk3.
-  ① xem (số thứ tự nét đỏ ở chỗ đặt bút) ② tô từng nét (judge như viet-so, ngưỡng nhỏ hơn) ③ tự viết (so mẫu, mẫu lật gương = móc quay sai, i thiếu chấm thì nhắc).
-  `#duong-ke`: 8 câu chạm đúng đường kẻ n, 4 câu đầu có số, sau tự đếm từ dưới lên. localStorage `nhc-stars`, `nhc-snd`, `nhc-done` (i, t, dk), `nhc-vdone`.
-  **21/11 mẹ: bé chưa dùng điện thoại thạo → bài đọc thành trình chiếu** (`slidesOf` / `deck` / `show`): mỗi trang một việc nhỏ (1 dạng chữ, 1 cặp tranh chọn 1,
-  1 hàng dấu, 1 từ, 1 câu, 1 câu nối chọn 1 trong 3 tranh, 4 đám mây), ◀ ▶ to, thanh tiến bộ, đúng thì tự sang trang, trang cuối ★ + ✏️ Tập viết.
-  Dọc: hàng biểu tượng các phần ở trên; **ngang (≥ 600px): menu các phần bên trái**, ◀ ▶ hai bên. Cỡ chữ / hình theo `cqmin` (`.slide` là container).
-  Tập viết, Đường kẻ: `.panel.split` (`.side` lời dặn + nút / `.main` bảng viết) — dọc một cột (order), ngang chia trái / phải.
-  **22/11 mẹ:** chuyển trang chậm lại (đúng → cô nói xong + 2,5 s mới sang), giọng chậm (`rate .72`; giọng mạng `playbackRate .85` trong giong.js),
-  cô nói như cô giáo ngồi cạnh: **trang giới thiệu đầu mỗi phần** (`intro()`: “Phần hai: Tìm tranh. Sau đây cô đưa ra các bức tranh… bấm nút đúng màu xanh / sai màu đỏ”, đầu bài gọi tên bé),
-  Tìm tranh = 1 tranh / trang + nút ✔ / ✖, cô **đánh vần** mọi từ (`spellSyl`: “tờ, i, ti. vờ, i, vi”, “quờ, a, qua, hỏi, quả”, phụ âm ghép ch kh ng ngh…).
-  Giọng đọc nghe “bé” thành “bố” → `say()` của trang đổi “bé” → “con” khi đọc (chữ trên màn vẫn “Bé”); vì vậy không dùng chữ “bé” với nghĩa “nhỏ” trong câu đọc.
-  **22/11 (2) mẹ: cô giáo hoạt hình + bé nói thử.** `CO` = SVG cô giáo (tóc búi, áo tím), mắt chớp; `say()` gắn `body.talking` → miệng mấp máy, xong thì bỏ
-  (`hush()` dừng giọng + nghe khi đổi trang). Cô ở đầu mỗi trang trình chiếu (chạm = nghe lại), to ở trang giới thiệu, cạnh tiêu đề trang viết / đường kẻ.
-  Bé nói: nút 🎤 trên thanh trên (chỉ hiện khi trình duyệt có `SpeechRecognition`, mặc định tắt, `nhc-mic`). Bật thì sau khi cô nói “con đọc theo cô”
-  (trang chữ, tranh khóa, từ, câu, ô dấu vừa chạm) máy tự nghe 7 s (`listen`, vi-VN, 5 phương án), so dễ dãi (`heard`: bỏ dấu, đ→d, y→i, ≥ 60 % tiếng; âm chữ có `ALIAS`).
-  Đúng → khen + viền xanh; không nghe rõ → mời đọc to lại 1 lần; sai → “Con đọc gần đúng rồi! Mình đọc lại cùng cô nhé” (không bao giờ chê). Bị chặn micro → tự tắt, nhắc mẹ.
-  Câu bé nói ghi vào nhật ký giọng đọc (`NTH.log`). Tiếng bé gửi dịch vụ nhận giọng của trình duyệt (Google) — đã ghi trong “Dành cho mẹ”.
-  **23/11 nâng cấp cô** (Claude không làm được video người thật → làm hoạt hình SVG): `coavt` có `data-v` (miệng theo âm r/m/a/o/e/i, `lipPlan` đọc chữ đang nói:
-  phụ âm m b p mím môi, nguyên âm chính → hình miệng, dấu câu ngậm), `data-g` (point = tay chỉ vào nội dung khi nói · wave = vẫy ở trang giới thiệu, trang cuối, khi khen),
-  `data-m` (happy = mắt cười + sao, `moodOf` nhận câu khen · listen = nghiêng đầu + sóng âm khi đang nghe bé · kind = động viên). Đầu gật khi nói. `coSet` đổi mọi cô trên trang.
-  Miệng chỉ khớp tương đối (giọng mạng không báo đang đọc tới chữ nào).
-  Bài tiếp theo trong vở: thêm vào `LES` + `WR`, ô menu, regex `[it]` trong `render()`.
+- ~~`hoc-chu/` Vở của bé~~ (20–23/11, bài i, t theo vở mẹ gửi; trình chiếu + cô giáo hoạt hình SVG + bé nói thử) — **mẹ bảo xoá hẳn 23/11 để làm lại mới**
+  (cô giáo hoạt hình nói quá dài dòng, không hợp). Bản cũ còn trong lịch sử git (commit `9942f0c`). Mẹ góp ý lúc làm, nhớ khi làm lại:
+  bé chưa dùng điện thoại thạo → mỗi màn một việc nhỏ, nút to; chuyển trang không quá nhanh; giọng đọc chậm; giọng máy đọc “bé” nghe như “bố” (nên gọi “con” hoặc tên bé);
+  khi đọc tranh thì đánh vần (“tờ, i, ti”); lời dặn rõ ràng nhưng **ngắn gọn**, không dài dòng.
 
 ## Dự định
 Vần có âm cuối (an, am…) · chữ ghép (ch, nh, ng, gh, ngh…) · số 1–20 · chữ / số dễ nhầm (b–d, p–q, 2–5) · phiếu tô in A4.
