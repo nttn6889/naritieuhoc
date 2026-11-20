@@ -249,10 +249,26 @@ body.fit #view{flex:1;min-height:0;display:flex;flex-direction:column}
 h2 .coavt{width:52px;height:52px;display:inline-block;vertical-align:middle;margin-right:8px;border-radius:50%}
 .coavt .eyes{transform-box:fill-box;transform-origin:center;animation:blink 4s infinite}
 @keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
-.coavt .m1{display:none;transform-box:fill-box;transform-origin:center}
-body.talking .coavt .m0{display:none}
-body.talking .coavt .m1{display:block;animation:talk .22s infinite alternate}
-@keyframes talk{from{transform:scaleY(.25)}to{transform:scaleY(1.1)}}
+.coavt [class^="v-"],.coavt .eh,.coavt .spark,.coavt .waves,.coavt .arm{display:none}
+.coavt[data-v="r"] .v-r,.coavt[data-v="m"] .v-m,.coavt[data-v="a"] .v-a,.coavt[data-v="o"] .v-o,.coavt[data-v="e"] .v-e,.coavt[data-v="i"] .v-i{display:inline}
+.coavt .head{transform-box:view-box;transform-origin:50px 78px;transition:transform .35s}
+body.talking .coavt .head{animation:nod 1.6s infinite ease-in-out}
+@keyframes nod{0%,100%{transform:rotate(0)}25%{transform:rotate(-2.5deg) translateY(.6px)}75%{transform:rotate(2deg)}}
+.coavt .arm{transform-box:view-box;transform-origin:72px 92px}
+body.talking .coavt[data-g="point"] .arm{display:inline;animation:point 1.1s infinite alternate ease-in-out}
+@keyframes point{from{transform:rotate(-4deg)}to{transform:rotate(6deg) translateX(1px)}}
+.coavt[data-g="wave"] .arm{display:inline;animation:wave .45s infinite alternate ease-in-out}
+@keyframes wave{from{transform:rotate(-18deg)}to{transform:rotate(14deg)}}
+body:not(.talking) .coavt[data-g="wave"]:not([data-m="happy"]) .arm{display:none}
+.coavt[data-m="happy"] .eyes{display:none}.coavt[data-m="happy"] .eh{display:inline}
+.coavt[data-m="happy"] .spark{display:inline;animation:tw .5s infinite alternate}
+@keyframes tw{to{opacity:.3}}
+.coavt[data-m="happy"] .ck{opacity:.85}
+body:not(.talking) .coavt[data-m="happy"] .v-r{display:none}body:not(.talking) .coavt[data-m="happy"] .v-h{display:inline}
+.coavt[data-m="listen"] .head{transform:rotate(-8deg)}
+.coavt[data-m="listen"] .waves{display:inline;animation:tw .6s infinite alternate}
+.coavt[data-m="listen"] .brows,.coavt[data-m="kind"] .brows{transform:translateY(-1.6px)}
+.coavt[data-m="listen"] .arm{display:inline;transform:rotate(-38deg) translate(-4px,-6px)}
 body.talking .co{animation:bob .9s infinite alternate}
 @keyframes bob{to{transform:translateY(-3px)}}
 .slide{position:relative}
@@ -382,23 +398,61 @@ sndB.onclick=function(){sound=!sound;save('nhc-snd',sound);showSnd();if(!sound&&
 /* 22/11: đọc chậm như cô giáo; giọng đọc nghe “bé” thành “bố” → khi nói gọi bé là “con” (hoặc tên bé khi đầu câu tự thêm) */
 function say(t,cb){if(!sound){if(cb)setTimeout(cb,600);return}
   t=String(t).replace(/(^|[^\p{L}])([Bb])é(?!\p{L})/gu,function(m,a,b){return a+(b==='B'?'Con':'con')});
-  var id=++talkN;document.body.classList.add('talking');clearTimeout(talkT);
-  talkT=setTimeout(function(){if(id===talkN)document.body.classList.remove('talking')},Math.max(4000,t.length*160));
-  NTH.say(t,{rate:.72,pitch:1.05,done:function(){if(id===talkN)document.body.classList.remove('talking');cb&&cb()}})}
-function hushTalk(){talkN++;document.body.classList.remove('talking');if(window.NTH)NTH.stop()}
-function hush(){talkN++;document.body.classList.remove('talking');stopListen();if(window.NTH)NTH.stop()}
+  var id=++talkN,mood=moodOf(t);document.body.classList.add('talking');clearTimeout(talkT);clearTimeout(moodT);
+  coSet('data-m',mood);coSet('data-g',mood==='happy'?'wave':CO_G);lipStart(t,id);
+  function end(){if(id!==talkN)return;document.body.classList.remove('talking');lipStop();if(mood)moodT=setTimeout(function(){if(id===talkN)coSet('data-m','')},1800)}
+  talkT=setTimeout(end,Math.max(4000,t.length*160));
+  NTH.say(t,{rate:.72,pitch:1.05,done:function(){end();cb&&cb()}})}
+function hushTalk(){talkN++;document.body.classList.remove('talking');lipStop();coSet('data-m','');if(window.NTH)NTH.stop()}
+function hush(){talkN++;document.body.classList.remove('talking');lipStop();coSet('data-m','');stopListen();if(window.NTH)NTH.stop()}
 var talkN=0,talkT=null;
 
-/* ===== Cô giáo hoạt hình (22/11): miệng mấp máy khi cô nói (body.talking), mắt chớp; chạm vào cô = nghe lại ===== */
-var CO='<svg class="coavt" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="50" fill="#FFE6EE"/>'+
-  '<circle cx="50" cy="15" r="10" fill="#3B2A20"/><circle cx="50" cy="48" r="29" fill="#3B2A20"/>'+
-  '<path d="M18 100 Q22 78 50 76 Q78 78 82 100Z" fill="#53468F"/><path d="M42 77 L50 88 L58 77Z" fill="#FFDCC0"/>'+
-  '<ellipse cx="50" cy="52" rx="21" ry="23" fill="#FFDCC0"/>'+
-  '<path d="M28 48 Q31 26 50 26 Q69 26 72 48 Q63 36 50 37 Q38 36 28 48Z" fill="#3B2A20"/>'+
-  '<g class="eyes"><ellipse cx="41" cy="53" rx="2.7" ry="3.3" fill="#2A2547"/><ellipse cx="59" cy="53" rx="2.7" ry="3.3" fill="#2A2547"/></g>'+
-  '<circle cx="35" cy="61" r="4" fill="#FF9FB0" opacity=".55"/><circle cx="65" cy="61" r="4" fill="#FF9FB0" opacity=".55"/>'+
-  '<path class="m0" d="M43 65 Q50 71 57 65" stroke="#B5475A" stroke-width="2.4" fill="none" stroke-linecap="round"/>'+
-  '<ellipse class="m1" cx="50" cy="67" rx="5.5" ry="4" fill="#B5475A"/></svg>';
+/* ===== Cô giáo hoạt hình (22/11, nâng cấp 23/11) =====
+   Miệng theo từng âm (data-v: r nghỉ · m mím · a mở to · o tròn · e vừa · i kéo ngang), lấy từ chữ đang đọc (lipPlan);
+   đầu gật khi nói; tay chỉ vào nội dung (data-g="point") hoặc vẫy (wave: trang giới thiệu, khi khen);
+   nét mặt (data-m): happy = mắt cười + sao lấp lánh · listen = nghiêng đầu lắng nghe (khi bật micro) · kind = động viên. Chạm vào cô = nghe lại. */
+var CO='<svg class="coavt" data-v="r" data-m="" data-g="point" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="50" fill="#FFE6EE"/>'+
+  '<g class="spark"><path d="M18 22 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z" fill="#F5B700"/><path d="M84 18 l1.5 3.5 3.5 1.5 -3.5 1.5 -1.5 3.5 -1.5 -3.5 -3.5 -1.5 3.5 -1.5z" fill="#F5B700"/></g>'+
+  '<path d="M14 100 Q18 79 50 77 Q82 79 86 100Z" fill="#53468F"/><path d="M42 78 L50 89 L58 78Z" fill="#FFDCC0"/><path d="M50 89 L50 100" stroke="#3E3470" stroke-width="1.2"/>'+
+  '<g class="arm"><path d="M72 92 Q80 82 86 71" stroke="#53468F" stroke-width="9" fill="none" stroke-linecap="round"/><circle cx="87" cy="68" r="5" fill="#FFDCC0"/><path d="M89 65 L94 59" stroke="#FFDCC0" stroke-width="3" stroke-linecap="round"/></g>'+
+  '<g class="head"><circle cx="50" cy="15" r="10" fill="#3B2A20"/><circle cx="50" cy="48" r="29" fill="#3B2A20"/>'+
+  '<ellipse cx="29.5" cy="55" rx="3.5" ry="5" fill="#F5C9A8"/><ellipse cx="70.5" cy="55" rx="3.5" ry="5" fill="#F5C9A8"/>'+
+  '<ellipse cx="50" cy="53" rx="21" ry="23" fill="#FFDCC0"/>'+
+  '<path d="M28 48 Q31 26 50 26 Q69 26 72 48 Q63 36 50 37 Q38 36 28 48Z" fill="#3B2A20"/><circle cx="66" cy="31" r="3.2" fill="#F07A35"/><circle cx="66" cy="31" r="1.2" fill="#FFE9DB"/>'+
+  '<g class="brows"><path d="M36.5 46 Q41 43.5 45.5 46" stroke="#3B2A20" stroke-width="1.7" fill="none" stroke-linecap="round"/><path d="M54.5 46 Q59 43.5 63.5 46" stroke="#3B2A20" stroke-width="1.7" fill="none" stroke-linecap="round"/></g>'+
+  '<g class="eyes"><ellipse cx="41" cy="53" rx="2.8" ry="3.4" fill="#2A2547"/><ellipse cx="59" cy="53" rx="2.8" ry="3.4" fill="#2A2547"/><circle cx="42" cy="52" r=".9" fill="#fff"/><circle cx="60" cy="52" r=".9" fill="#fff"/></g>'+
+  '<g class="eh"><path d="M37.5 54.5 Q41 50 44.5 54.5" stroke="#2A2547" stroke-width="2.3" fill="none" stroke-linecap="round"/><path d="M55.5 54.5 Q59 50 62.5 54.5" stroke="#2A2547" stroke-width="2.3" fill="none" stroke-linecap="round"/></g>'+
+  '<circle class="ck" cx="35" cy="61" r="4" fill="#FF9FB0" opacity=".55"/><circle class="ck" cx="65" cy="61" r="4" fill="#FF9FB0" opacity=".55"/>'+
+  '<path class="v-r" d="M44 65 Q50 70.5 56 65" stroke="#B5475A" stroke-width="2.4" fill="none" stroke-linecap="round"/>'+
+  '<path class="v-m" d="M45 66.5 Q50 67.5 55 66.5" stroke="#B5475A" stroke-width="2.6" fill="none" stroke-linecap="round"/>'+
+  '<g class="v-a"><path d="M43.5 64 Q50 63 56.5 64 Q55 74 50 74 Q45 74 43.5 64Z" fill="#8E2F45"/><ellipse cx="50" cy="71.3" rx="3.6" ry="1.8" fill="#FF8FA3"/></g>'+
+  '<ellipse class="v-o" cx="50" cy="67.5" rx="3.3" ry="4" fill="#8E2F45"/>'+
+  '<g class="v-i"><path d="M42.5 65 Q50 64 57.5 65 Q55.5 69.5 50 69.5 Q44.5 69.5 42.5 65Z" fill="#8E2F45"/><path d="M44.5 65.1 Q50 64.4 55.5 65.1 L55 66.3 Q50 65.8 45 66.3Z" fill="#fff"/></g>'+
+  '<path class="v-e" d="M44.5 64.5 Q50 64 55.5 64.5 Q54.5 71 50 71 Q45.5 71 44.5 64.5Z" fill="#8E2F45"/>'+
+  '<g class="v-h"><path d="M41.5 63.5 Q50 64.5 58.5 63.5 Q56.5 73 50 73 Q43.5 73 41.5 63.5Z" fill="#8E2F45"/><path d="M43 64 Q50 65 57 64 L56.4 65.6 Q50 66.4 43.6 65.6Z" fill="#fff"/></g>'+
+  '<g class="waves"><path d="M76 49 Q79 55 76 61" stroke="#2E7BE0" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M80 46 Q85 55 80 64" stroke="#2E7BE0" stroke-width="1.8" fill="none" stroke-linecap="round"/></g>'+
+  '</g></svg>';
+function coSet(a,v){document.querySelectorAll('.coavt').forEach(function(e){e.setAttribute(a,v)})}
+/* miệng theo âm: mỗi tiếng = phụ âm đầu (m b p mím môi) → nguyên âm chính → nghỉ; dấu câu = ngậm miệng */
+var VIS={a:'a','ă':'a','â':'a',o:'o','ô':'o',u:'o','ư':'o','ơ':'e',e:'e','ê':'e',i:'i',y:'i'};
+function lipPlan(t){
+  var out=[];(String(t).match(/[^\s.,!?:;…]+|[.,!?:;…]/g)||[]).forEach(function(w){
+    if(/^[.!?…]$/.test(w)){out.push(['r',420]);return}
+    if(/^[,:;]$/.test(w)){out.push(['m',230]);return}
+    var p=w.toLowerCase().normalize('NFD').replace(/[̣̀́̃̉]/g,'').normalize('NFC'),v='e';
+    for(var i=0;i<p.length;i++)if(VIS[p[i]]){v=VIS[p[i]];break}
+    if(/^(m|b|p)/.test(p))out.push(['m',90]);else out.push(['e',70]);
+    out.push([v,230]);
+    if(/(m|p|n|ng|nh|c|t|ch)$/.test(p))out.push(['m',60]);else out.push(['r',40]);
+  });
+  return out;
+}
+var lipT=null,moodT=null,CO_G='point';
+function lipStart(t,id){clearTimeout(lipT);var plan=lipPlan(t),i=0;
+  (function step(){if(id!==talkN)return;var p=plan[i++]||[['a','e','o','i','m'][rnd(5)],170];coSet('data-v',p[0]);lipT=setTimeout(step,p[1])})()}
+function lipStop(){clearTimeout(lipT);coSet('data-v','r')}
+function moodOf(t){return /^(Đúng rồi|Giỏi|Tuyệt|Hoan hô)|giỏi lắm|siêu ghê|Giỏi quá/i.test(t)?'happy':/^(Chưa|Con đọc gần|Cô chưa nghe|Ồ|Máy chưa)/.test(t)?'kind':''}
+
 
 /* ===== Bé nói thử (22/11): cô hỏi xong thì máy tự nghe (SpeechRecognition vi-VN), không cần bấm ghi âm mỗi lần.
    Mẹ bật bằng nút 🎤 trên thanh trên (mặc định tắt). Nghe được gần đúng là khen; không nghe rõ thì mời đọc lại, không bao giờ chê. ===== */
@@ -422,17 +476,17 @@ function listen(target,my,retry){
   if(!micOn||!SR||my!==tok)return;
   stopListen();var r;try{r=new SR()}catch(e){return}
   rec=r;r.lang='vi-VN';r.interimResults=false;r.maxAlternatives=5;r.continuous=false;
-  var got=false,l=$('#lis');if(l)l.hidden=false;
+  var got=false,l=$('#lis');if(l)l.hidden=false;coSet('data-m','listen');
   var tm=setTimeout(function(){try{r.stop()}catch(e){}},7000);
   r.onresult=function(e){got=true;var alts=[];for(var i=0;i<e.results[0].length;i++)alts.push(e.results[0][i].transcript);
     try{NTH&&NTH.log&&NTH.log('bé nói: '+alts.join(' / '))}catch(x){}
     var good=heard(alts,target);
-    rec=null;clearTimeout(tm);if(l)l.hidden=true;if(my!==tok)return;
+    rec=null;clearTimeout(tm);if(l)l.hidden=true;coSet('data-m','');if(my!==tok)return;
     if(good){var sl=$('.sbody');if(sl)sl.classList.add('spoke');say('Giỏi quá! Cô nghe con đọc đúng rồi: '+target+'. '+PRAISE[rnd(PRAISE.length)])}
     else say('Con đọc gần đúng rồi! Mình đọc lại cùng cô nhé: '+target+'.')};
   r.onerror=function(e){if(e.error==='not-allowed'||e.error==='service-not-allowed'){micOn=false;save('nhc-mic',false);showMic();
     say('Máy chưa cho cô nghe con nói. Mẹ bật micro giúp con nhé.')}};
-  r.onend=function(){clearTimeout(tm);if(rec===r)rec=null;if(l)l.hidden=true;
+  r.onend=function(){clearTimeout(tm);if(rec===r)rec=null;if(l)l.hidden=true;if(!got)coSet('data-m','');
     if(!got&&my===tok&&micOn&&!retry)say('Cô chưa nghe rõ. Con đọc to lên nhé: '+target+'.',function(){listen(target,my,1)})};
   try{r.start()}catch(e){rec=null;if(l)l.hidden=true}
 }
@@ -582,6 +636,7 @@ function deck(ch){
 function after(my,text){say(text,function(){setTimeout(function(){if(my===tok&&DK&&DK.i<DK.S.length-1&&document.getElementById('slide')){DK.i++;show()}},2500)})}
 function show(){
   hush();
+  CO_G=(DK.S[DK.i].t==='intro'||DK.S[DK.i].t==='end')?'wave':'point';
   var my=++tok,ch=DK.ch,X=LES[ch],sn=SND[ch],s=DK.S[DK.i],q='',b='',sp='',col=false;
   if(s.t==='intro'){var sc=SEC.filter(function(x){return x[0]===s.sec})[0];col=true;q='Phần '+s.n;sp=intro(s.sec,ch,s.n,s.last);
     b='<button class="cobig" id="tap" aria-label="Cô giáo">'+CO+'</button><button class="introbig" id="tap2"><span class="e">'+sc[1]+'</span><b>'+sc[2]+'</b></button>'+
@@ -861,7 +916,7 @@ function kidEars(){kidHello();
 }
 function render(){
   var h=location.hash.slice(1),mb=/^bai-([it])$/.exec(h),mv=/^viet-([it])$/.exec(h);
-  hush();tok++;document.body.classList.remove('fit');
+  hush();tok++;CO_G='point';document.body.classList.remove('fit');
   var inner=!!(mb||mv||h==='duong-ke');backB.hidden=!inner;allA.hidden=inner;
   if(mb){DK=null;deck(mb[1])}else if(mv){mode='xem';letter(mv[1])}else if(h==='duong-ke')lines();else home();
   kidTiles();kidEars();

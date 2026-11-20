@@ -112,6 +112,10 @@ Gợi ý cho mẹ, ô gập “Lên tiểu học: Lớp 1 – Lớp 5 · sắp c
   (trang chữ, tranh khóa, từ, câu, ô dấu vừa chạm) máy tự nghe 7 s (`listen`, vi-VN, 5 phương án), so dễ dãi (`heard`: bỏ dấu, đ→d, y→i, ≥ 60 % tiếng; âm chữ có `ALIAS`).
   Đúng → khen + viền xanh; không nghe rõ → mời đọc to lại 1 lần; sai → “Con đọc gần đúng rồi! Mình đọc lại cùng cô nhé” (không bao giờ chê). Bị chặn micro → tự tắt, nhắc mẹ.
   Câu bé nói ghi vào nhật ký giọng đọc (`NTH.log`). Tiếng bé gửi dịch vụ nhận giọng của trình duyệt (Google) — đã ghi trong “Dành cho mẹ”.
+  **23/11 nâng cấp cô** (Claude không làm được video người thật → làm hoạt hình SVG): `coavt` có `data-v` (miệng theo âm r/m/a/o/e/i, `lipPlan` đọc chữ đang nói:
+  phụ âm m b p mím môi, nguyên âm chính → hình miệng, dấu câu ngậm), `data-g` (point = tay chỉ vào nội dung khi nói · wave = vẫy ở trang giới thiệu, trang cuối, khi khen),
+  `data-m` (happy = mắt cười + sao, `moodOf` nhận câu khen · listen = nghiêng đầu + sóng âm khi đang nghe bé · kind = động viên). Đầu gật khi nói. `coSet` đổi mọi cô trên trang.
+  Miệng chỉ khớp tương đối (giọng mạng không báo đang đọc tới chữ nào).
   Bài tiếp theo trong vở: thêm vào `LES` + `WR`, ô menu, regex `[it]` trong `render()`.
 
 ## Dự định
