@@ -241,6 +241,29 @@ body.fit #view{flex:1;min-height:0;display:flex;flex-direction:column}
 @container (orientation:landscape){.sbody.col:has(.introbig){flex-direction:row;flex-wrap:wrap}.introbig .e{font-size:min(40cqh,20cqw)}}
 @container (orientation:landscape){.sbody.col:has(.ynb){flex-direction:row;flex-wrap:wrap}.ynb{flex-direction:column}}
 
+/* cô giáo hoạt hình */
+.cobig{border:0;background:none;padding:0;width:min(34cqh,46cqw);height:min(34cqh,46cqw);border-radius:50%;box-shadow:0 4px 0 rgba(0,0,0,.1)}
+.cobig+.introbig{padding:2cqmin 6cqmin}.cobig+.introbig .e{font-size:min(16cqh,20cqw)}
+.co{border:0;background:none;padding:0;width:70px;height:70px;flex:none;border-radius:50%;box-shadow:0 3px 0 rgba(0,0,0,.1)}
+.coavt{width:100%;height:100%;display:block}
+h2 .coavt{width:52px;height:52px;display:inline-block;vertical-align:middle;margin-right:8px;border-radius:50%}
+.coavt .eyes{transform-box:fill-box;transform-origin:center;animation:blink 4s infinite}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+.coavt .m1{display:none;transform-box:fill-box;transform-origin:center}
+body.talking .coavt .m0{display:none}
+body.talking .coavt .m1{display:block;animation:talk .22s infinite alternate}
+@keyframes talk{from{transform:scaleY(.25)}to{transform:scaleY(1.1)}}
+body.talking .co{animation:bob .9s infinite alternate}
+@keyframes bob{to{transform:translateY(-3px)}}
+.slide{position:relative}
+.lis{position:absolute;left:50%;bottom:2px;transform:translateX(-50%);background:var(--bad);color:#fff;font-weight:800;border-radius:999px;padding:8px 16px;white-space:nowrap;box-shadow:0 3px 0 #A8303F}
+.lis span{display:inline-block;animation:pulse .8s infinite alternate}
+@keyframes pulse{to{transform:scale(1.35)}}
+.top .pill.mic{opacity:.5}.top .pill.mic.on{opacity:1;background:#FFE3E7}
+.micb{background:#FFE3E7}
+.sbody.spoke .keybig,.sbody.spoke .glyph,.sbody.spoke .toks{outline:6px solid var(--good);outline-offset:4px}
+@media (orientation:landscape) and (min-width:600px){.co{width:54px;height:54px}}
+
 /* tập viết / đường kẻ: dọc xếp một cột; ngang chia trái (lời dặn, nút) – phải (bảng viết) */
 .split .side,.split .main{display:contents}
 .split .board{order:4}.split .msg,.split .prog{order:5}.split #ctl{order:6}.split .steps{order:7}.split details{order:8}
@@ -281,6 +304,7 @@ body.fit #view{flex:1;min-height:0;display:flex;flex-direction:column}
     <button class="back" id="back" hidden aria-label="Quay lại">⬅</button>
     <span class="sp"></span>
     <span class="pill" title="Số sao bé đã có"><span class="st">★</span><span id="stars">0</span></span>
+    <button class="pill mic" id="micT" hidden aria-pressed="false" aria-label="Cô nghe bé nói">🎤</button>
     <button class="pill snd" id="snd" aria-pressed="true" aria-label="Bật tắt tiếng">🔊</button>
   </div>
   <main id="view"></main>
@@ -358,7 +382,60 @@ sndB.onclick=function(){sound=!sound;save('nhc-snd',sound);showSnd();if(!sound&&
 /* 22/11: đọc chậm như cô giáo; giọng đọc nghe “bé” thành “bố” → khi nói gọi bé là “con” (hoặc tên bé khi đầu câu tự thêm) */
 function say(t,cb){if(!sound){if(cb)setTimeout(cb,600);return}
   t=String(t).replace(/(^|[^\p{L}])([Bb])é(?!\p{L})/gu,function(m,a,b){return a+(b==='B'?'Con':'con')});
-  NTH.say(t,{rate:.72,pitch:1.05,done:cb})}
+  var id=++talkN;document.body.classList.add('talking');clearTimeout(talkT);
+  talkT=setTimeout(function(){if(id===talkN)document.body.classList.remove('talking')},Math.max(4000,t.length*160));
+  NTH.say(t,{rate:.72,pitch:1.05,done:function(){if(id===talkN)document.body.classList.remove('talking');cb&&cb()}})}
+function hushTalk(){talkN++;document.body.classList.remove('talking');if(window.NTH)NTH.stop()}
+function hush(){talkN++;document.body.classList.remove('talking');stopListen();if(window.NTH)NTH.stop()}
+var talkN=0,talkT=null;
+
+/* ===== Cô giáo hoạt hình (22/11): miệng mấp máy khi cô nói (body.talking), mắt chớp; chạm vào cô = nghe lại ===== */
+var CO='<svg class="coavt" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="50" fill="#FFE6EE"/>'+
+  '<circle cx="50" cy="15" r="10" fill="#3B2A20"/><circle cx="50" cy="48" r="29" fill="#3B2A20"/>'+
+  '<path d="M18 100 Q22 78 50 76 Q78 78 82 100Z" fill="#53468F"/><path d="M42 77 L50 88 L58 77Z" fill="#FFDCC0"/>'+
+  '<ellipse cx="50" cy="52" rx="21" ry="23" fill="#FFDCC0"/>'+
+  '<path d="M28 48 Q31 26 50 26 Q69 26 72 48 Q63 36 50 37 Q38 36 28 48Z" fill="#3B2A20"/>'+
+  '<g class="eyes"><ellipse cx="41" cy="53" rx="2.7" ry="3.3" fill="#2A2547"/><ellipse cx="59" cy="53" rx="2.7" ry="3.3" fill="#2A2547"/></g>'+
+  '<circle cx="35" cy="61" r="4" fill="#FF9FB0" opacity=".55"/><circle cx="65" cy="61" r="4" fill="#FF9FB0" opacity=".55"/>'+
+  '<path class="m0" d="M43 65 Q50 71 57 65" stroke="#B5475A" stroke-width="2.4" fill="none" stroke-linecap="round"/>'+
+  '<ellipse class="m1" cx="50" cy="67" rx="5.5" ry="4" fill="#B5475A"/></svg>';
+
+/* ===== Bé nói thử (22/11): cô hỏi xong thì máy tự nghe (SpeechRecognition vi-VN), không cần bấm ghi âm mỗi lần.
+   Mẹ bật bằng nút 🎤 trên thanh trên (mặc định tắt). Nghe được gần đúng là khen; không nghe rõ thì mời đọc lại, không bao giờ chê. ===== */
+var SR=window.SpeechRecognition||window.webkitSpeechRecognition,micOn=!!SR&&load('nhc-mic',false),rec=null;
+var micB=$('#micT');
+function showMic(){micB.hidden=!SR;micB.setAttribute('aria-pressed',micOn?'true':'false');micB.classList.toggle('on',micOn)}
+micB.onclick=function(){micOn=!micOn;save('nhc-mic',micOn);showMic();
+  if(micOn)say('Cô sẽ nghe con đọc. Khi thấy cái micro nhấp nháy, con đọc thật to nhé.');else{stopListen();say('Cô tắt nghe rồi.')}
+  if(DK&&$('#slide'))show()};
+function stopListen(){if(rec){var r=rec;rec=null;try{r.onresult=r.onend=r.onerror=null;r.abort()}catch(e){}}var l=$('#lis');if(l)l.hidden=true}
+function nrm(x){return String(x).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').replace(/y/g,'i').replace(/[^a-z ]/g,' ').replace(/\s+/g,' ').trim()}
+var ALIAS={'tờ':['to','tu','tho','tro','te'],'i':['i','ia','e']};
+function heard(alts,target){
+  var T=nrm(target).split(' '),ok=false;
+  alts.forEach(function(a){var A=nrm(a),W=A.split(' ');
+    if(ALIAS[target]){if(ALIAS[target].some(function(x){return W.indexOf(x)>=0}))ok=true;return}
+    var n=T.filter(function(t){return W.indexOf(t)>=0}).length;if(n>=Math.ceil(T.length*.6)||A.indexOf(T.join(' '))>=0)ok=true});
+  return ok;
+}
+function listen(target,my,retry){
+  if(!micOn||!SR||my!==tok)return;
+  stopListen();var r;try{r=new SR()}catch(e){return}
+  rec=r;r.lang='vi-VN';r.interimResults=false;r.maxAlternatives=5;r.continuous=false;
+  var got=false,l=$('#lis');if(l)l.hidden=false;
+  var tm=setTimeout(function(){try{r.stop()}catch(e){}},7000);
+  r.onresult=function(e){got=true;var alts=[];for(var i=0;i<e.results[0].length;i++)alts.push(e.results[0][i].transcript);
+    try{NTH&&NTH.log&&NTH.log('bé nói: '+alts.join(' / '))}catch(x){}
+    var good=heard(alts,target);
+    rec=null;clearTimeout(tm);if(l)l.hidden=true;if(my!==tok)return;
+    if(good){var sl=$('.sbody');if(sl)sl.classList.add('spoke');say('Giỏi quá! Cô nghe con đọc đúng rồi: '+target+'. '+PRAISE[rnd(PRAISE.length)])}
+    else say('Con đọc gần đúng rồi! Mình đọc lại cùng cô nhé: '+target+'.')};
+  r.onerror=function(e){if(e.error==='not-allowed'||e.error==='service-not-allowed'){micOn=false;save('nhc-mic',false);showMic();
+    say('Máy chưa cho cô nghe con nói. Mẹ bật micro giúp con nhé.')}};
+  r.onend=function(){clearTimeout(tm);if(rec===r)rec=null;if(l)l.hidden=true;
+    if(!got&&my===tok&&micOn&&!retry)say('Cô chưa nghe rõ. Con đọc to lên nhé: '+target+'.',function(){listen(target,my,1)})};
+  try{r.start()}catch(e){rec=null;if(l)l.hidden=true}
+}
 
 /* ---------- chúc mừng ---------- */
 var PRAISE=['Giỏi quá!','Tuyệt vời!',NTH.ten(1)+' giỏi lắm!','Giỏi quá, '+NTH.ten()+' ơi!','Đúng rồi, siêu ghê!'];
@@ -435,6 +512,7 @@ function home(){
 }
 function momHome(){
   return '<p>Các bài ở đây đi theo <b>vở bé đang học</b> (Bài 1: i, Bài 2: t). Mỗi bài giống trang vở: nhận biết chữ (in thường, in hoa, viết thường, viết hoa), tìm tranh có chữ, luyện đọc với 6 dấu thanh, tìm chữ trong đám mây; bài t có thêm đọc từ, đọc câu và nối từ với tranh. Từ, câu và vần thơ trong app do Nari tự viết, mẹ dùng song song với vở.</p>'+
+  '<h2>🎤 Bé nói thử</h2><p>Bấm nút 🎤 trên thanh trên cùng để bật. Khi cô bảo “con đọc theo cô”, máy tự nghe (micro đỏ nhấp nháy), bé đọc to, cô khen khi nghe đúng. Lần đầu máy hỏi quyền dùng micro, mẹ chọn Cho phép. Tiếng bé được gửi tới dịch vụ nhận giọng nói của Google (trình duyệt Chrome) để nhận chữ. Máy nhận giọng trẻ nhỏ chưa chuẩn, nên cô không bao giờ chê, chỉ mời đọc lại. Máy nào không có nút 🎤 là trình duyệt chưa hỗ trợ (nên dùng Chrome).</p>'+
   '<h2>Ô li và đường kẻ</h2><ul>'+
   '<li>Đường kẻ đếm <b>từ dưới lên</b>: đường kẻ 1 là dòng đậm dưới cùng, rồi 2, 3, 4, 5. Mỗi khoảng giữa hai đường kẻ là 1 ô li.</li>'+
   '<li>Chơi “Đường kẻ” trước để bé quen nghe “đặt bút ở đường kẻ 2”. Trên vở thật, mẹ chấm một chấm đỏ nhỏ ở chỗ đặt bút như vở mẫu.</li>'+
@@ -503,10 +581,10 @@ function deck(ch){
 /* đúng rồi → cô nói xong, chờ thêm 2,5 giây rồi mới sang trang */
 function after(my,text){say(text,function(){setTimeout(function(){if(my===tok&&DK&&DK.i<DK.S.length-1&&document.getElementById('slide')){DK.i++;show()}},2500)})}
 function show(){
-  if(window.NTH)NTH.stop();
+  hush();
   var my=++tok,ch=DK.ch,X=LES[ch],sn=SND[ch],s=DK.S[DK.i],q='',b='',sp='',col=false;
   if(s.t==='intro'){var sc=SEC.filter(function(x){return x[0]===s.sec})[0];col=true;q='Phần '+s.n;sp=intro(s.sec,ch,s.n,s.last);
-    b='<button class="introbig" id="tap"><span class="e">'+sc[1]+'</span><b>'+sc[2]+'</b></button>'+
+    b='<button class="cobig" id="tap" aria-label="Cô giáo">'+CO+'</button><button class="introbig" id="tap2"><span class="e">'+sc[1]+'</span><b>'+sc[2]+'</b></button>'+
       (s.sec==='tranh'?'<div class="ynhelp"><span class="y">✔ có chữ '+ch+'</span><span class="n">✖ không có</span></div>':'')+
       '<button class="btn big go" id="start">▶ Bắt đầu</button>';}
   else if(s.t==='form'){var f=s.f;col=true;q='Chữ '+ch;
@@ -537,7 +615,12 @@ function show(){
     if(!s.done){s.done=1;done[ch]=1;save('nhc-done',done);addStar()}
     var pr=PRAISE[rnd(PRAISE.length)];sp=pr+' Con học xong bài chữ '+sn+' rồi. Cô thưởng con một ngôi sao. Bây giờ mình cùng tập viết chữ '+sn+' nhé!';
     b='<div class="bigstar">★</div><p class="endp">'+pr+'</p><div class="row"><button class="btn big" id="toW">✏️ Tập viết chữ '+ch+'</button><button class="btn light big" id="again">🔁 Học lại</button></div>';}
-  $('#slide').innerHTML='<div class="shead"><span class="q">'+q+'</span><button class="ear" id="rep" aria-label="Nghe lại">🔊</button></div><div class="sbody'+(col?' col':'')+'">'+b+'</div>';
+  var talk=({form:sn,key:X.key[0],word:s.w&&s.w[0],sent:s.s&&s.s[0]})[s.t]||'';
+  $('#slide').innerHTML='<div class="shead"><button class="co" id="co" aria-label="Cô giáo, chạm để nghe lại">'+CO+'</button><span class="q">'+q+'</span><button class="ear" id="rep" aria-label="Nghe lại">🔊</button>'+
+    (micOn&&talk?'<button class="ear micb" id="micb" aria-label="Con nói">🎤</button>':'')+'</div><div class="sbody'+(col?' col':'')+'">'+b+'</div>'+
+    '<div class="lis" id="lis" hidden><span>🎤</span> Cô đang nghe con đọc…</div>';
+  $('#co').onclick=function(){say(sp)};
+  var mb=$('#micb');if(mb)mb.onclick=function(){hushTalk();listen(talk,my)};
   $('#sbar').style.width=((DK.i+1)/DK.S.length*100)+'%';
   $('#prev').style.visibility=DK.i>0?'visible':'hidden';
   $('#next').style.visibility=DK.i<DK.S.length-1?'visible':'hidden';
@@ -545,7 +628,8 @@ function show(){
   var on=view.querySelector('.secs .on');if(on&&on.scrollIntoView)try{on.scrollIntoView({block:'nearest',inline:'nearest'})}catch(e){}
   $('#rep').onclick=function(){say(sp)};
   var tap=$('#tap');if(tap)tap.onclick=function(){say(sp)};
-  setTimeout(function(){if(my===tok)say(sp)},500);
+  setTimeout(function(){if(my===tok)say(sp,function(){if(talk&&my===tok)setTimeout(function(){listen(talk,my)},300)})},500);
+  if(s.t==='intro')$('#tap2').onclick=function(){say(sp)};
   if(s.t==='intro')$('#start').onclick=function(){DK.i++;show()};
   if(s.t==='yn')view.querySelectorAll('.ynb button').forEach(function(x){x.onclick=function(){
     if(s.ok)return;var w=s.p[0],right=(x.dataset.a==='1')===!!s.has;
@@ -557,7 +641,7 @@ function show(){
     var k=+x.dataset.k,v=s.v,syl=X.vow?ch+tone(v,k):tone(v,k),t;
     t=(X.vow?spellSyl(syl):(k?v+', '+TONES[k][0]+', '+syl:v))+'. Con đọc theo cô: '+syl+'.';
     view.querySelectorAll('.tg button').forEach(function(y){y.classList.remove('say')});x.classList.add('say','seen');
-    say(t,function(){x.classList.remove('say')})}});
+    stopListen();say(t,function(){x.classList.remove('say');if(my===tok)setTimeout(function(){listen(syl,my)},300)})}});
   if(s.t==='sent')view.querySelectorAll('.tok').forEach(function(x){x.onclick=function(){var w=s.s[0].split(' ')[+x.dataset.i].replace(/[.,!?]/g,'');say(spellWord(w)+'. '+w)}});
   if(s.t==='match')view.querySelectorAll('.mpic').forEach(function(x){x.onclick=function(){
     if(s.ok)return;var j=+x.dataset.j;
@@ -592,7 +676,7 @@ function lines(){
   var Q=shuffle([1,2,3,4,5]).concat(shuffle([1,2,3,4,5]).slice(0,3)),i=0,miss=0;
   function round(){
     var n=Q[i],show=i<4;
-    view.innerHTML='<section class="panel split"><div class="side"><h2>Đường kẻ</h2><p class="hint">Đường kẻ đếm từ dưới lên: 1, 2, 3, 4, 5. Bé chạm vào đường kẻ cô gọi.</p>'+
+    view.innerHTML='<section class="panel split"><div class="side"><h2>'+CO+'Đường kẻ</h2><p class="hint">Đường kẻ đếm từ dưới lên: 1, 2, 3, 4, 5. Bé chạm vào đường kẻ cô gọi.</p>'+
       '<p class="ask">Đường kẻ số <span class="r" style="font-size:1.5em">'+n+'</span></p>'+
       '<p class="prog">Câu '+(i+1)+' / '+Q.length+(show?'':' · không có số, bé tự đếm từ dưới lên nhé')+'</p></div><div class="main"><div class="board"><div class="mark l"><i>🌳</i>cây</div><svg class="pad" id="pad" viewBox="0 0 100 146" role="img" aria-label="Ô li">'+gridSVG(show)+'<g id="hit"></g></svg><div class="mark r"><i>🏠</i>nhà</div></div></div></section>';
     kidEars();
@@ -615,7 +699,7 @@ function lines(){
 var mode='xem';
 function letter(ch){
   var X=WR[ch],sn=SND[ch];
-  view.innerHTML='<section class="panel split"><div class="side"><h2 data-say="Viết chữ '+sn+'">Viết chữ '+ch+'</h2>'+
+  view.innerHTML='<section class="panel split"><div class="side"><h2 data-say="Viết chữ '+sn+'">'+CO+'Viết chữ '+ch+'</h2>'+
   '<div class="seg" role="group" aria-label="Bước học"><button data-m="xem">① Xem cách viết</button><button data-m="to">② Tô từng nét</button><button data-m="tu">③ Tự viết</button></div>'+
   '<p class="tip">'+X.tip+'</p>'+
   '<p class="msg" id="msg" aria-live="polite">&nbsp;</p>'+
@@ -777,7 +861,7 @@ function kidEars(){kidHello();
 }
 function render(){
   var h=location.hash.slice(1),mb=/^bai-([it])$/.exec(h),mv=/^viet-([it])$/.exec(h);
-  if(window.NTH)NTH.stop();tok++;document.body.classList.remove('fit');
+  hush();tok++;document.body.classList.remove('fit');
   var inner=!!(mb||mv||h==='duong-ke');backB.hidden=!inner;allA.hidden=inner;
   if(mb){DK=null;deck(mb[1])}else if(mv){mode='xem';letter(mv[1])}else if(h==='duong-ke')lines();else home();
   kidTiles();kidEars();
@@ -785,7 +869,7 @@ function render(){
 }
 backB.onclick=function(){go('')};
 window.addEventListener('hashchange',render);
-showStars();showSnd();render();
+showStars();showSnd();showMic();render();
 })();
 </script>
 <script>if('serviceWorker' in navigator)navigator.serviceWorker.register('../sw.js',{scope:'../'}).catch(function(){});</script>

@@ -106,6 +106,12 @@ Gợi ý cho mẹ, ô gập “Lên tiểu học: Lớp 1 – Lớp 5 · sắp c
   cô nói như cô giáo ngồi cạnh: **trang giới thiệu đầu mỗi phần** (`intro()`: “Phần hai: Tìm tranh. Sau đây cô đưa ra các bức tranh… bấm nút đúng màu xanh / sai màu đỏ”, đầu bài gọi tên bé),
   Tìm tranh = 1 tranh / trang + nút ✔ / ✖, cô **đánh vần** mọi từ (`spellSyl`: “tờ, i, ti. vờ, i, vi”, “quờ, a, qua, hỏi, quả”, phụ âm ghép ch kh ng ngh…).
   Giọng đọc nghe “bé” thành “bố” → `say()` của trang đổi “bé” → “con” khi đọc (chữ trên màn vẫn “Bé”); vì vậy không dùng chữ “bé” với nghĩa “nhỏ” trong câu đọc.
+  **22/11 (2) mẹ: cô giáo hoạt hình + bé nói thử.** `CO` = SVG cô giáo (tóc búi, áo tím), mắt chớp; `say()` gắn `body.talking` → miệng mấp máy, xong thì bỏ
+  (`hush()` dừng giọng + nghe khi đổi trang). Cô ở đầu mỗi trang trình chiếu (chạm = nghe lại), to ở trang giới thiệu, cạnh tiêu đề trang viết / đường kẻ.
+  Bé nói: nút 🎤 trên thanh trên (chỉ hiện khi trình duyệt có `SpeechRecognition`, mặc định tắt, `nhc-mic`). Bật thì sau khi cô nói “con đọc theo cô”
+  (trang chữ, tranh khóa, từ, câu, ô dấu vừa chạm) máy tự nghe 7 s (`listen`, vi-VN, 5 phương án), so dễ dãi (`heard`: bỏ dấu, đ→d, y→i, ≥ 60 % tiếng; âm chữ có `ALIAS`).
+  Đúng → khen + viền xanh; không nghe rõ → mời đọc to lại 1 lần; sai → “Con đọc gần đúng rồi! Mình đọc lại cùng cô nhé” (không bao giờ chê). Bị chặn micro → tự tắt, nhắc mẹ.
+  Câu bé nói ghi vào nhật ký giọng đọc (`NTH.log`). Tiếng bé gửi dịch vụ nhận giọng của trình duyệt (Google) — đã ghi trong “Dành cho mẹ”.
   Bài tiếp theo trong vở: thêm vào `LES` + `WR`, ô menu, regex `[it]` trong `render()`.
 
 ## Dự định
