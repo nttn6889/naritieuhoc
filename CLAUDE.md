@@ -9,7 +9,7 @@ Dự án tách khỏi Nari TOPIK (kho `narikoreanbox`, `nari-lop`), chỉ chung 
 
 - Nam San là con gái của chủ kho, 5 tuổi, là nhân vật của trang. Kho công khai: **không đưa ảnh, ngày sinh, trường lớp hay thông tin riêng nào khác của bé**.
 - Người dùng: các mẹ ở Việt Nam, bé chơi bằng ngón tay trên điện thoại / máy tính bảng. Nút to, chữ to, câu ngắn, giọng nhẹ nhàng; có mục “Gợi ý cho mẹ”.
-- Chữ cái dạy theo **âm** của sách Tiếng Việt 1 (bờ, cờ…), không theo tên chữ. Chưa dạy viết chữ, chỉ tô nét / tô số.
+- Chữ cái dạy theo **âm** của sách Tiếng Việt 1 (bờ, cờ…), không theo tên chữ. Viết chữ: chỉ dạy những chữ mẹ gửi vở (20/11: i, t trong `hoc-chu/`), còn lại tô nét / tô số.
 - Mỗi bài một thư mục (`so-6-9/`…), một file `index.html` tự chứa (CSS + JS trong file, font Google Baloo 2 + Nunito). Làm bài mới thì thêm thẻ vào `me/index.html`
   (bỏ thẻ “Sắp có” tương ứng), thêm ô ở trang chủ nếu cần, và có nút 🏠 về `../`.
 - Giọng đọc: **`giong.js` ở gốc** (gắn `<script src="../giong.js">` trước script của trang; hàm `say` của trang gọi `NTH.say(câu, {rate, pitch, done})`).
@@ -88,6 +88,17 @@ Gợi ý cho mẹ, ô gập “Lên tiểu học: Lớp 1 – Lớp 5 · sắp c
   `judge` kiểm tra đi theo đường, phủ ≥ 80 % và **chiều đi** — đi ngược thì xóa, nhắc “bắt đầu ở chấm xanh”) · ③ Tự viết (không có mẫu; so với mẫu và với **mẫu lật gương**,
   giống bản lật hơn thì báo “số bị quay ngược” + `tip`). Trò **Ai đứng đúng?** `#dung-nguoc` (chọn số đúng giữa số thật và số lật gương, 8 câu, nhiều 6 và 9).
   localStorage `nvs-stars`, `nvs-snd`, `nvs-done`. Link `viet-so/#so-6`. Thẻ ở mục Tô nét trang chủ; `so-6-9/#tap-viet` có nút sang đây.
+
+- `hoc-chu/` **Học chữ theo vở** (20/11, mẹ gửi ảnh vở bé đang học: Bài 1 i, Bài 2 t, trang “Làm quen ô li”, mẫu viết i/t có chấm số nét).
+  Menu: Bài 1 i · Bài 2 t · Đường kẻ · Viết chữ i · Viết chữ t (ô “Vở của bé” ở Chơi tự do trang chủ, 2 thẻ trong `me/`).
+  Bài đọc `#bai-i|bai-t` (bảng `LES`, đi như trang vở): Nhận biết (in thường / in hoa / viết thường = nét SVG / viết hoa = font Dancing Script, tranh khóa, 2 câu lục bát
+  **Nari tự viết**) · Tìm tranh có chữ · Luyện đọc (i + 6 dấu; t ghép i a o ô ơ e ê y × 6 dấu, bỏ tõ tỡ tỹ tọ tẹ như vở) · (t) Đọc từ + câu · Nối từ với tranh · Tô đám mây có chữ → ★, rồi sang tập viết.
+  Không chép từ / câu / thơ của vở, chỉ theo cấu trúc bài.
+  Tập viết `#viet-i|viet-t` (bảng `WR`): **ô li** khung 100 × 146, mỗi li 25, đường kẻ 1–5 ở y 125/100/75/50/25 (số đường kẻ in bên trái), cây trái / nhà phải.
+  i cao 2 li: hất (đk2→3) · móc ngược (đk3→1→2) · dấu chấm (nét `dot`, chạm là được). t cao 3 li: hất · lia lên đk4, móc ngược xuống đk1 lên đk2 · nét ngang trên đk3.
+  ① xem (số thứ tự nét đỏ ở chỗ đặt bút) ② tô từng nét (judge như viet-so, ngưỡng nhỏ hơn) ③ tự viết (so mẫu, mẫu lật gương = móc quay sai, i thiếu chấm thì nhắc).
+  `#duong-ke`: 8 câu chạm đúng đường kẻ n, 4 câu đầu có số, sau tự đếm từ dưới lên. localStorage `nhc-stars`, `nhc-snd`, `nhc-done` (i, t, dk), `nhc-vdone`.
+  Bài tiếp theo trong vở: thêm vào `LES` + `WR`, ô menu, regex `[it]` trong `render()`.
 
 ## Dự định
 Vần có âm cuối (an, am…) · chữ ghép (ch, nh, ng, gh, ngh…) · số 1–20 · chữ / số dễ nhầm (b–d, p–q, 2–5) · phiếu tô in A4.

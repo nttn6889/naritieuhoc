@@ -58,6 +58,9 @@ a:focus-visible,button:focus-visible{outline:4px solid var(--blue);outline-offse
 .t-so{background:var(--orange-bg);border-color:#F9C3A0;box-shadow:0 6px 0 #F3A877}.t-so b{color:#B8501A}
 .t-chu{background:var(--blue-bg);border-color:#A9CBF7;box-shadow:0 6px 0 #86B4F0}.t-chu b{color:#1F5FB4}
 .t-van{background:var(--green-bg);border-color:#9EDFBC;box-shadow:0 6px 0 #74CC9E}.t-van b{color:#18794A}
+.t-vo{background:#FFE6EE;border-color:#F5B5C8;box-shadow:0 6px 0 #EE93AE}.t-vo b{color:#B23A5E}
+.tiles .tile:last-child:nth-child(odd){grid-column:1/-1}
+@media (min-width:760px){.tiles{grid-template-columns:repeat(5,minmax(0,1fr))}.tiles .tile:last-child:nth-child(odd){grid-column:auto}}
 .t-viet{background:var(--gold-bg);border-color:#EED48F;box-shadow:0 6px 0 #E2BE62}.t-viet b{color:#8A6510}
 .pic{flex:1;display:flex;align-items:center;justify-content:center;gap:2px;position:relative;flex-direction:column}
 .t-so .pic{flex-direction:row}
@@ -215,6 +218,9 @@ footer .sl{font-family:var(--f-logo);font-size:19px;color:var(--purple);font-wei
       </a>
       <a class="tile t-van" href="chu-cai/#danh-van" data-say="Đánh vần. Bờ, a, ba">
         <span class="pic"><span class="big sm"><span style="color:var(--blue)">b</span><i>+</i><span style="color:var(--orange)">a</span></span><span class="pic-s">= ba</span></span><b>Đánh vần</b>
+      </a>
+      <a class="tile t-vo" href="hoc-chu/" data-say="Học chữ theo vở. Chữ i, chữ tờ">
+        <span class="pic"><span class="big"><span style="color:#E03A3A">i</span><span style="color:#E03A3A">t</span></span></span><b>Vở của bé</b>
       </a>
       <a class="tile t-viet" href="viet-so/" data-say="Tập viết">
         <span class="pic"><span class="big dash">6</span><span class="pen">✏️</span></span><b>Tập viết</b>
