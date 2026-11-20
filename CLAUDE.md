@@ -102,6 +102,10 @@ Gợi ý cho mẹ, ô gập “Lên tiểu học: Lớp 1 – Lớp 5 · sắp c
   1 hàng dấu, 1 từ, 1 câu, 1 câu nối chọn 1 trong 3 tranh, 4 đám mây), ◀ ▶ to, thanh tiến bộ, đúng thì tự sang trang, trang cuối ★ + ✏️ Tập viết.
   Dọc: hàng biểu tượng các phần ở trên; **ngang (≥ 600px): menu các phần bên trái**, ◀ ▶ hai bên. Cỡ chữ / hình theo `cqmin` (`.slide` là container).
   Tập viết, Đường kẻ: `.panel.split` (`.side` lời dặn + nút / `.main` bảng viết) — dọc một cột (order), ngang chia trái / phải.
+  **22/11 mẹ:** chuyển trang chậm lại (đúng → cô nói xong + 2,5 s mới sang), giọng chậm (`rate .72`; giọng mạng `playbackRate .85` trong giong.js),
+  cô nói như cô giáo ngồi cạnh: **trang giới thiệu đầu mỗi phần** (`intro()`: “Phần hai: Tìm tranh. Sau đây cô đưa ra các bức tranh… bấm nút đúng màu xanh / sai màu đỏ”, đầu bài gọi tên bé),
+  Tìm tranh = 1 tranh / trang + nút ✔ / ✖, cô **đánh vần** mọi từ (`spellSyl`: “tờ, i, ti. vờ, i, vi”, “quờ, a, qua, hỏi, quả”, phụ âm ghép ch kh ng ngh…).
+  Giọng đọc nghe “bé” thành “bố” → `say()` của trang đổi “bé” → “con” khi đọc (chữ trên màn vẫn “Bé”); vì vậy không dùng chữ “bé” với nghĩa “nhỏ” trong câu đọc.
   Bài tiếp theo trong vở: thêm vào `LES` + `WR`, ô menu, regex `[it]` trong `render()`.
 
 ## Dự định

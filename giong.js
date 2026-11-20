@@ -89,7 +89,8 @@
       au.onerror = function(){ fail(null, kk); };
       au.onplaying = function(){ if(my === seq){ note(false); log('giọng mạng ' + (s + 1) + ' đang phát'); if(mode() === 'auto') set('nth-vweb', '1'); } };
       au.src = SRC[s] + encodeURIComponent(list[i]);
-      au.playbackRate = o.rate < .9 ? .9 : 1;
+      au.defaultPlaybackRate = au.playbackRate = o.rate < .8 ? .85 : o.rate < .9 ? .9 : 1; /* giọng mạng: cô đọc chậm (trang đặt rate thấp) */
+      try{ au.preservesPitch = true; }catch(e){}
       var p; try{ p = au.play(); }catch(e){ fail(e, kk); return; }
       if(p && p.catch) p.catch(function(e){ fail(e, kk); });
     }
