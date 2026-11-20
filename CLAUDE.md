@@ -98,6 +98,10 @@ Gợi ý cho mẹ, ô gập “Lên tiểu học: Lớp 1 – Lớp 5 · sắp c
   i cao 2 li: hất (đk2→3) · móc ngược (đk3→1→2) · dấu chấm (nét `dot`, chạm là được). t cao 3 li: hất · lia lên đk4, móc ngược xuống đk1 lên đk2 · nét ngang trên đk3.
   ① xem (số thứ tự nét đỏ ở chỗ đặt bút) ② tô từng nét (judge như viet-so, ngưỡng nhỏ hơn) ③ tự viết (so mẫu, mẫu lật gương = móc quay sai, i thiếu chấm thì nhắc).
   `#duong-ke`: 8 câu chạm đúng đường kẻ n, 4 câu đầu có số, sau tự đếm từ dưới lên. localStorage `nhc-stars`, `nhc-snd`, `nhc-done` (i, t, dk), `nhc-vdone`.
+  **21/11 mẹ: bé chưa dùng điện thoại thạo → bài đọc thành trình chiếu** (`slidesOf` / `deck` / `show`): mỗi trang một việc nhỏ (1 dạng chữ, 1 cặp tranh chọn 1,
+  1 hàng dấu, 1 từ, 1 câu, 1 câu nối chọn 1 trong 3 tranh, 4 đám mây), ◀ ▶ to, thanh tiến bộ, đúng thì tự sang trang, trang cuối ★ + ✏️ Tập viết.
+  Dọc: hàng biểu tượng các phần ở trên; **ngang (≥ 600px): menu các phần bên trái**, ◀ ▶ hai bên. Cỡ chữ / hình theo `cqmin` (`.slide` là container).
+  Tập viết, Đường kẻ: `.panel.split` (`.side` lời dặn + nút / `.main` bảng viết) — dọc một cột (order), ngang chia trái / phải.
   Bài tiếp theo trong vở: thêm vào `LES` + `WR`, ô menu, regex `[it]` trong `render()`.
 
 ## Dự định

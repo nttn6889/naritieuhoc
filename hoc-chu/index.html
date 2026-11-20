@@ -127,13 +127,7 @@ details.mom>summary::-webkit-details-marker{display:none}
 .match button.ok{background:var(--good-bg);box-shadow:0 3px 0 #b5e7cc}
 .match button .n{position:absolute;top:-8px;left:-8px;width:26px;height:26px;border-radius:50%;background:var(--good);color:#fff;font:800 15px/26px var(--f-num)}
 .match button.no{background:#FFE3E7}
-.clouds{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px 6px;width:100%;max-width:520px}
-.cloud{border:0;background:none;padding:0;position:relative;aspect-ratio:3/2;display:grid;place-items:center}
-.cloud svg{position:absolute;inset:0;width:100%;height:100%}
-.cloud svg path{fill:#fff;stroke:#7F95BD;stroke-width:3;transition:fill .3s}
-.cloud span{position:relative;font:800 clamp(30px,9vw,46px)/1 var(--f-num);top:12%}
-.cloud:nth-child(even){transform:translateY(10px)}
-.cloud.no svg path{fill:#FFE3E7}
+
 
 /* bảng viết ô li */
 .seg{display:inline-flex;background:var(--bg);border-radius:999px;padding:4px;gap:4px;flex-wrap:wrap;justify-content:center}
@@ -155,6 +149,100 @@ svg.pad{overflow:visible}
 .msg{min-height:1.6em;font-weight:800;font-size:17px}
 .msg.good{color:var(--good)} .msg.bad{color:var(--bad)}
 .tip{background:var(--orange-bg);border-radius:16px;padding:10px 14px;font-weight:800;color:#8A3A0E;max-width:520px}
+
+/* ===== trình chiếu (21/11): mỗi trang một việc nhỏ; dọc = biểu tượng các phần ở trên, ngang = menu bên trái ===== */
+body.fit{padding-block:10px}
+body.fit .wrap{height:calc(100dvh - 20px);max-width:1100px;gap:10px}
+body.fit #view{flex:1;min-height:0;display:flex;flex-direction:column}
+.deck{flex:1;min-height:0;display:flex;flex-direction:column;gap:10px}
+.secs{display:flex;gap:6px;overflow-x:auto;flex:none;padding:2px 2px 6px;scrollbar-width:none}
+.secs button{flex:none;border:0;background:var(--card);border-radius:16px;min-width:52px;height:52px;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 2px 0 var(--line);padding:0 10px;font-weight:800}
+.secs .si{font-size:26px;line-height:1}
+.secs .sl{display:none;font-size:15px}
+.secs button.on{background:var(--ink);color:#fff}
+.secs button.on .sl{display:inline}
+.secs .wr{background:var(--gold-bg)}
+.stage{flex:1;min-height:0;background:var(--card);border-radius:26px;box-shadow:0 4px 0 var(--line);display:grid;
+  grid-template-columns:1fr 1fr;grid-template-rows:auto minmax(0,1fr) auto;grid-template-areas:"bar bar" "sl sl" "pv nx";padding:10px 12px 12px;gap:8px}
+.sbar{grid-area:bar;height:8px;background:var(--bg);border-radius:9px;overflow:hidden}
+.sbar i{display:block;height:100%;width:0;background:var(--star);border-radius:9px;transition:width .3s}
+.slide{grid-area:sl;min-height:0;min-width:0;container-type:size;display:flex;flex-direction:column;align-items:center;gap:6px}
+.nav{grid-area:pv;justify-self:start;border:0;width:84px;height:66px;border-radius:22px;font-size:30px;background:var(--bg);box-shadow:0 4px 0 var(--line);color:var(--ink)}
+.nav.next{grid-area:nx;justify-self:end;width:120px;background:var(--orange);color:#fff;box-shadow:0 4px 0 #C25A1E}
+.nav:active{transform:translateY(3px);box-shadow:none}
+.shead{display:flex;align-items:center;gap:8px;justify-content:center;flex:none;min-height:44px}
+.shead .q{font:800 clamp(20px,6cqmin,30px)/1.2 var(--f-num)}
+.shead .ear{margin:0}
+.sbody{flex:1;min-height:0;width:100%;display:flex;align-items:center;justify-content:center;gap:4cqmin;flex-wrap:wrap}
+.sbody.col{flex-direction:column;flex-wrap:nowrap}
+.glyph{border:0;border-radius:28px;width:min(70cqw,62cqh);height:min(70cqw,62cqh);display:grid;place-items:center;
+  font:800 calc(min(70cqw,62cqh)*.72)/1 var(--f-num);color:var(--red);background:#FFF4C2;box-shadow:0 4px 0 rgba(0,0,0,.08);padding:0}
+.glyph.g+.lab{color:#8A6510}
+.glyph.h{font-family:var(--f-hand);font-weight:700;background:#EAF6D8}
+.glyph.svg{background:#FFE0EA}
+.glyph.svg svg{height:88%;width:auto}
+.lab{font-weight:800;color:var(--soft);font-size:clamp(18px,6cqmin,28px)}
+.keybig{border:0;background:var(--gold-bg);border-radius:28px;padding:3cqmin 6cqmin;display:flex;flex-direction:column;align-items:center;gap:1cqmin;box-shadow:0 4px 0 #EED48F}
+.keybig .e{font-size:min(40cqh,44cqw);line-height:1.05}
+.keybig b{font:800 min(14cqh,13cqw)/1.1 var(--f-num)}
+.rhymebig{border:0;background:var(--bg);border-radius:24px;padding:4cqmin 5cqmin;font-weight:800;font-size:clamp(19px,min(7cqh,6cqw),40px);line-height:1.5}
+.pk{--s:min(44cqw,70cqh);width:var(--s);height:calc(var(--s)*1.05);border:0;border-radius:26px;background:var(--bg);box-shadow:0 4px 0 var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;position:relative;padding:0}
+.pk .e{font-size:calc(var(--s)*.5);line-height:1.05}
+.pk .word{font:800 calc(var(--s)*.14)/1.1 var(--f-num)}
+@container (orientation:portrait){.pk{--s:min(66cqw,42cqh)}}
+.pk.ok,.mpic.ok{background:var(--good-bg);box-shadow:0 4px 0 #b5e7cc}
+.pk.ok::after,.mpic.ok::after{content:"✓";position:absolute;top:6px;right:12px;color:var(--good);font:800 26px/1 var(--f-body)}
+.pk.no,.mpic.no{background:#FFE3E7}
+.tg{display:grid;grid-template-columns:repeat(3,1fr);gap:3cqmin;width:100%;max-width:min(100%,130cqh)}
+.tg button,.tg .nil{border:0;height:min(36cqh,28cqw);border-radius:20px;background:var(--bg);box-shadow:0 4px 0 var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:0}
+.tg .nil{box-shadow:none;background:repeating-linear-gradient(45deg,#F4F7FC,#F4F7FC 6px,#fff 6px,#fff 12px)}
+.tg small{font:800 min(7cqh,6cqw)/1 var(--f-num);color:var(--red)}
+.tg b{font:800 min(17cqh,13cqw)/1 var(--f-num)}
+.tg button.say{background:#FFF8DC;outline:4px solid var(--star)}
+.tg button.seen{background:var(--good-bg)}
+@container (orientation:landscape){.tg{grid-template-columns:repeat(6,1fr);max-width:100%}.tg button,.tg .nil{height:min(56cqh,16cqw)}.tg b{font-size:min(24cqh,8cqw)}.tg small{font-size:min(10cqh,4cqw)}}
+.semoji{border:0;background:none;font-size:min(30cqh,34cqw);line-height:1.1;padding:0}
+.toks{display:flex;gap:2cqmin;flex-wrap:wrap;justify-content:center}
+.tok{border:0;background:var(--bg);border-radius:18px;padding:2cqmin 3cqmin;font:800 min(13cqh,11cqw)/1.1 var(--f-num);box-shadow:0 4px 0 var(--line)}
+.mword{border:0;background:var(--bg);border-radius:22px;padding:1cqmin 6cqmin;font:800 min(15cqh,14cqw)/1.2 var(--f-num);box-shadow:0 4px 0 var(--line)}
+.mrow{display:flex;gap:4cqmin;justify-content:center}
+.mpic{border:0;width:min(28cqw,44cqh);height:min(28cqw,44cqh);border-radius:24px;background:#E9F2FF;box-shadow:0 4px 0 var(--line);font-size:calc(min(28cqw,44cqh)*.6);line-height:1;position:relative;padding:0}
+.clouds{display:grid;grid-template-columns:repeat(2,auto);gap:3cqmin 5cqmin;justify-content:center}
+@container (orientation:landscape){.clouds{grid-template-columns:repeat(4,auto)}}
+.cloud{border:0;background:none;padding:0;position:relative;width:min(42cqw,50cqh);aspect-ratio:3/2;display:grid;place-items:center}
+@container (orientation:landscape){.cloud{width:min(22cqw,90cqh)}}
+.cloud svg{position:absolute;inset:0;width:100%;height:100%}
+.cloud svg path{fill:#fff;stroke:#7F95BD;stroke-width:3;transition:fill .3s}
+.cloud span{position:relative;top:12%;font:800 1px/1 var(--f-num);font-size:min(16cqw,19cqh)}
+@container (orientation:landscape){.cloud span{font-size:min(9cqw,34cqh)}}
+.cloud.no svg path{fill:#FFE3E7}
+.bigstar{font-size:min(34cqh,40cqw);line-height:1;color:var(--star)}
+.endp{font:800 min(10cqh,9cqw)/1.2 var(--f-num)}
+.btn.big{font-size:20px;padding:16px 24px}
+
+/* tập viết / đường kẻ: dọc xếp một cột; ngang chia trái (lời dặn, nút) – phải (bảng viết) */
+.split .side,.split .main{display:contents}
+.split .board{order:4}.split .msg,.split .prog{order:5}.split #ctl{order:6}.split .steps{order:7}.split details{order:8}
+
+@media (orientation:landscape) and (min-width:600px){
+  .top .back,.top .pill{height:46px;min-width:46px;font-size:21px}
+  .deck{flex-direction:row}
+  .secs{flex-direction:column;overflow-x:hidden;overflow-y:auto;width:clamp(150px,22vw,230px);padding:2px 6px 2px 2px}
+  .secs{gap:5px}
+  .secs button{justify-content:flex-start;height:auto;min-height:42px;padding:4px 12px;width:100%}
+  .secs .si{font-size:22px}
+  .secs .sl{display:inline}
+  .stage{grid-template-columns:auto minmax(0,1fr) auto;grid-template-rows:auto minmax(0,1fr);grid-template-areas:"bar bar bar" "pv sl nx"}
+  .nav{align-self:center;width:66px;height:96px}
+  .nav.next{width:76px}
+  .wrap{max-width:1100px}
+  .split{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px 18px;height:calc(100dvh - 100px);min-height:300px}
+  .split .side{display:flex;flex-direction:column;gap:10px;align-items:center;overflow-y:auto;max-height:100%;min-height:0;align-self:stretch}
+  .split .main{display:flex;align-items:center;justify-content:center;height:100%;min-height:0}
+  .split .pad{width:calc((100dvh - 150px)*100/146);height:calc(100dvh - 150px);max-height:560px;max-width:384px;min-height:200px}
+  .split .board{height:100%;align-items:center}
+  .split .mark{align-self:stretch}
+}
 
 .win{position:fixed;inset:0;display:grid;place-items:center;background:rgba(34,48,77,.45);z-index:20;padding:20px}
 .win .box{background:var(--card);border-radius:30px;padding:24px 22px;max-width:340px;width:100%;text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center;animation:pop .35s}
@@ -213,16 +301,16 @@ var SND={i:'i',t:'tờ',l:'lờ',m:'mờ',k:'ca',v:'vờ',s:'sờ',h:'hờ',đ:'
 var LES={
  i:{n:1,up:'I',key:['bút chì','✏️'],
    rhyme:['Chữ i bé nhỏ xinh xinh','Trên đầu một chấm, một mình đi chơi.'],
-   pics:[['ti vi','📺',1],['con cá','🐟',0],['bút chì','✏️',1],['quả bí','🎃',1],['quả cam','🍊',0],['con khỉ','🐒',1]],
-   clouds:'iltiyikm'},
+   yes:[['ti vi','📺'],['bút chì','✏️'],['quả bí','🎃'],['con khỉ','🐒']],no:[['con cá','🐟'],['quả cam','🍊'],['con gà','🐔'],['bông hoa','🌸']],
+   clouds:['ilkt','yimi']},
  t:{n:2,up:'T',key:['quả táo','🍎'],
    rhyme:['Chữ t cao hơn chữ i','Thêm gạch ngang nhỏ, bé ghi nhớ liền.'],
-   pics:[['con tôm','🦐',1],['con gà','🐔',0],['cái tai','👂',1],['quả táo','🍎',1],['bông hoa','🌸',0],['con tàu','🚢',1]],
+   yes:[['con tôm','🦐'],['quả táo','🍎'],['cái tai','👂'],['con tàu','🚢']],no:[['con gà','🐔'],['bông hoa','🌸'],['con cá','🐟'],['quả cam','🍊']],
    vow:['i','a','o','ô','ơ','e','ê','y'],skip:['tõ','tỡ','tỹ','tọ','tẹ'],
    words:[['ti vi','📺'],['tò te','🎺'],['tô to','🥣'],['tí ti','🤏'],['tỉ tê','💬'],['tí tị','👶']],
    sents:[['Ti vi to.','📺'],['Tò te tò te.','🎺'],['Tô to tí ti.','🥣']],
    match:[['ti vi','📺'],['tò te','🎺'],['tô to','🥣'],['tí ti','🤏']],
-   clouds:'tltđthli'}
+   clouds:['tlđt','hitl']}
 };
 var TONES=[['ngang','',''],['huyền','̀','ˋ'],['sắc','́','ˊ'],['hỏi','̉','?'],['ngã','̃','~'],['nặng','̣','•']];
 function tone(v,k){return (v+TONES[k][1]).normalize('NFC')}
@@ -337,119 +425,98 @@ function momHome(){
   '</ul>';
 }
 
-/* ---------- bài đọc ---------- */
-var LS=null;
-function stepsOf(ch){
-  var s=[['nhan','Nhận biết'],['tranh','Tìm tranh'],['doc','Luyện đọc']];
-  if(LES[ch].words)s.push(['tu','Đọc từ'],['noi','Nối']);
-  s.push(['may','Đám mây']);
-  return s;
+/* ---------- bài đọc: trình chiếu, mỗi trang một việc nhỏ ----------
+   Dọc: hàng biểu tượng các phần ở trên, ◀ ▶ to ở dưới. Ngang: menu các phần bên trái, ◀ ▶ hai bên trang. */
+var SEC=[['nhan','👀','Nhận biết'],['tranh','🖼️','Tìm tranh'],['doc','📖','Luyện đọc'],['tu','🔤','Đọc từ'],['noi','🔗','Nối'],['may','☁️','Đám mây'],['xong','⭐','Xong bài']];
+var DK=null,tok=0;
+function slidesOf(ch){
+  var X=LES[ch],S=[];
+  [['g',ch,'in thường'],['g',X.up,'in hoa'],['svg',ch,'viết thường'],['h',X.up,'viết hoa']].forEach(function(f){S.push({sec:'nhan',t:'form',f:f})});
+  S.push({sec:'nhan',t:'key'},{sec:'nhan',t:'rhyme'});
+  X.yes.forEach(function(y,k){S.push({sec:'tranh',t:'pick2',a:shuffle([[y,1],[X.no[k],0]])})});
+  (X.vow||[ch]).forEach(function(v){S.push({sec:'doc',t:'tones',v:v})});
+  if(X.words){X.words.forEach(function(w){S.push({sec:'tu',t:'word',w:w})});X.sents.forEach(function(s){S.push({sec:'tu',t:'sent',s:s})})}
+  if(X.match)X.match.forEach(function(m,i){var o=shuffle(X.match.map(function(x,j){return j}).filter(function(j){return j!==i})).slice(0,2);S.push({sec:'noi',t:'match',i:i,o:shuffle(o.concat([i]))})});
+  X.clouds.forEach(function(c){S.push({sec:'may',t:'cloud',c:shuffle(Array.from(c))})});
+  S.push({sec:'xong',t:'end'});
+  return S;
 }
-function finish(ch){done[ch]=1;save('nhc-done',done);LS=null;
-  win('Bé học xong bài '+LES[ch].n+'. Giờ mình tập viết chữ '+ch+' nhé!',function(){go('viet-'+ch)},'✏️ Tập viết ›')}
-function nextStep(ch){var st=stepsOf(ch);if(LS.step>=st.length-1){finish(ch);return}LS.step++;lesson(ch);window.scrollTo(0,0)}
-function lesson(ch,quiet){
-  if(!LS||LS.ch!==ch)LS={ch:ch,step:0};
-  var X=LES[ch],steps=stepsOf(ch),st=steps[LS.step][0],sn=SND[ch];
-  var h='<section class="panel"><h2 data-say="Bài '+X.n+'. Chữ '+sn+'">Bài '+X.n+': '+X.up+' – '+ch+'</h2>'+
-    '<div class="stepper">'+steps.map(function(s,i){return '<button data-k="'+i+'" class="'+(i===LS.step?'on':i<LS.step?'ok':'')+'">'+(i+1)+'. '+s[1]+'</button>'}).join('')+
-    '<button data-v="1">✏️ Tập viết</button></div>';
-  var nextBtn='<div class="row"><button class="btn" id="lNext">Tiếp ›</button></div>';
-  if(st==='nhan'){
-    var F=[['g',ch,'in thường'],['g',X.up,'in hoa'],['g svg',letterSVG(ch),'viết thường'],['g h',X.up,'viết hoa']];
-    h+='<p class="ask">Đây là chữ '+ch+'</p>'+
-      '<div class="forms">'+F.map(function(f,i){return '<button class="form" data-i="'+i+'" style="background:'+['#FFF4C2','#D6ECFF','#FFE0EA','#EAF6D8'][i]+'"><span class="'+f[0].replace(' svg','')+'">'+f[1]+'</span><small>'+f[2]+'</small></button>'}).join('')+'</div>'+
-      '<button class="keypic" id="kp"><span class="e">'+X.key[1]+'</span><b>'+hl(X.key[0],ch)+'</b></button>'+
-      '<button class="rhyme" id="rh">'+X.rhyme.map(function(l){return hl(l,ch)}).join('<br>')+'</button>'+nextBtn;
-  }else if(st==='tranh'){
-    var need=X.pics.filter(function(p){return p[2]}).length;
-    h+='<p class="ask">Tranh nào có chữ '+ch+'?</p><p class="hint">Bé chạm vào tất cả tranh có chữ '+ch+'.</p>'+
-      '<div class="words">'+X.pics.map(function(p,i){return '<button class="pic" data-i="'+i+'"><span class="e">'+p[1]+'</span><span class="word">'+p[0]+'</span></button>'}).join('')+'</div>'+
-      '<p class="prog" id="prog">Đã tìm được 0 / '+need+'</p>';
-  }else if(st==='doc'){
-    if(!X.vow){
-      h+='<p class="ask">Bé đọc chữ '+ch+' với dấu</p><p class="hint">Chạm vào từng ô để nghe cô đọc.</p>'+
-        '<table class="tbl tones1"><tr>'+TONES.map(function(t){return '<th class="tn">'+(t[2]||'&nbsp;')+'</th>'}).join('')+'</tr><tr>'+
-        TONES.map(function(t,k){return '<td><button data-v="'+ch+'" data-k="'+k+'">'+(k?'<span class="r">'+tone(ch,k)+'</span>':'<span class="r">'+ch+'</span>')+'</button></td>'}).join('')+'</tr></table>'+
-        '<div class="row"><button class="btn light" id="rAll">🔊 Cô đọc cả hàng</button></div>'+nextBtn;
-    }else{
-      h+='<p class="ask">Bé ghép chữ '+ch+' với chữ khác</p><p class="hint">Chạm vào từng ô để nghe cô đánh vần.</p>'+
-        '<div style="overflow-x:auto;max-width:100%"><table class="tbl"><tr><th></th>'+X.vow.map(function(v){return '<th>'+v+'</th>'}).join('')+'</tr>'+
-        TONES.map(function(t,k){return '<tr><th class="tn">'+(t[2]||'&nbsp;')+'</th>'+X.vow.map(function(v){var syl=ch+tone(v,k);
-          return '<td>'+(X.skip.indexOf(syl)>=0?'<span class="nil"></span>':'<button data-v="'+v+'" data-k="'+k+'"><span class="r">'+ch+'</span>'+tone(v,k)+'</button>')+'</td>'}).join('')+'</tr>'}).join('')+'</table></div>'+nextBtn;
-    }
-  }else if(st==='tu'){
-    h+='<p class="ask">Bé đọc từ</p><p class="hint">Chạm vào từ để nghe cô đánh vần rồi đọc.</p>'+
-      '<div class="words">'+X.words.map(function(w,i){return '<button class="pic rw" data-i="'+i+'"><span class="e">'+w[1]+'</span><span class="word">'+hl(w[0],ch)+'</span></button>'}).join('')+'</div>'+
-      '<p class="ask">Bé đọc câu</p><div class="sents">'+X.sents.map(function(s,i){return '<button class="sent" data-i="'+i+'"><span class="e">'+s[1]+'</span><span>'+hl(s[0],ch)+'</span></button>'}).join('')+'</div>'+nextBtn;
-  }else if(st==='noi'){
-    if(!LS.mp)LS.mp=shuffle(X.match.map(function(m,i){return i}));
-    h+='<p class="ask">Nối từ với tranh</p><p class="hint">Bé chạm vào một từ, rồi chạm vào tranh đúng.</p><div class="match">'+
-      X.match.map(function(m,i){var j=LS.mp[i];return '<button class="mw" data-i="'+i+'">'+hl(m[0],ch)+'</button><button class="mp" data-i="'+j+'" aria-label="Tranh">'+X.match[j][1]+'</button>'}).join('')+'</div>';
-  }else if(st==='may'){
-    if(!LS.cl)LS.cl=shuffle(Array.from(X.clouds));
-    var need2=LS.cl.filter(function(c){return c===ch}).length;
-    h+='<p class="ask">Tô màu đám mây có chữ '+ch+'</p><p class="hint">Bé chạm vào tất cả đám mây có chữ '+ch+'.</p>'+
-      '<div class="clouds">'+LS.cl.map(function(c){return '<button class="cloud" data-v="'+c+'"><svg viewBox="0 0 120 80" aria-hidden="true"><path d="M28 72 H94 A17 17 0 0 0 97 38 A23 23 0 0 0 56 22 A20 20 0 0 0 22 40 A16 16 0 0 0 28 72Z"/></svg><span>'+c+'</span></button>'}).join('')+'</div>'+
-      '<p class="prog" id="prog">Đã tô 0 / '+need2+'</p>';
-  }
-  view.innerHTML=h+'</section>';
-
-  view.querySelectorAll('.stepper button').forEach(function(b){b.onclick=function(){if(b.dataset.v){go('viet-'+ch);return}LS.step=+b.dataset.k;lesson(ch)}});
-  var nb=$('#lNext');if(nb)nb.onclick=function(){nextStep(ch)};
-  if(st==='nhan'){
-    var names=['in thường','in hoa','viết thường','viết hoa'];
-    view.querySelectorAll('.form').forEach(function(b){b.onclick=function(){
-      view.querySelectorAll('.form').forEach(function(x){x.classList.remove('say')});b.classList.add('say');say('Chữ '+sn+' '+names[+b.dataset.i])}});
-    $('#kp').onclick=function(){say(X.key[0]+'. '+X.key[0]+' có chữ '+sn+'.')};
-    $('#rh').onclick=function(){say(spk(X.rhyme.join(' ')))};
-    if(!quiet)say('Bài '+X.n+'. Chữ '+sn+'. Đây là chữ '+sn+'. Bé nghe nhé. '+spk(X.rhyme.join(' ')));
-  }else if(st==='tranh'){
-    var found=0,need=X.pics.filter(function(p){return p[2]}).length;
-    say('Tranh nào có chữ '+sn+'?');
-    view.querySelectorAll('.pic').forEach(function(b){b.onclick=function(){
-      var p=X.pics[+b.dataset.i];if(b.classList.contains('ok'))return;
-      if(p[2]){b.classList.add('ok');$('.word',b).innerHTML=hl(p[0],ch);found++;$('#prog').textContent='Đã tìm được '+found+' / '+need;
-        if(found===need){say(p[0]+' có chữ '+sn+'. Giỏi quá!');setTimeout(function(){nextStep(ch)},1800)}else say(p[0]+' có chữ '+sn+'.')}
-      else{b.classList.add('no');shakeEl(b);say(p[0]+' không có chữ '+sn+'.');setTimeout(function(){b.classList.remove('no')},900)}
-    }});
-  }else if(st==='doc'){
-    var cells=[].slice.call(view.querySelectorAll('.tbl button'));
-    function spell(b,cb){var v=b.dataset.v,k=+b.dataset.k,t;
-      cells.forEach(function(x){x.classList.remove('say')});b.classList.add('say','seen');
-      if(!X.vow)t=k?v+'. '+TONES[k][0]+'. '+tone(v,k)+'.':v+'.';
-      else{var sy=ch+v;t=sn+'. '+(v==='y'?'i':v)+'. '+sy+'.'+(k?' '+TONES[k][0]+'. '+ch+tone(v,k)+'.':'')}
-      say(t,function(){b.classList.remove('say');cb&&cb()})}
-    cells.forEach(function(b){b.onclick=function(){spell(b)}});
-    var ra=$('#rAll');if(ra)ra.onclick=function(){var i=0;(function n(){if(i<cells.length)spell(cells[i++],function(){setTimeout(n,200)})})()};
-    if(!quiet)say(X.vow?'Bé ghép chữ '+sn+' với chữ khác. Chạm vào từng ô để nghe nhé.':'Bé đọc chữ i với dấu. Chạm vào từng ô để nghe nhé.');
-  }else if(st==='tu'){
-    view.querySelectorAll('.rw').forEach(function(b){b.onclick=function(){var w=X.words[+b.dataset.i][0];
-      b.classList.add('say');say(w.split(' ').map(spellSyl).join('. ')+'. '+w+'.',function(){b.classList.remove('say')})}});
-    view.querySelectorAll('.sent').forEach(function(b){b.onclick=function(){b.classList.add('say');say(X.sents[+b.dataset.i][0],function(){b.classList.remove('say')})}});
-    if(!quiet)say('Bé đọc từ nhé. Chạm vào từ để nghe cô đánh vần.');
-  }else if(st==='noi'){
-    var sel=null,pairs=0;
-    say('Nối từ với tranh. Bé chạm vào một từ, rồi chạm vào tranh đúng.');
-    view.querySelectorAll('.match button').forEach(function(b){b.onclick=function(){
-      if(b.classList.contains('ok'))return;
-      if(b.classList.contains('mw'))say(X.match[+b.dataset.i][0]);
-      if(!sel||sel.className.split(' ')[0]===b.className.split(' ')[0]){if(sel)sel.classList.remove('sel');sel=b;b.classList.add('sel');return}
-      var a=sel;sel=null;a.classList.remove('sel');
-      if(a.dataset.i===b.dataset.i){pairs++;[a,b].forEach(function(x){x.classList.add('ok');x.insertAdjacentHTML('beforeend','<span class="n">'+pairs+'</span>')});
-        if(pairs===X.match.length){say('Đúng rồi! Giỏi quá!');setTimeout(function(){nextStep(ch)},1500)}else say('Đúng rồi!')}
-      else{b.classList.add('no');shakeEl(b);say('Chưa đúng, bé thử lại nhé.');setTimeout(function(){b.classList.remove('no')},900)}
-    }});
-  }else if(st==='may'){
-    var got=0,need2=LS.cl.filter(function(c){return c===ch}).length,COLS=['#FFD36B','#9FD8FF','#FFB3C7','#A8E6A3','#D6B8FF'];
-    say('Bé tô màu đám mây có chữ '+sn+'.');
-    view.querySelectorAll('.cloud').forEach(function(b){b.onclick=function(){
-      if(b.dataset.ok)return;
-      if(b.dataset.v===ch){b.dataset.ok=1;$('path',b).style.fill=COLS[got%COLS.length];got++;$('#prog').textContent='Đã tô '+got+' / '+need2;
-        if(got===need2)setTimeout(function(){finish(ch)},700);else say(sn)}
-      else{b.classList.add('no');shakeEl(b);say('Đây là chữ '+SND[b.dataset.v]+'.');setTimeout(function(){b.classList.remove('no')},900)}
-    }});
-  }
+function deck(ch){
+  if(!DK||DK.ch!==ch)DK={ch:ch,i:0,S:slidesOf(ch)};
+  document.body.classList.add('fit');
+  var secs=SEC.filter(function(s){return DK.S.some(function(x){return x.sec===s[0]})});
+  view.innerHTML='<div class="deck"><nav class="secs" aria-label="Các phần của bài">'+
+    secs.map(function(s){return '<button data-s="'+s[0]+'" aria-label="'+s[2]+'"><span class="si">'+s[1]+'</span><span class="sl">'+s[2]+'</span></button>'}).join('')+
+    '<button class="wr" data-w="1" aria-label="Tập viết"><span class="si">✏️</span><span class="sl">Tập viết</span></button></nav>'+
+    '<div class="stage"><div class="sbar"><i id="sbar"></i></div><button class="nav prev" id="prev" aria-label="Trang trước">◀</button>'+
+    '<div class="slide" id="slide"></div><button class="nav next" id="next" aria-label="Trang sau">▶</button></div></div>';
+  view.querySelectorAll('.secs button').forEach(function(b){b.onclick=function(){
+    if(b.dataset.w){go('viet-'+ch);return}
+    for(var i=0;i<DK.S.length;i++)if(DK.S[i].sec===b.dataset.s){DK.i=i;break}
+    show();say(b.getAttribute('aria-label'))}});
+  $('#prev').onclick=function(){if(DK.i>0){DK.i--;show()}};
+  $('#next').onclick=function(){if(DK.i<DK.S.length-1){DK.i++;show()}};
+  show();
+}
+function advance(my){setTimeout(function(){if(my===tok&&DK&&DK.i<DK.S.length-1&&document.getElementById('slide')){DK.i++;show()}},1500)}
+function show(){
+  if(window.NTH)NTH.stop();
+  var my=++tok,ch=DK.ch,X=LES[ch],sn=SND[ch],s=DK.S[DK.i],q='',b='',sp='',col=false;
+  if(s.t==='form'){var f=s.f;col=true;q='Chữ '+ch;sp='Chữ '+sn+' '+f[2]+'.';
+    b='<button class="glyph '+f[0]+'" id="tap" aria-label="'+f[2]+'">'+(f[0]==='svg'?letterSVG(ch):f[1])+'</button><p class="lab">'+f[2]+'</p>';}
+  else if(s.t==='key'){col=true;q='Chữ '+ch;sp=X.key[0]+'. '+X.key[0]+' có chữ '+sn+'.';
+    b='<button class="keybig" id="tap"><span class="e">'+X.key[1]+'</span><b>'+hl(X.key[0],ch)+'</b></button>';}
+  else if(s.t==='rhyme'){q='Bé nghe nhé';sp=spk(X.rhyme.join(' '));
+    b='<button class="rhymebig" id="tap">'+X.rhyme.map(function(l){return hl(l,ch)}).join('<br>')+'</button>';}
+  else if(s.t==='pick2'){q='Tranh nào có chữ '+ch+'?';sp='Tranh nào có chữ '+sn+'?';
+    b=s.a.map(function(p,j){return '<button class="pk'+(s.ok&&p[1]?' ok':'')+'" data-j="'+j+'"><span class="e">'+p[0][1]+'</span><span class="word">'+(s.ok&&p[1]?hl(p[0][0],ch):p[0][0])+'</span></button>'}).join('');}
+  else if(s.t==='tones'){var v=s.v;
+    if(X.vow){q='<span class="r">'+ch+'</span> + '+v;sp=sn+'. '+(v==='y'?'i':v)+'. '+ch+v+'.'}else{q='Chữ '+ch+' với dấu';sp='Bé chạm vào từng chữ để nghe nhé.'}
+    b='<div class="tg">'+TONES.map(function(t,k){var syl=X.vow?ch+tone(v,k):tone(ch,k);
+      return X.skip&&X.skip.indexOf(syl)>=0?'<span class="nil"></span>':'<button data-k="'+k+'"><small>'+(t[2]||'&nbsp;')+'</small><b>'+(X.vow?'<span class="r">'+ch+'</span>'+tone(v,k):'<span class="r">'+syl+'</span>')+'</b></button>'}).join('')+'</div>';}
+  else if(s.t==='word'){col=true;q='Bé đọc từ';sp=s.w[0].split(' ').map(spellSyl).join('. ')+'. '+s.w[0]+'.';
+    b='<button class="keybig" id="tap"><span class="e">'+s.w[1]+'</span><b>'+hl(s.w[0],ch)+'</b></button>';}
+  else if(s.t==='sent'){col=true;q='Bé đọc câu';sp=s.s[0];
+    b='<button class="semoji" id="tap">'+s.s[1]+'</button><div class="toks">'+s.s[0].split(' ').map(function(w,i){return '<button class="tok" data-i="'+i+'">'+hl(w,ch)+'</button>'}).join('')+'</div>';}
+  else if(s.t==='match'){var w=X.match[s.i][0];col=true;q='Tranh nào là…';sp='Tranh nào là '+w+'?';
+    b='<button class="mword" id="tap">'+hl(w,ch)+'</button><div class="mrow">'+s.o.map(function(j){return '<button class="mpic'+(s.ok&&j===s.i?' ok':'')+'" data-j="'+j+'" aria-label="Tranh">'+X.match[j][1]+'</button>'}).join('')+'</div>';}
+  else if(s.t==='cloud'){q='Đám mây nào có chữ '+ch+'?';sp='Bé chạm vào đám mây có chữ '+sn+'.';if(!s.got)s.got={};
+    b='<div class="clouds">'+s.c.map(function(c,j){return '<button class="cloud" data-j="'+j+'" data-v="'+c+'"><svg viewBox="0 0 120 80" aria-hidden="true"><path d="M28 72 H94 A17 17 0 0 0 97 38 A23 23 0 0 0 56 22 A20 20 0 0 0 22 40 A16 16 0 0 0 28 72Z"'+(s.got[j]?' style="fill:'+s.got[j]+'"':'')+'/></svg><span>'+c+'</span></button>'}).join('')+'</div>';}
+  else if(s.t==='end'){col=true;q='Xong bài '+X.n+'!';
+    if(!s.done){s.done=1;done[ch]=1;save('nhc-done',done);addStar()}
+    var pr=PRAISE[rnd(PRAISE.length)];sp=pr+' Bé học xong bài chữ '+sn+'. Giờ mình tập viết nhé!';
+    b='<div class="bigstar">★</div><p class="endp">'+pr+'</p><div class="row"><button class="btn big" id="toW">✏️ Tập viết chữ '+ch+'</button><button class="btn light big" id="again">🔁 Học lại</button></div>';}
+  $('#slide').innerHTML='<div class="shead"><span class="q">'+q+'</span><button class="ear" id="rep" aria-label="Nghe lại">🔊</button></div><div class="sbody'+(col?' col':'')+'">'+b+'</div>';
+  $('#sbar').style.width=((DK.i+1)/DK.S.length*100)+'%';
+  $('#prev').style.visibility=DK.i>0?'visible':'hidden';
+  $('#next').style.visibility=DK.i<DK.S.length-1?'visible':'hidden';
+  view.querySelectorAll('.secs button[data-s]').forEach(function(x){x.classList.toggle('on',x.dataset.s===s.sec)});
+  var on=view.querySelector('.secs .on');if(on&&on.scrollIntoView)try{on.scrollIntoView({block:'nearest',inline:'nearest'})}catch(e){}
+  $('#rep').onclick=function(){say(sp)};
+  var tap=$('#tap');if(tap)tap.onclick=function(){say(sp)};
+  say(sp);
+  if(s.t==='pick2')view.querySelectorAll('.pk').forEach(function(x){x.onclick=function(){
+    var p=s.a[+x.dataset.j];if(s.ok)return;
+    if(p[1]){s.ok=1;x.classList.add('ok');$('.word',x).innerHTML=hl(p[0][0],ch);say(p[0][0]+' có chữ '+sn+'. Đúng rồi!');advance(my)}
+    else{x.classList.add('no');shakeEl(x);say(p[0][0]+' không có chữ '+sn+'.');setTimeout(function(){x.classList.remove('no')},900)}}});
+  if(s.t==='tones')view.querySelectorAll('.tg button').forEach(function(x){x.onclick=function(){
+    var k=+x.dataset.k,v=s.v,t;
+    if(!X.vow)t=k?v+'. '+TONES[k][0]+'. '+tone(v,k)+'.':v+'.';
+    else t=sn+'. '+(v==='y'?'i':v)+'. '+ch+v+'.'+(k?' '+TONES[k][0]+'. '+ch+tone(v,k)+'.':'');
+    view.querySelectorAll('.tg button').forEach(function(y){y.classList.remove('say')});x.classList.add('say','seen');
+    say(t,function(){x.classList.remove('say')})}});
+  if(s.t==='sent')view.querySelectorAll('.tok').forEach(function(x){x.onclick=function(){say(s.s[0].split(' ')[+x.dataset.i].replace(/[.,!?]/g,''))}});
+  if(s.t==='match')view.querySelectorAll('.mpic').forEach(function(x){x.onclick=function(){
+    if(s.ok)return;var j=+x.dataset.j;
+    if(j===s.i){s.ok=1;x.classList.add('ok');say('Đúng rồi! '+X.match[j][0]+'.');advance(my)}
+    else{x.classList.add('no');shakeEl(x);say('Chưa đúng, bé thử lại nhé.');setTimeout(function(){x.classList.remove('no')},900)}}});
+  if(s.t==='cloud'){var need=s.c.filter(function(c){return c===ch}).length,COLS=['#FFD36B','#9FD8FF','#FFB3C7','#A8E6A3'];
+    view.querySelectorAll('.cloud').forEach(function(x){x.onclick=function(){
+      var j=x.dataset.j;if(s.got[j])return;
+      if(x.dataset.v===ch){var n=Object.keys(s.got).length;s.got[j]=COLS[n%4];$('path',x).style.fill=s.got[j];
+        if(n+1===need){say('Giỏi quá!');advance(my)}else say(sn)}
+      else{x.classList.add('no');shakeEl(x);say('Đây là chữ '+SND[x.dataset.v]+'.');setTimeout(function(){x.classList.remove('no')},900)}}})}
+  if(s.t==='end'){$('#toW').onclick=function(){go('viet-'+ch)};$('#again').onclick=function(){DK=null;deck(ch)}}
 }
 /* đánh vần một tiếng có t: “tờ. a. ta. huyền. tà” */
 function spellSyl(s){
@@ -465,10 +532,9 @@ function lines(){
   var Q=shuffle([1,2,3,4,5]).concat(shuffle([1,2,3,4,5]).slice(0,3)),i=0,miss=0;
   function round(){
     var n=Q[i],show=i<4;
-    view.innerHTML='<section class="panel"><h2>Đường kẻ</h2><p class="hint">Đường kẻ đếm từ dưới lên: 1, 2, 3, 4, 5. Bé chạm vào đường kẻ cô gọi.</p>'+
+    view.innerHTML='<section class="panel split"><div class="side"><h2>Đường kẻ</h2><p class="hint">Đường kẻ đếm từ dưới lên: 1, 2, 3, 4, 5. Bé chạm vào đường kẻ cô gọi.</p>'+
       '<p class="ask">Đường kẻ số <span class="r" style="font-size:1.5em">'+n+'</span></p>'+
-      '<div class="board"><div class="mark l"><i>🌳</i>cây</div><svg class="pad" id="pad" viewBox="0 0 100 146" role="img" aria-label="Ô li">'+gridSVG(show)+'<g id="hit"></g></svg><div class="mark r"><i>🏠</i>nhà</div></div>'+
-      '<p class="prog">Câu '+(i+1)+' / '+Q.length+(show?'':' · không có số, bé tự đếm từ dưới lên nhé')+'</p></section>';
+      '<p class="prog">Câu '+(i+1)+' / '+Q.length+(show?'':' · không có số, bé tự đếm từ dưới lên nhé')+'</p></div><div class="main"><div class="board"><div class="mark l"><i>🌳</i>cây</div><svg class="pad" id="pad" viewBox="0 0 100 146" role="img" aria-label="Ô li">'+gridSVG(show)+'<g id="hit"></g></svg><div class="mark r"><i>🏠</i>nhà</div></div></div></section>';
     kidEars();
     say('Bé chạm vào đường kẻ số '+n+'.'+(show?'':' Bé đếm từ dưới lên nhé.'));
     var pad=$('#pad');
@@ -489,15 +555,15 @@ function lines(){
 var mode='xem';
 function letter(ch){
   var X=WR[ch],sn=SND[ch];
-  view.innerHTML='<section class="panel"><h2 data-say="Viết chữ '+sn+'">Viết chữ '+ch+'</h2>'+
+  view.innerHTML='<section class="panel split"><div class="side"><h2 data-say="Viết chữ '+sn+'">Viết chữ '+ch+'</h2>'+
   '<div class="seg" role="group" aria-label="Bước học"><button data-m="xem">① Xem cách viết</button><button data-m="to">② Tô từng nét</button><button data-m="tu">③ Tự viết</button></div>'+
   '<p class="tip">'+X.tip+'</p>'+
-  '<div class="board"><div class="mark l"><i>🌳</i>cây</div><div id="padBox" style="display:contents"></div><div class="mark r"><i>🏠</i>nhà</div></div>'+
   '<p class="msg" id="msg" aria-live="polite">&nbsp;</p>'+
   '<div class="row" id="ctl"></div>'+
   '<ol class="steps" id="steps"></ol>'+
   '<details class="mom"><summary>👩 Dành cho mẹ: cách viết chữ '+ch+' ›</summary><ol>'+X.mom.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ol>'+
-  '<p class="hint" style="margin-top:8px">Số 1, 2, 3, 4, 5 bên trái bảng là số đường kẻ, đếm từ dưới lên. Bé viết ngón tay trên màn hình trước, rồi viết bút chì vào vở.</p></details></section>';
+  '<p class="hint" style="margin-top:8px">Số 1, 2, 3, 4, 5 bên trái bảng là số đường kẻ, đếm từ dưới lên. Bé viết ngón tay trên màn hình trước, rồi viết bút chì vào vở.</p></details></div>'+
+  '<div class="main"><div class="board"><div class="mark l"><i>🌳</i>cây</div><div id="padBox" style="display:contents"></div><div class="mark r"><i>🏠</i>nhà</div></div></div></section>';
   view.querySelectorAll('.seg button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.m===mode?'true':'false');b.onclick=function(){mode=b.dataset.m;letter(ch);kidEars()}});
   ({xem:watch,to:trace,tu:free})[mode](ch);
 }
@@ -640,7 +706,7 @@ function kidHello(){
   b.onclick=function(){say(t)};(h1||hr.lastChild).insertAdjacentElement('afterend',b);
 }
 function kidEars(){kidHello();
-  view.querySelectorAll('.panel>h2, .panel>h1').forEach(function(h){
+  view.querySelectorAll('.panel>h2, .panel>h1, .side>h2').forEach(function(h){
     if(h.querySelector('.ear'))return;
     var t=h.dataset.say||h.textContent,n=h.nextElementSibling;
     while(n&&n.classList.contains('stepper'))n=n.nextElementSibling;
@@ -649,12 +715,11 @@ function kidEars(){kidHello();
     e.onclick=function(){say(spk(t+'. '+x))};h.appendChild(e);
   });
 }
-var _lesson=lesson;lesson=function(ch,q){_lesson(ch,q);kidEars()};
 function render(){
   var h=location.hash.slice(1),mb=/^bai-([it])$/.exec(h),mv=/^viet-([it])$/.exec(h);
-  if(window.NTH)NTH.stop();
+  if(window.NTH)NTH.stop();tok++;document.body.classList.remove('fit');
   var inner=!!(mb||mv||h==='duong-ke');backB.hidden=!inner;allA.hidden=inner;
-  if(mb){LS=null;lesson(mb[1])}else if(mv){mode='xem';letter(mv[1])}else if(h==='duong-ke')lines();else home();
+  if(mb){DK=null;deck(mb[1])}else if(mv){mode='xem';letter(mv[1])}else if(h==='duong-ke')lines();else home();
   kidTiles();kidEars();
   window.scrollTo(0,0);
 }
